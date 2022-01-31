@@ -24,9 +24,9 @@ variable "namespace" {
   default = "thanos"
 }
 
-variable "profiles" {
+variable "extra_yaml" {
   type    = list(string)
-  default = ["default"]
+  default = []
 }
 
 #######################
