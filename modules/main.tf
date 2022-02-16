@@ -6,21 +6,21 @@ resource "argocd_project" "this" {
       "devops-stack.io/argocd_namespace" = var.argocd_namespace
     }
   }
- 
+
   spec {
     description  = "thanos application project"
     source_repos = ["https://github.com/camptocamp/devops-stack-module-thanos.git"]
- 
+
     destination {
       server    = "https://kubernetes.default.svc"
       namespace = var.namespace
     }
- 
+
     destination {
       server    = "https://kubernetes.default.svc"
       namespace = "kube-system"
     }
- 
+
     orphaned_resources {
       warn = true
     }

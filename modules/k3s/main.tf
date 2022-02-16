@@ -6,8 +6,8 @@ module "thanos" {
   base_domain      = var.base_domain
   argocd_namespace = var.argocd_namespace
 
-  namespace      = var.namespace
-  profiles       = var.profiles
+  namespace = var.namespace
+  profiles  = var.profiles
 
   thanos = {
     bucket_config = {

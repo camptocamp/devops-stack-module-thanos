@@ -34,6 +34,6 @@ variable "extra_yaml" {
 #######################
 
 variable "thanos" {
-  type = any
+  type    = any
   default = {}
 }

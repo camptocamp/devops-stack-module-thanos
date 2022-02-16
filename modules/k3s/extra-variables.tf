@@ -1,4 +1,4 @@
 variable "minio" {
-  type = any
+  type    = any
   default = {}
 }
