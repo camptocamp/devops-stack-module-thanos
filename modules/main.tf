@@ -12,12 +12,12 @@ resource "argocd_project" "this" {
     source_repos = ["https://github.com/camptocamp/devops-stack-module-thanos.git"]
 
     destination {
-      server    = "https://kubernetes.default.svc"
+      name      = "in-cluster"
       namespace = var.namespace
     }
 
     destination {
-      server    = "https://kubernetes.default.svc"
+      name      = "in-cluster"
       namespace = "kube-system"
     }
 
@@ -57,7 +57,7 @@ resource "argocd_application" "this" {
     }
 
     destination {
-      server    = "https://kubernetes.default.svc"
+      name      = "in-cluster"
       namespace = var.namespace
     }
 
