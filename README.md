@@ -7,7 +7,7 @@ A [DevOps Stack](https://devops-stack.io) module to deploy and configure [Thanos
 
 ```hcl
 module "metrics-archives" {
-  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//modules"
+  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git/"
 
   cluster_name     = var.cluster_name
   argocd_namespace = module.cluster.argocd_namespace
