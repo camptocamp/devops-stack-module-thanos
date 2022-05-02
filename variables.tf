@@ -29,6 +29,12 @@ variable "extra_yaml" {
   default = []
 }
 
+variable "dependency_ids" {
+  type = map(string)
+
+  default = {}
+}
+
 #######################
 ## Module variables
 #######################
