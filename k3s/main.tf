@@ -26,4 +26,6 @@ module "thanos" {
 
   #extra_yaml = [ templatefile("${path.module}/values.yaml", {
   #}) ]
+
+  dependency_ids = var.dependency_ids
 }
