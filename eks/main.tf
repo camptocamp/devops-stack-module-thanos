@@ -59,10 +59,15 @@ module "thanos" {
   cluster_name     = var.cluster_name
   base_domain      = var.base_domain
   argocd_namespace = var.argocd_namespace
+  cluster_issuer   = var.cluster_issuer
 
   namespace = var.namespace
 
   helm_values = concat(local.helm_values, var.helm_values)
+
+  thanos = {
+    oidc = var.thanos.oidc
+  }
 
   dependency_ids = var.dependency_ids
 }
