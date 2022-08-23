@@ -47,8 +47,8 @@ locals {
   bucket_config = {
     type = "s3"
     config = {
-      bucket             = "${aws_s3_bucket.thanos_metrics_store.id}"
-      endpoint           = "s3.${aws_s3_bucket.thanos_metrics_store.region}.amazonaws.com"
+      bucket   = "${aws_s3_bucket.thanos_metrics_store.id}"
+      endpoint = "s3.${aws_s3_bucket.thanos_metrics_store.region}.amazonaws.com"
     }
   }
 }

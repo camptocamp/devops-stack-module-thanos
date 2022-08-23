@@ -13,13 +13,13 @@ resource "aws_s3_bucket" "thanos_metrics_store" {
 data "aws_region" "current" {}
 
 module "iam_assumable_role_thanos" {
-  source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                       = "4.0.0"
-  create_role                   = true
-  number_of_role_policy_arns    = 1
-  role_name                     = format("thanos-s3-role-%s", var.cluster_name)
-  provider_url                  = replace(var.cluster_oidc_issuer_url, "https://", "")
-  role_policy_arns              = [aws_iam_policy.thanos_s3_policy.arn]
+  source                     = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  version                    = "4.0.0"
+  create_role                = true
+  number_of_role_policy_arns = 1
+  role_name                  = format("thanos-s3-role-%s", var.cluster_name)
+  provider_url               = replace(var.cluster_oidc_issuer_url, "https://", "")
+  role_policy_arns           = [aws_iam_policy.thanos_s3_policy.arn]
   oidc_fully_qualified_subjects = [
     "system:serviceaccount:thanos:thanos-bucketweb",
     "system:serviceaccount:thanos:thanos-storegateway",
