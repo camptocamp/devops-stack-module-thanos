@@ -64,50 +64,182 @@ locals {
 
       bucketweb = {
         enabled = "true"
+        sidecars = [{
+          args = concat([
+              "--http-address=0.0.0.0:9075",
+              "--upstream=http://localhost:8080",
+              "--provider=oidc",
+              "--oidc-issuer-url=${replace(local.thanos.oidc.issuer_url, "\"", "\\\"")}",
+              "--client-id=${replace(local.thanos.oidc.client_id, "\"", "\\\"")}",
+              "--client-secret=${replace(local.thanos.oidc.client_secret, "\"", "\\\"")}",
+              "--cookie-secure=false",
+              "--cookie-secret=${replace(random_password.oauth2_cookie_secret.result, "\"", "\\\"")}",
+              "--email-domain=*",
+              "--redirect-url=https://${local.thanos.bucketweb_domain}/oauth2/callback",
+          ], local.thanos.oidc.oauth2_proxy_extra_args)
+          image = "quay.io/oauth2-proxy/oauth2-proxy:v7.1.3"
+          name = "thanos-proxy"
+          ports = [{
+            containerPort = 9075
+            name = "proxy"
+          }]
+        }]
+        service = {
+          extraPorts = [{
+            name = "proxy"
+            port = 9075
+            protocol = "TCP"
+            targetPort = "proxy"
+          }]
+        }
         ingress = {
           enabled = "true"
           annotations = {
             "cert-manager.io/cluster-issuer"                   = "${var.cluster_issuer}"
             "traefik.ingress.kubernetes.io/router.entrypoints" = "websecure"
+            "traefik.ingress.kubernetes.io/router.middlewares" = "traefik-withclustername@kubernetescrd"
             "traefik.ingress.kubernetes.io/router.tls"         = "true"
             "ingress.kubernetes.io/ssl-redirect"               = "true"
             "kubernetes.io/ingress.allow-http"                 = "false"
           }
-          hostname = "thanos-bucketweb.apps.${var.base_domain}"
-          extraHosts = [{
-            name = "thanos-bucketweb.apps.${var.cluster_name}.${var.base_domain}"
-          }]
-          tls = "true"
+          tls = false
+          hostname = ""
+          extraRules = [
+            {
+              host = "thanos-bucketweb.apps.${var.base_domain}"
+              http = {
+                paths = [
+                  {
+                    backend = {
+                      service = {
+                        name = "thanos-bucketweb"
+                        port = {
+                          name = "proxy"
+                        }
+                      }
+                    }
+                    path = "/"
+                    pathType = "ImplementationSpecific"
+                  }                
+                ]
+              }
+            },
+            {
+              host = "${local.thanos.bucketweb_domain}"
+              http = {
+                paths = [
+                  {
+                    backend = {
+                      service = {
+                        name = "thanos-bucketweb"
+                        port = {
+                          name = "proxy"
+                        }
+                      }
+                    }
+                    path = "/"
+                    pathType = "ImplementationSpecific"
+                  }
+                ]
+              }
+            },
+          ]
           extraTls = [{
             secretName = "thanos-bucketweb-tls"
             hosts = [
-              "thanos-bucketweb.apps.${var.cluster_name}.${var.base_domain}",
-              "thanos-bucketweb.apps.${var.base_domain}"
+              "thanos-bucketweb.apps.${var.base_domain}",
+              "${local.thanos.bucketweb_domain}"
             ]
           }]
         }
       }
 
       queryFrontend = {
+        sidecars = [{
+          args = concat([
+              "--http-address=0.0.0.0:9075",
+              "--upstream=http://localhost:10902",
+              "--provider=oidc",
+              "--oidc-issuer-url=${replace(local.thanos.oidc.issuer_url, "\"", "\\\"")}",
+              "--client-id=${replace(local.thanos.oidc.client_id, "\"", "\\\"")}",
+              "--client-secret=${replace(local.thanos.oidc.client_secret, "\"", "\\\"")}",
+              "--cookie-secure=false",
+              "--cookie-secret=${replace(random_password.oauth2_cookie_secret.result, "\"", "\\\"")}",
+              "--email-domain=*",
+              "--redirect-url=https://${local.thanos.query_domain}/oauth2/callback",
+          ], local.thanos.oidc.oauth2_proxy_extra_args)
+          image = "quay.io/oauth2-proxy/oauth2-proxy:v7.1.3"
+          name = "thanos-proxy"
+          ports = [{
+            containerPort = 9075
+            name = "proxy"
+          }]
+        }]
+        service = {
+          extraPorts = [{
+            name = "proxy"
+            port = 9075
+            protocol = "TCP"
+            targetPort = "proxy"
+          }]
+        }
         ingress = {
           enabled = "true"
           annotations = {
             "cert-manager.io/cluster-issuer"                   = "${var.cluster_issuer}"
             "traefik.ingress.kubernetes.io/router.entrypoints" = "websecure"
+            "traefik.ingress.kubernetes.io/router.middlewares" = "traefik-withclustername@kubernetescrd"
             "traefik.ingress.kubernetes.io/router.tls"         = "true"
             "ingress.kubernetes.io/ssl-redirect"               = "true"
             "kubernetes.io/ingress.allow-http"                 = "false"
           }
-          hostname = "thanos-query.apps.${var.base_domain}"
-          extraHosts = [{
-            name = "thanos-query.apps.${var.cluster_name}.${var.base_domain}"
-          }]
-          tls = "true"
+          tls = false
+          hostname = ""
+          extraRules = [
+            {
+              host = "thanos-query.apps.${var.base_domain}"
+              http = {
+                paths = [
+                  {
+                    backend = {
+                      service = {
+                        name = "thanos-query-frontend"
+                        port = {
+                          name = "proxy"
+                        }
+                      }
+                    }
+                    path = "/"
+                    pathType = "ImplementationSpecific"
+                  }
+                ]
+              }
+            },
+            {
+              host = "${local.thanos.query_domain}"
+              http = {
+                paths = [
+                  {
+                    backend = {
+                      service = {
+                        name = "thanos-query-frontend"
+                        port = {
+                          name = "proxy"
+                        }
+                      }
+                    }
+                    path = "/"
+                    pathType = "ImplementationSpecific"
+                  }
+                ]
+              }
+            },
+          ]
           extraTls = [{
             secretName = "thanos-query-tls"
             hosts = [
-              "thanos-query.apps.${var.cluster_name}.${var.base_domain}",
-              "thanos-query.apps.${var.base_domain}"
+              "thanos-query.apps.${var.base_domain}",
+              "${local.thanos.query_domain}"
             ]
           }]
         }
@@ -115,4 +247,14 @@ locals {
 
     }
   }]
+
+  thanos_defaults = {
+    query_domain = "thanos-query.apps.${var.cluster_name}.${var.base_domain}"
+    bucketweb_domain = "thanos-bucketweb.apps.${var.cluster_name}.${var.base_domain}"
+  }
+
+  thanos = merge(
+    local.thanos_defaults,
+    var.thanos,
+  )
 }

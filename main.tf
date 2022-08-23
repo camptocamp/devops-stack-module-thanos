@@ -2,6 +2,11 @@ resource "null_resource" "dependencies" {
   triggers = var.dependency_ids
 }
 
+resource "random_password" "oauth2_cookie_secret" {
+  length  = 16
+  special = false
+}
+
 resource "argocd_project" "this" {
   metadata {
     name      = "thanos"
@@ -49,7 +54,7 @@ resource "argocd_application" "this" {
     source {
       repo_url        = "https://github.com/camptocamp/devops-stack-module-thanos.git"
       path            = "charts/thanos"
-      target_revision = "main"
+      target_revision = "thanos_redesign" # TODO remove ref to this branch
       helm {
         values = data.utils_deep_merge_yaml.values.output
       }
