@@ -38,10 +38,9 @@ locals {
 
       compactor = {
         enabled = true
-        # TODO Maybe provide an interface to customize this variables on the module call
-        retentionResolutionRaw = "60d"
-        retentionResolution5m  = "120d"
-        retentionResolution1h  = "240d"
+        retentionResolutionRaw = "${var.thanos.compactor_retention.raw}"
+        retentionResolution5m  = "${var.thanos.compactor_retention.five_min}"
+        retentionResolution1h  = "${var.thanos.compactor_retention.one_hour}"
         resources = {
           limits = {
             memory = "1Gi"
@@ -251,6 +250,13 @@ locals {
   thanos_defaults = {
     query_domain     = "thanos-query.apps.${var.cluster_name}.${var.base_domain}"
     bucketweb_domain = "thanos-bucketweb.apps.${var.cluster_name}.${var.base_domain}"
+    # TODO Review these values (these are the ones defined by default by Thanos)
+    # But I think we should provide more sensible values
+    compactor_retention = {
+      raw      = "30d"
+      five_min = "30d"
+      one_hour = "10y"
+    }
   }
 
   thanos = merge(

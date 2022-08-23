@@ -67,6 +67,11 @@ module "thanos" {
 
   thanos = {
     oidc = var.thanos.oidc
+    compactor_retention = {
+      raw      = var.thanos.compactor_retention.raw
+      five_min = var.thanos.compactor_retention.five_min
+      one_hour = var.thanos.compactor_retention.one_hour
+    }
   }
 
   dependency_ids = var.dependency_ids
