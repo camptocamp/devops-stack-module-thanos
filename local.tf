@@ -4,13 +4,61 @@ locals {
 
       storegateway = {
         enabled         = true
-        createConfigMap = "true"
+        persistence = {
+          enabled = false
+        }
+        resources = {
+          limits = {
+            memory = "2Gi"
+          }
+          requests = {
+            cpu = "0.5"
+            memory = "1Gi"
+          }
+        }
       }
 
       query = {
         dnsDiscovery = {
-          sidecarsService   = "kube-prometheus-stack-thanos-discovery"
-          sidecarsNamespace = "kube-prometheus-stack"
+          enabled = false
+        }
+        stores = [
+          "thanos-storegateway:10901"
+        ]
+        resources = {
+          limits = {
+            memory = "1Gi"
+          }
+          requests = {
+            cpu = "0.5"
+            memory = "512Mi"
+          }
+        }
+      }
+
+      compactor = {
+        enabled = true
+        # TODO Maybe provide an interface to customize this variables on the module call
+        retentionResolutionRaw = "60d"
+        retentionResolution5m = "120d"
+        retentionResolution1h = "240d"
+        resources = {
+          limits = {
+            memory = "1Gi"
+          }
+          requests = {
+            cpu = "0.5"
+            memory = "512Mi"
+          }
+        }
+        persistence = {
+          # We had the access mode set as ReadWriteMany, but it was not 
+          # supported with AWS gp2 EBS volumes. Since the compactor is the only
+          # pod accessing this volume, there should be no issue to have this as
+          # ReadWriteOnce (https://stackoverflow.com/a/57799347).
+          accessModes = [
+            "ReadWriteOnce"
+          ]
         }
       }
 
