@@ -250,12 +250,10 @@ locals {
   thanos_defaults = {
     query_domain     = "thanos-query.apps.${var.cluster_name}.${var.base_domain}"
     bucketweb_domain = "thanos-bucketweb.apps.${var.cluster_name}.${var.base_domain}"
-    # TODO Review these values (these are the ones defined by default by Thanos)
-    # But I think we should provide more sensible values
     compactor_retention = {
-      raw      = "30d"
-      five_min = "30d"
-      one_hour = "10y"
+      raw      = "60d"
+      five_min = "120d"
+      one_hour = "240d"
     }
   }
 
