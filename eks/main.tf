@@ -57,22 +57,13 @@ module "thanos" {
   source = "../"
 
   cluster_name     = var.cluster_name
-  base_domain      = var.base_domain
   argocd_namespace = var.argocd_namespace
+  base_domain      = var.base_domain
   cluster_issuer   = var.cluster_issuer
-
   namespace = var.namespace
+  dependency_ids = var.dependency_ids
+
+  thanos = var.thanos
 
   helm_values = concat(local.helm_values, var.helm_values)
-
-  thanos = {
-    oidc = var.thanos.oidc
-    compactor_retention = {
-      raw      = var.thanos.compactor_retention.raw
-      five_min = var.thanos.compactor_retention.five_min
-      one_hour = var.thanos.compactor_retention.one_hour
-    }
-  }
-
-  dependency_ids = var.dependency_ids
 }
