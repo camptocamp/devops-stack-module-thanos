@@ -19,7 +19,7 @@ locals {
       }
 
       query = {
-        # We disabled the direct connection to the sidecar so thano-query
+        # We have disabled the direct connection to the sidecar so thanos-query
         # depends on thanos-storegateway to obtain the metrics directly from
         # the S3 bucket. Note that storegateway gets new blocks from the bucket
         # every 30 mins.
