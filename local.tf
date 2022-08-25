@@ -19,6 +19,10 @@ locals {
       }
 
       query = {
+        # We disabled the direct connection to the sidecar so thano-query
+        # depends on thanos-storegateway to obtain the metrics directly from
+        # the S3 bucket. Note that storegateway gets new blocks from the bucket
+        # every 30 mins.
         dnsDiscovery = {
           enabled = false
         }
@@ -38,9 +42,9 @@ locals {
 
       compactor = {
         enabled = true
-        retentionResolutionRaw = "${var.thanos.compactor_retention.raw}"
-        retentionResolution5m  = "${var.thanos.compactor_retention.five_min}"
-        retentionResolution1h  = "${var.thanos.compactor_retention.one_hour}"
+        retentionResolutionRaw = "${local.thanos.compactor_retention.raw}"
+        retentionResolution5m  = "${local.thanos.compactor_retention.five_min}"
+        retentionResolution1h  = "${local.thanos.compactor_retention.one_hour}"
         resources = {
           limits = {
             memory = "1Gi"
