@@ -54,7 +54,7 @@ resource "argocd_application" "this" {
     source {
       repo_url        = "https://github.com/camptocamp/devops-stack-module-thanos.git"
       path            = "charts/thanos"
-      target_revision = "thanos_redesign" # TODO remove ref to this branch
+      target_revision = "main"
       helm {
         values = data.utils_deep_merge_yaml.values.output
       }
