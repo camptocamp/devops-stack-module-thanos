@@ -2,6 +2,11 @@ resource "null_resource" "dependencies" {
   triggers = var.dependency_ids
 }
 
+resource "random_password" "oauth2_cookie_secret" {
+  length  = 16
+  special = false
+}
+
 resource "argocd_project" "this" {
   metadata {
     name      = "thanos"
@@ -20,11 +25,6 @@ resource "argocd_project" "this" {
       namespace = var.namespace
     }
 
-    destination {
-      name      = "in-cluster"
-      namespace = "kube-system"
-    }
-
     orphaned_resources {
       warn = true
     }
@@ -37,7 +37,7 @@ resource "argocd_project" "this" {
 }
 
 data "utils_deep_merge_yaml" "values" {
-  input = local.all_yaml
+  input = [for i in concat(local.helm_values, var.helm_values) : yamlencode(i)]
 }
 
 resource "argocd_application" "this" {
@@ -54,7 +54,7 @@ resource "argocd_application" "this" {
     source {
       repo_url        = "https://github.com/camptocamp/devops-stack-module-thanos.git"
       path            = "charts/thanos"
-      target_revision = "main"
+      target_revision = "thanos_redesign" # TODO remove ref to this branch
       helm {
         values = data.utils_deep_merge_yaml.values.output
       }
@@ -67,8 +67,17 @@ resource "argocd_application" "this" {
 
     sync_policy {
       automated = {
-        prune     = true
-        self_heal = true
+        allow_empty = false
+        prune       = true
+        self_heal   = true
+      }
+
+      retry {
+        backoff = {
+          duration     = ""
+          max_duration = ""
+        }
+        limit = "0"
       }
 
       sync_options = [
