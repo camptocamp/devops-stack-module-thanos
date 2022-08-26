@@ -60,8 +60,8 @@ module "thanos" {
   argocd_namespace = var.argocd_namespace
   base_domain      = var.base_domain
   cluster_issuer   = var.cluster_issuer
-  namespace = var.namespace
-  dependency_ids = var.dependency_ids
+  namespace        = var.namespace
+  dependency_ids   = var.dependency_ids
 
   thanos = var.thanos
 
