@@ -41,7 +41,7 @@ locals {
       }
 
       compactor = {
-        enabled = true
+        enabled                = true
         retentionResolutionRaw = "${local.thanos.compactor_retention.raw}"
         retentionResolution5m  = "${local.thanos.compactor_retention.five_min}"
         retentionResolution1h  = "${local.thanos.compactor_retention.one_hour}"
@@ -252,6 +252,8 @@ locals {
   }]
 
   thanos_defaults = {
+    # By default is true because if we call this module it is because we want to enable it
+    enabled          = true
     query_domain     = "thanos-query.apps.${var.cluster_name}.${var.base_domain}"
     bucketweb_domain = "thanos-bucketweb.apps.${var.cluster_name}.${var.base_domain}"
     compactor_retention = {
