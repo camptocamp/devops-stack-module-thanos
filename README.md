@@ -35,7 +35,5 @@ module "thanos" {
 
 This module must be one of the first ones to be deployed and because of that it only needs this explicit dependency.
 
-### EKS Submodule
-
-<!-- BEGIN_TF_DOCS_EKS -->
-<!-- END_TF_DOCS_EKS -->
+<!-- BEGIN_TF_DOCS -->
+<!-- END_TF_DOCS -->
