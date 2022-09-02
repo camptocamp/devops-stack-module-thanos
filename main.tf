@@ -2,11 +2,6 @@ resource "null_resource" "dependencies" {
   triggers = var.dependency_ids
 }
 
-resource "random_password" "oauth2_cookie_secret" {
-  length  = 16
-  special = false
-}
-
 resource "argocd_project" "this" {
   metadata {
     name      = "thanos"
@@ -36,6 +31,11 @@ resource "argocd_project" "this" {
   }
 }
 
+resource "random_password" "oauth2_cookie_secret" {
+  length  = 16
+  special = false
+}
+
 data "utils_deep_merge_yaml" "values" {
   input = [for i in concat(local.helm_values, var.helm_values) : yamlencode(i)]
 }
@@ -44,6 +44,11 @@ resource "argocd_application" "this" {
   metadata {
     name      = "thanos"
     namespace = var.argocd_namespace
+  }
+
+  timeouts {
+    create = "15m"
+    delete = "15m"
   }
 
   wait = true
