@@ -3,9 +3,11 @@ output "id" {
 }
 
 output "metrics_archives" {
+  description = "value"
   value = local.metrics_archives
 }
 
 output "thanos_enabled" {
+  description = "value"
   value = module.thanos.thanos_enabled
 }
