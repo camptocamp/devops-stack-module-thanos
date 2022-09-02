@@ -26,7 +26,7 @@ jobs:
           {{ .Content }}
           <!-- END_TF_DOCS_EKS -->
         output-format: "markdown document"
-        output-file: ./README.md
+        output-file: ../README.md
         output-method: inject
         git-push: "true"
         git-commit-message: "terraform-docs: generate EKS docs and append to README.md"
