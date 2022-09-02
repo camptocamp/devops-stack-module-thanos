@@ -16,14 +16,13 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
 
-    - name: Render Terraform documentation inside the README.md and push changes back to PR branch (EKS submodule)
+    - name: Render Terraform documentation inside the README.md and push changes back to PR branch
       uses: terraform-docs/gh-actions@v1.0.0
       with:
-        working-dir: ./eks
-        indention: 4
-        template: <!-- BEGIN_TF_DOCS_EKS -->\n{{ .Content }}\n<!-- END_TF_DOCS_EKS -->
+        working-dir: .
+        indention: 3
         output-format: "markdown document"
-        output-file: ../README.md
+        output-file: README.md
         output-method: inject
         git-push: "true"
-        git-commit-message: "terraform-docs: generate EKS docs and append to README.md"
+        git-commit-message: "terraform-docs: generate docs and append to README.md"
