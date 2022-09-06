@@ -145,3 +145,6 @@ Description: n/a
 
 Description: n/a
 <!-- END_TF_DOCS -->
+
+<!-- BEGIN_TF_DOCS_EKS -->
+<!-- END_TF_DOCS_EKS -->
