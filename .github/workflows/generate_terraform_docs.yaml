@@ -9,7 +9,6 @@ jobs:
   terraform-docs:
     runs-on: ubuntu-latest
 
-
     steps:
     - name: Checkout the repository
       uses: actions/checkout@v3
@@ -20,9 +19,22 @@ jobs:
       uses: terraform-docs/gh-actions@v1.0.0
       with:
         working-dir: .
+        # recursive: "true"
         indention: 3
         output-format: "markdown document"
         output-file: README.md
         output-method: inject
+        git-push: "true"
+        git-commit-message: "terraform-docs: generate docs and append to README.md"
+
+    - name: Render Terraform documentation inside the README.md for the EKS module push changes back to PR branch
+      uses: terraform-docs/gh-actions@v1.0.0
+      with:
+        working-dir: eks
+        indention: 3
+        output-format: "markdown document"
+        output-file: ../README.md
+        output-method: inject<!-- BEGIN_TF_DOCS_EKS -->\n{{ .Content }}\n<!-- END_TF_DOCS_EKS -->
+        template: 
         git-push: "true"
         git-commit-message: "terraform-docs: generate docs and append to README.md"
