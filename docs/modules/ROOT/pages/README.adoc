@@ -1,0 +1,5 @@
+= devops-stack-module-thanos
+
+A https://devops-stack.io[DevOps Stack] module to deploy and configure https://thanos.io[Thanos].
+
+include::README_EKS.adoc[leveloffset=+1]
