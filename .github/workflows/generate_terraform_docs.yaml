@@ -1,5 +1,7 @@
+---
 # GitHub Actions workflow to automatically generate documentation from the .tf files of the module
 # The generated documentation will be injected between <!-- BEGIN_TF_DOCS --> and <!-- END_TF_DOCS --> on the README.md
+
 name: Generate Terraform documentation
 
 on:
@@ -19,7 +21,6 @@ jobs:
       uses: terraform-docs/gh-actions@v1.0.0
       with:
         working-dir: .
-        recursive: "true"
         indention: 3
         output-format: "markdown document"
         output-file: README.md
