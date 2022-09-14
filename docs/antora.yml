@@ -1,3 +1,4 @@
 ---
 name: "thanos"
 version: true
+start_page: README.adoc
