@@ -26,4 +26,4 @@ jobs:
         output-file: README.md
         output-method: inject
         git-push: "true"
-        git-commit-message: "terraform-docs: generate docs and append to README.md"
+        git-commit-message: "docs(terraform-docs): generate docs and write to README.adoc"
