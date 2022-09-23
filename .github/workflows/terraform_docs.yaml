@@ -8,7 +8,7 @@ on:
   - pull_request
 
 env:
-  TF_DOCS_WORKING_DIR: ".,eks" # Define the folders of the main module and submodules
+  TF_DOCS_WORKING_DIR: ".,./eks" # Define the folders of the main module and submodules
 
 jobs:
   terraform-docs:
