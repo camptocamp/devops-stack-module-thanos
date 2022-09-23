@@ -1,4 +1,2 @@
-.Module Thanos
 * xref:ROOT:README.adoc[Home]
-.DevOps Stack
-* xref:ROOT:ROOT:index.adoc[Main Documentation]
+* xref:ROOT:ROOT:index.adoc[_Return to main docs_]
