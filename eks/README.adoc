@@ -2,10 +2,10 @@
 
 == Usage
 
-This is how to use:
+This module can be instantiated by adding the following block on your Terraform configuration:
 
-[source,hcl]
----
+[source,terraform]
+----
 module "thanos" {
   source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks"
 
@@ -22,9 +22,24 @@ module "thanos" {
 
   depends_on = [module.argocd_bootstrap]
 }
----
+----
 
 == Technical Reference
 
-<!-- BEGIN_TF_DOCS -->
-<!-- END_TF_DOCS -->
+=== Dependencies
+
+==== `module.argocd_bootstrap`
+
+This module must be one of the first ones to be deployed and consequently it needs to be deployed exactly after the module `argocd_bootstrap`.
+
+// BEGIN_TF_DOCS
+// END_TF_DOCS
+
+=== Reference in table format 
+
+.Show tables
+[%collapsible]
+====
+// BEGIN_TF_TABLES
+// END_TF_TABLES
+====
