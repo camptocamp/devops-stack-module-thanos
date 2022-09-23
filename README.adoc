@@ -4,36 +4,21 @@ A https://devops-stack.io[DevOps Stack] module to deploy and configure https://t
 
 TODO Add chart version and link to chart used as well as the possible variables in the values.yaml.
 
-== Usage
+Since this module is meant to be instantiated by its submodules, the documentation is separated and available in each submodule. Below you will find the technical reference automatically generated from the main `*.tf` files this module. 
 
-=== On EKS
-
-This module can be instantiated by adding the following block on your Terraform configuration:
-
-[source,hcl]
-----
-module "thanos" {
-  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks"
-
-  cluster_name     = var.cluster_name
-  argocd_namespace = module.cluster.argocd_namespace # TODO Make sure we use a generic name for the cluster module instead of using eks or aks, to be discussed
-  base_domain      = module.cluster.base_domain
-  cluster_issuer   = var.cluster_issuer # TODO Verify that we will create this variable and document it in the main module
-
-  cluster_oidc_issuer_url = module.cluster.cluster_oidc_issuer_url
-
-  thanos = {
-    oicd = module.oicd.oicd
-  }`
-
-  depends_on = [module.argocd_bootstrap]
-}
-----
+- link:eks/README.adoc[EKS]
+// - link:aks/README.adoc[EKS]
 
 == Technical Reference
 
-=== Dependencies
+// BEGIN_TF_DOCS
+// END_TF_DOCS
 
-==== `module.argocd_bootstrap`
+=== Reference in table format 
 
-This module must be one of the first ones to be deployed and because of that it only needs to be deployed exactly after the module `argocd_bootstrap`.
+.Show tables
+[%collapsible]
+====
+// BEGIN_TF_TABLES
+// END_TF_TABLES
+====
