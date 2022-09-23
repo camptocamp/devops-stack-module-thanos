@@ -4,10 +4,12 @@ A https://devops-stack.io[DevOps Stack] module to deploy and configure https://t
 
 TODO Add chart version and link to chart used as well as the possible variables in the values.yaml.
 
-Since this module is meant to be instantiated by its submodules, the documentation is separated and available in each submodule. Below you will find the technical reference automatically generated from the main `*.tf` files this module. 
+Since this module is meant to be instantiated using its submodules, the usage documentation is available in each submodule.
 
 - link:eks/README.adoc[EKS]
 // - link:aks/README.adoc[EKS]
+
+Below you will only find the technical reference automatically generated from the `*.tf` files on the root module. 
 
 == Technical Reference
 
