@@ -33,6 +33,70 @@ module "thanos" {
 This module must be one of the first ones to be deployed and consequently it needs to be deployed exactly after the module `argocd_bootstrap`.
 
 // BEGIN_TF_DOCS
+=== Requirements
+
+No requirements.
+
+=== Providers
+
+The following providers are used by this module:
+
+- [[provider_aws]] <<provider_aws,aws>>
+
+=== Modules
+
+The following Modules are called:
+
+==== [[module_iam_assumable_role_thanos]] <<module_iam_assumable_role_thanos,iam_assumable_role_thanos>>
+
+Source: terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc
+
+Version: 4.0.0
+
+==== [[module_thanos]] <<module_thanos,thanos>>
+
+Source: ../../
+
+Version:
+
+=== Resources
+
+The following resources are used by this module:
+
+- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy[aws_iam_policy.thanos_s3_policy] (resource)
+- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket[aws_s3_bucket.thanos_metrics_store] (resource)
+- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document[aws_iam_policy_document.thanos_s3_policy] (data source)
+- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region[aws_region.current] (data source)
+
+=== Required Inputs
+
+The following input variables are required:
+
+==== [[input_cluster_oidc_issuer_url]] <<input_cluster_oidc_issuer_url,cluster_oidc_issuer_url>>
+
+Description: value
+
+Type: `string`
+
+=== Optional Inputs
+
+No optional inputs.
+
+=== Outputs
+
+The following outputs are exported:
+
+==== [[output_id]] <<output_id,id>>
+
+Description: n/a
+
+==== [[output_metrics_archives]] <<output_metrics_archives,metrics_archives>>
+
+Description: value
+
+==== [[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>>
+
+Description: value
 // END_TF_DOCS
 
 === Reference in table format 
@@ -41,5 +105,57 @@ This module must be one of the first ones to be deployed and consequently it nee
 [%collapsible]
 ====
 // BEGIN_TF_TABLES
+
+
+= Providers
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Version
+|[[provider_aws]] <<provider_aws,aws>> |n/a
+|===
+
+= Modules
+
+[cols="a,a,a",options="header,autowidth"]
+|===
+|Name |Source |Version
+|[[module_iam_assumable_role_thanos]] <<module_iam_assumable_role_thanos,iam_assumable_role_thanos>> |terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc |4.0.0
+|[[module_thanos]] <<module_thanos,thanos>> |../../ |
+|===
+
+= Resources
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Type
+|https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy[aws_iam_policy.thanos_s3_policy] |resource
+|https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket[aws_s3_bucket.thanos_metrics_store] |resource
+|https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document[aws_iam_policy_document.thanos_s3_policy] |data source
+|https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region[aws_region.current] |data source
+|===
+
+= Inputs
+
+[cols="a,a,a,a,a",options="header,autowidth"]
+|===
+|Name |Description |Type |Default |Required
+|[[input_cluster_oidc_issuer_url]] <<input_cluster_oidc_issuer_url,cluster_oidc_issuer_url>>
+|value
+|`string`
+|n/a
+|yes
+
+|===
+
+= Outputs
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Description
+|[[output_id]] <<output_id,id>> |n/a
+|[[output_metrics_archives]] <<output_metrics_archives,metrics_archives>> |value
+|[[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>> |value
+|===
 // END_TF_TABLES
 ====
