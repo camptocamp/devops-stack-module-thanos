@@ -97,9 +97,9 @@ As you can see on the examples above, the variable `thanos` provides an interfac
 
 IMPORTANT: This module was developed with OIDC in mind!
 
-There is an OIDC proxy container deployed as a sidecar on each pod that has a web interface. Consequently, the `thanos` variable is expected to have a map `oidc` containing at least the issuer URL, the Client ID, and the Client Secret.
+There is an OIDC proxy container deployed as a sidecar on each pod that has a web interface. Consequently, the `thanos` variable is expected to have a map `oidc` containing at least the Issuer URL, the Client ID, and the Client Secret.
 
-You can pass this values by passing an output from another module (as above), or define them explicitly:
+You can pass these values by pointing an output from another module (as above), or by defining them explicitly:
 
 [source,terraform]
 ----
