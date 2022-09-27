@@ -104,7 +104,6 @@ You can pass these values by pointing an output from another module (as above), 
 [source,terraform]
 ----
 module "thanos" {
-
   ...
 
   thanos = {
@@ -116,7 +115,6 @@ module "thanos" {
   }
 
   ...
-
 }
 ----
 
