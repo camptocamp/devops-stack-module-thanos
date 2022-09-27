@@ -110,8 +110,8 @@ module "thanos" {
   thanos = {
     oidc = {
       issuer_url    = "<URL>"
-      client_id     = <ID>
-      client_secret = <SECRET>
+      client_id     = "<ID>"
+      client_secret = "<SECRET>"
     }
   }
 

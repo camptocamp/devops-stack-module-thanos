@@ -8,7 +8,8 @@ on:
   - pull_request
 
 env:
-  SUBMODULES_DIR: "eks" # Define the folders of the submodules
+  SUBMODULES_DIR: "eks" # List the submodules folders as a comma-separated list inside a string
+  # SUBMODULES_DIR: "eks,aks,sks" # Example
 
 jobs:
   terraform-docs:
