@@ -170,25 +170,25 @@ The following input variables are required:
 
 ==== [[input_argocd_namespace]] <<input_argocd_namespace,argocd_namespace>>
 
-Description: n/a
+Description: Namespace used by Argo CD where the Application and AppProject resources should be created.
 
 Type: `string`
 
 ==== [[input_base_domain]] <<input_base_domain,base_domain>>
 
-Description: n/a
+Description: Base domain of the cluster. This value will be used to generate the URLs in order to create the ingresses to access the application.
 
 Type: `string`
 
 ==== [[input_cluster_name]] <<input_cluster_name,cluster_name>>
 
-Description: n/a
+Description: Name given to the cluster. This value will be used to generate the URLs in order to create the ingresses to access the application.
 
 Type: `string`
 
 ==== [[input_cluster_oidc_issuer_url]] <<input_cluster_oidc_issuer_url,cluster_oidc_issuer_url>>
 
-Description: value
+Description: The URL on the EKS cluster OIDC Issuer.
 
 Type: `string`
 
@@ -198,7 +198,7 @@ The following input variables are optional (have default values):
 
 ==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
 
-Description: n/a
+Description: SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files.
 
 Type: `string`
 
@@ -206,7 +206,7 @@ Default: `"ca-issuer"`
 
 ==== [[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
 
-Description: n/a
+Description: IDs of the other modules on which this module depends on.
 
 Type: `map(string)`
 
@@ -214,7 +214,7 @@ Default: `{}`
 
 ==== [[input_helm_values]] <<input_helm_values,helm_values>>
 
-Description: Helm values, passed as a list of HCL structures.
+Description: Helm values, passed as a list of HCL structures. These values are concatenated with the default ones and then passed to the application's charts.
 
 Type: `any`
 
@@ -222,7 +222,7 @@ Default: `[]`
 
 ==== [[input_namespace]] <<input_namespace,namespace>>
 
-Description: n/a
+Description: The namespace where the application's resources will reside (it will be created in case it dows not already exist).
 
 Type: `string`
 
@@ -230,7 +230,7 @@ Default: `"thanos"`
 
 ==== [[input_thanos]] <<input_thanos,thanos>>
 
-Description: Thanos settings
+Description: Most frequently used Thanos settings. This variable is merged with the local value `thanos_defaults`, which contains some sensible defaults. You can check the default values on the link:./local.tf[`local.tf`] file. If there still is anything other that needs to be customized, you can always pass on configuration values using the variable `helm_values`.
 
 Type: `any`
 
@@ -242,15 +242,15 @@ The following outputs are exported:
 
 ==== [[output_id]] <<output_id,id>>
 
-Description: n/a
+Description: ID to pass other modules in order to refer to this module as a dependency. It takes the ID that comes from the main module and passes it along to the code that called this submodule in the first place.
 
 ==== [[output_metrics_archives]] <<output_metrics_archives,metrics_archives>>
 
-Description: value
+Description: Bucket configuration in an HCL structure that will be used as an output to pass on to the module `kube-prometheus-stack` to activate and then configure `thanos-sidecar`.
 
 ==== [[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>>
 
-Description: value
+Description: Flag to say that Thanos is enabled. It takes the output that comes from the main module and passes it along to the code that called this submodule in the first place.
 // END_TF_DOCS
 
 === Reference in table format 
@@ -295,55 +295,55 @@ Description: value
 |===
 |Name |Description |Type |Default |Required
 |[[input_argocd_namespace]] <<input_argocd_namespace,argocd_namespace>>
-|n/a
+|Namespace used by Argo CD where the Application and AppProject resources should be created.
 |`string`
 |n/a
 |yes
 
 |[[input_base_domain]] <<input_base_domain,base_domain>>
-|n/a
+|Base domain of the cluster. This value will be used to generate the URLs in order to create the ingresses to access the application.
 |`string`
 |n/a
 |yes
 
 |[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
-|n/a
+|SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files.
 |`string`
 |`"ca-issuer"`
 |no
 
 |[[input_cluster_name]] <<input_cluster_name,cluster_name>>
-|n/a
+|Name given to the cluster. This value will be used to generate the URLs in order to create the ingresses to access the application.
 |`string`
 |n/a
 |yes
 
 |[[input_cluster_oidc_issuer_url]] <<input_cluster_oidc_issuer_url,cluster_oidc_issuer_url>>
-|value
+|The URL on the EKS cluster OIDC Issuer.
 |`string`
 |n/a
 |yes
 
 |[[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
-|n/a
+|IDs of the other modules on which this module depends on.
 |`map(string)`
 |`{}`
 |no
 
 |[[input_helm_values]] <<input_helm_values,helm_values>>
-|Helm values, passed as a list of HCL structures.
+|Helm values, passed as a list of HCL structures. These values are concatenated with the default ones and then passed to the application's charts.
 |`any`
 |`[]`
 |no
 
 |[[input_namespace]] <<input_namespace,namespace>>
-|n/a
+|The namespace where the application's resources will reside (it will be created in case it dows not already exist).
 |`string`
 |`"thanos"`
 |no
 
 |[[input_thanos]] <<input_thanos,thanos>>
-|Thanos settings
+|Most frequently used Thanos settings. This variable is merged with the local value `thanos_defaults`, which contains some sensible defaults. You can check the default values on the link:./local.tf[`local.tf`] file. If there still is anything other that needs to be customized, you can always pass on configuration values using the variable `helm_values`.
 |`any`
 |`{}`
 |no
@@ -355,9 +355,9 @@ Description: value
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Description
-|[[output_id]] <<output_id,id>> |n/a
-|[[output_metrics_archives]] <<output_metrics_archives,metrics_archives>> |value
-|[[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>> |value
+|[[output_id]] <<output_id,id>> |ID to pass other modules in order to refer to this module as a dependency. It takes the ID that comes from the main module and passes it along to the code that called this submodule in the first place.
+|[[output_metrics_archives]] <<output_metrics_archives,metrics_archives>> |Bucket configuration in an HCL structure that will be used as an output to pass on to the module `kube-prometheus-stack` to activate and then configure `thanos-sidecar`.
+|[[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>> |Flag to say that Thanos is enabled. It takes the output that comes from the main module and passes it along to the code that called this submodule in the first place.
 |===
 // END_TF_TABLES
 ====
