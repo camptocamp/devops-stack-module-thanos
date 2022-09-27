@@ -1,26 +1,122 @@
 = EKS submodule
 
+This folder contains the submodule to use when deploying in AWS using an EKS cluster.
+
 == Usage
 
-This module can be instantiated by adding the following block on your Terraform configuration:
+This module can be declared by adding the following block on your Terraform configuration:
 
 [source,terraform]
 ----
 module "thanos" {
   source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks"
 
-  cluster_name     = var.cluster_name
-  argocd_namespace = module.cluster.argocd_namespace # TODO Make sure we use a generic name for the cluster module instead of using eks or aks, to be discussed
-  base_domain      = module.cluster.base_domain
-  cluster_issuer   = var.cluster_issuer # TODO Verify that we will create this variable and document it in the main module
-
+  cluster_name            = var.cluster_name
+  argocd_namespace        = module.cluster.argocd_namespace # TODO Make sure we use a generic name for the cluster module instead of using eks or aks, to be discussed
+  base_domain             = module.cluster.base_domain
+  cluster_issuer          = var.cluster_issuer # TODO Verify that we will create this variable and document it in the main module
   cluster_oidc_issuer_url = module.cluster.cluster_oidc_issuer_url
 
   thanos = {
-    oicd = module.oicd.oicd
-  }`
+    oidc = module.oidc.oidc
+  }
 
   depends_on = [module.argocd_bootstrap]
+}
+----
+
+A more complex complex declaration, one that changes the default values for the compactor retention times, would look like this:
+
+[source,terraform]
+----
+module "thanos" {
+  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks"
+
+  cluster_name            = var.cluster_name
+  argocd_namespace        = module.cluster.argocd_namespace # TODO See above
+  base_domain             = module.cluster.base_domain
+  cluster_issuer          = var.cluster_issuer # TODO See above
+  cluster_oidc_issuer_url = module.cluster.cluster_oidc_issuer_url
+
+  thanos = {
+    oidc = module.oidc.oidc
+    compactor_retention = {
+      raw      = "60d"
+      five_min = "120d"
+      one_hour = "240d"
+    }
+  }
+
+  depends_on = [module.argocd_bootstrap]
+}
+----
+
+Furthermore, you can customize the chart's `values.yaml` by adding an Helm configuration as an HCL structure:
+
+[source,terraform]
+----
+module "thanos" {
+  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks"
+
+  cluster_name            = var.cluster_name
+  argocd_namespace        = module.cluster.argocd_namespace # TODO See above
+  base_domain             = module.cluster.base_domain
+  cluster_issuer          = var.cluster_issuer # TODO See above
+  cluster_oidc_issuer_url = module.cluster.cluster_oidc_issuer_url
+
+  thanos = {
+    oidc = module.oidc.oidc
+  }
+
+  helm_values = [
+    map = {
+      string = "string"
+      bool   = true
+    }
+    sequence = [
+      {
+        key1 = "value1"
+        key2 = "value2"
+      },
+      {
+        key1 = "value1"
+        key2 = "value2"
+      },
+    ]
+    sequence2 = [
+      "string1",
+      "string2"
+    ]
+  ]
+
+  depends_on = [module.argocd_bootstrap]
+}
+----
+
+As you can see on the examples above, the variable `thanos` provides an interface to customize the most frequently used settings. This variable is merged with the local value `thanos_defaults`, which contains some sensible defaults. You can check the default values on the link:./local.tf[`local.tf`] file.
+
+IMPORTANT: This module was developed with OIDC in mind!
+
+There is an OIDC proxy container deployed as a sidecar on each pod that has a web interface. Consequently, the `thanos` variable is expected to have a map `oidc` containing at least the issuer URL, the Client ID, and the Client Secret.
+
+You can pass this values by passing an output from another module (as above), or define them explicitly:
+
+[source,terraform]
+----
+module "thanos" {
+
+  ...
+
+  thanos = {
+    oidc = {
+      issuer_url    = "<URL>"
+      client_id     = <ID>
+      client_secret = <SECRET>
+    }
+  }
+
+  ...
+
 }
 ----
 

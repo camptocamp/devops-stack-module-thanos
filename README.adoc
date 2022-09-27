@@ -2,9 +2,9 @@
 
 A https://devops-stack.io[DevOps Stack] module to deploy and configure https://thanos.io[Thanos].
 
-TODO Add chart version and link to chart used as well as the possible variables in the values.yaml.
+The Thanos chart used by this module is shipped in this repository as well, in order to avoid unwanted behavior by using unsupported versions. The chart version used is the *10.5.5*. All the Thanos charts are available https://github.com/bitnami/charts/tree/master/bitnami/thanos[here] as well as the documentation for the `values.yaml` (the default is available https://github.com/bitnami/charts/blob/master/bitnami/thanos/values.yaml[here]).
 
-Since this module is meant to be instantiated using its submodules, the usage documentation is available in each submodule.
+*Since this module is meant to be instantiated using its submodules, the usage documentation is available in each submodule.*
 
 - link:eks/README.adoc[EKS]
 // - link:aks/README.adoc[EKS]
