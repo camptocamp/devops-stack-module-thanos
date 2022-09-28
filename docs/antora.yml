@@ -1,5 +1,5 @@
 ---
-name: "thanos"
+name: "Thanos Module"
 version: true
 start_page: README.adoc
 nav:
