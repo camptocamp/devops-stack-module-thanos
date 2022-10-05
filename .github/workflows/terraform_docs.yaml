@@ -8,8 +8,8 @@ on:
   - pull_request
 
 env:
-  SUBMODULES_DIR: "eks" # List the submodules folders as a comma-separated list inside a string
-  # SUBMODULES_DIR: "eks,aks,sks" # Example
+  VARIANTS_DIR: "eks" # List the variants folders as a comma-separated list inside a string
+  # VARIANTS_DIR: "eks,aks,sks" # Example
 
 jobs:
   terraform-docs:
@@ -44,10 +44,10 @@ jobs:
         args: "--hide-empty=true" # Do not show empty sections
         git-push: false
 
-    - name: "Generate Terraform docs for the submodules"
+    - name: "Generate Terraform docs for the variants"
       uses: terraform-docs/gh-actions@v1.0.0
       with:
-        working-dir: ${{ env.SUBMODULES_DIR }}
+        working-dir: ${{ env.VARIANTS_DIR }}
         indention: 3
         output-format: asciidoc document
         output-file: README.adoc
@@ -55,10 +55,10 @@ jobs:
         template: "// BEGIN_TF_DOCS\n{{ .Content }}\n// END_TF_DOCS" # Define template compatible with AsciiDoc
         git-push: false
 
-    - name: "Generate Terraform tables for the submodules"
+    - name: "Generate Terraform tables for the variants"
       uses: terraform-docs/gh-actions@v1.0.0
       with:
-        working-dir: ${{ env.SUBMODULES_DIR }}
+        working-dir: ${{ env.VARIANTS_DIR }}
         indention: 1 # Since the headings are not read inside the collapsible block we can indent as 1 instead of aligning with the rest of the text
         output-format: asciidoc table
         output-file: README.adoc

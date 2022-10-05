@@ -1,6 +1,6 @@
-= EKS submodule
+= EKS variant
 
-This folder contains the submodule to use when deploying in AWS using an EKS cluster.
+This folder contains the variant to use when deploying in AWS using an EKS cluster.
 
 == Usage
 
