@@ -12,9 +12,9 @@ module "thanos" {
   source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks"
 
   cluster_name            = var.cluster_name
-  argocd_namespace        = module.cluster.argocd_namespace # TODO Make sure we use a generic name for the cluster module instead of using eks or aks, to be discussed
+  argocd_namespace        = module.cluster.argocd_namespace
   base_domain             = module.cluster.base_domain
-  cluster_issuer          = var.cluster_issuer # TODO Verify that we will create this variable and document it in the main module
+  cluster_issuer          = var.cluster_issuer
   cluster_oidc_issuer_url = module.cluster.cluster_oidc_issuer_url
 
   thanos = {
@@ -33,9 +33,9 @@ module "thanos" {
   source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks"
 
   cluster_name            = var.cluster_name
-  argocd_namespace        = module.cluster.argocd_namespace # TODO See above
+  argocd_namespace        = module.cluster.argocd_namespace
   base_domain             = module.cluster.base_domain
-  cluster_issuer          = var.cluster_issuer # TODO See above
+  cluster_issuer          = var.cluster_issuer
   cluster_oidc_issuer_url = module.cluster.cluster_oidc_issuer_url
 
   thanos = {
@@ -59,9 +59,9 @@ module "thanos" {
   source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks"
 
   cluster_name            = var.cluster_name
-  argocd_namespace        = module.cluster.argocd_namespace # TODO See above
+  argocd_namespace        = module.cluster.argocd_namespace
   base_domain             = module.cluster.base_domain
-  cluster_issuer          = var.cluster_issuer # TODO See above
+  cluster_issuer          = var.cluster_issuer
   cluster_oidc_issuer_url = module.cluster.cluster_oidc_issuer_url
 
   thanos = {
