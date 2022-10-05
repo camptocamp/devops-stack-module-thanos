@@ -242,7 +242,7 @@ The following outputs are exported:
 
 ==== [[output_id]] <<output_id,id>>
 
-Description: ID to pass other modules in order to refer to this module as a dependency. It takes the ID that comes from the main module and passes it along to the code that called this submodule in the first place.
+Description: ID to pass other modules in order to refer to this module as a dependency. It takes the ID that comes from the main module and passes it along to the code that called this variant in the first place.
 
 ==== [[output_metrics_archives]] <<output_metrics_archives,metrics_archives>>
 
@@ -250,7 +250,7 @@ Description: Bucket configuration in an HCL structure that will be used as an ou
 
 ==== [[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>>
 
-Description: Flag to say that Thanos is enabled. It takes the output that comes from the main module and passes it along to the code that called this submodule in the first place.
+Description: Flag to say that Thanos is enabled. It takes the output that comes from the main module and passes it along to the code that called this variant in the first place.
 // END_TF_DOCS
 
 === Reference in table format 
@@ -355,9 +355,9 @@ Description: Flag to say that Thanos is enabled. It takes the output that comes 
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Description
-|[[output_id]] <<output_id,id>> |ID to pass other modules in order to refer to this module as a dependency. It takes the ID that comes from the main module and passes it along to the code that called this submodule in the first place.
+|[[output_id]] <<output_id,id>> |ID to pass other modules in order to refer to this module as a dependency. It takes the ID that comes from the main module and passes it along to the code that called this variant in the first place.
 |[[output_metrics_archives]] <<output_metrics_archives,metrics_archives>> |Bucket configuration in an HCL structure that will be used as an output to pass on to the module `kube-prometheus-stack` to activate and then configure `thanos-sidecar`.
-|[[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>> |Flag to say that Thanos is enabled. It takes the output that comes from the main module and passes it along to the code that called this submodule in the first place.
+|[[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>> |Flag to say that Thanos is enabled. It takes the output that comes from the main module and passes it along to the code that called this variant in the first place.
 |===
 // END_TF_TABLES
 ====
