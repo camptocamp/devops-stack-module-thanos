@@ -7,7 +7,7 @@ A https://devops-stack.io[DevOps Stack] module to deploy and configure https://t
 
 The Thanos' chart used by this module is shipped in this repository as well, in order to avoid any unwanted behaviors caused by unsupported versions. 
 
-[%autowidth]
+[cols="1,1,1",options="autowidth,header"]
 |===
 |Current Chart Version |Original Repository |Default Values
 |*{chart-version}* |https://github.com/bitnami/charts/tree/master/bitnami/thanos[Chart] |{repo-url-release-commit}/values.yaml[`values.yaml`]
