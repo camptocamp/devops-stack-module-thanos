@@ -65,13 +65,13 @@ Type: `string`
 
 ==== [[input_base_domain]] <<input_base_domain,base_domain>>
 
-Description: Base domain of the cluster. This value will be used to generate the URLs in order to create the ingresses to access the application.
+Description: Base domain of the cluster. Value used for the ingress' URL of the application.
 
 Type: `string`
 
 ==== [[input_cluster_name]] <<input_cluster_name,cluster_name>>
 
-Description: Name given to the cluster. This value will be used to generate the URLs in order to create the ingresses to access the application.
+Description: Name given to the cluster. Value used for the ingress' URL of the application.
 
 Type: `string`
 
@@ -97,7 +97,7 @@ Default: `{}`
 
 ==== [[input_helm_values]] <<input_helm_values,helm_values>>
 
-Description: Helm values, passed as a list of HCL structures. These values are concatenated with the default ones and then passed to the application's charts.
+Description: Helm chart value overrides. They should be passed as a list of HCL structures.
 
 Type: `any`
 
@@ -105,7 +105,7 @@ Default: `[]`
 
 ==== [[input_namespace]] <<input_namespace,namespace>>
 
-Description: The namespace where the application's resources will reside (it will be created in case it dows not already exist).
+Description: Namespace where the apllications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
 
 Type: `string`
 
@@ -129,7 +129,7 @@ Description: ID to pass other modules in order to refer to this module as a depe
 
 ==== [[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>>
 
-Description: Flag to say that Thanos is enabled.
+Description: Boolean indicating wether Thanos is enabled.
 // END_TF_DOCS
 
 === Reference in table format 
@@ -176,7 +176,7 @@ Description: Flag to say that Thanos is enabled.
 |yes
 
 |[[input_base_domain]] <<input_base_domain,base_domain>>
-|Base domain of the cluster. This value will be used to generate the URLs in order to create the ingresses to access the application.
+|Base domain of the cluster. Value used for the ingress' URL of the application.
 |`string`
 |n/a
 |yes
@@ -188,7 +188,7 @@ Description: Flag to say that Thanos is enabled.
 |no
 
 |[[input_cluster_name]] <<input_cluster_name,cluster_name>>
-|Name given to the cluster. This value will be used to generate the URLs in order to create the ingresses to access the application.
+|Name given to the cluster. Value used for the ingress' URL of the application.
 |`string`
 |n/a
 |yes
@@ -200,13 +200,13 @@ Description: Flag to say that Thanos is enabled.
 |no
 
 |[[input_helm_values]] <<input_helm_values,helm_values>>
-|Helm values, passed as a list of HCL structures. These values are concatenated with the default ones and then passed to the application's charts.
+|Helm chart value overrides. They should be passed as a list of HCL structures.
 |`any`
 |`[]`
 |no
 
 |[[input_namespace]] <<input_namespace,namespace>>
-|The namespace where the application's resources will reside (it will be created in case it dows not already exist).
+|Namespace where the apllications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
 |`string`
 |`"thanos"`
 |no
@@ -225,7 +225,7 @@ Description: Flag to say that Thanos is enabled.
 |===
 |Name |Description
 |[[output_id]] <<output_id,id>> |ID to pass other modules in order to refer to this module as a dependency.
-|[[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>> |Flag to say that Thanos is enabled.
+|[[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>> |Boolean indicating wether Thanos is enabled.
 |===
 // END_TF_TABLES
 ====
