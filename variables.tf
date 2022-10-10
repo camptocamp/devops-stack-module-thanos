@@ -3,12 +3,12 @@
 #######################
 
 variable "cluster_name" {
-  description = "Name given to the cluster. This value will be used to generate the URLs in order to create the ingresses to access the application."
+  description = "Name given to the cluster. Value used for the ingress' URL of the application."
   type        = string
 }
 
 variable "base_domain" {
-  description = "Base domain of the cluster. This value will be used to generate the URLs in order to create the ingresses to access the application."
+  description = "Base domain of the cluster. Value used for the ingress' URL of the application."
   type        = string
 }
 
@@ -24,13 +24,13 @@ variable "cluster_issuer" {
 }
 
 variable "namespace" {
-  description = "The namespace where the application's resources will reside (it will be created in case it dows not already exist)."
+  description = "Namespace where the apllications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist."
   type        = string
   default     = "thanos"
 }
 
 variable "helm_values" {
-  description = "Helm values, passed as a list of HCL structures. These values are concatenated with the default ones and then passed to the application's charts."
+  description = "Helm chart value overrides. They should be passed as a list of HCL structures."
   type        = any
   default     = []
 }

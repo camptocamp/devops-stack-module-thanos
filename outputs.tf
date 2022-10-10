@@ -4,6 +4,6 @@ output "id" {
 }
 
 output "thanos_enabled" {
-  description = "Flag to say that Thanos is enabled."
+  description = "Boolean indicating wether Thanos is enabled."
   value       = local.thanos.enabled
 }
