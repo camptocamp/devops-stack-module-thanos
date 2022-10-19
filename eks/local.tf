@@ -42,8 +42,6 @@ locals {
     }
   }]
 
-  # Bucket configuration in an HCL structure that will be used as an output
-  # to pass on to kube-prometheus-stack and then configure thanos-sidecar.
   metrics_archives = {
     # This is set as true, because if we call this module it forcefully
     # means Thanos is activated. This variable is only needed to create

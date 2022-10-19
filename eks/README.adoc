@@ -1,0 +1,363 @@
+= EKS variant
+
+This folder contains the variant to use when deploying in AWS using an EKS cluster.
+
+== Usage
+
+This module can be declared by adding the following block on your Terraform configuration:
+
+[source,terraform]
+----
+module "thanos" {
+  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks"
+
+  cluster_name            = var.cluster_name
+  argocd_namespace        = module.cluster.argocd_namespace
+  base_domain             = module.cluster.base_domain
+  cluster_issuer          = var.cluster_issuer
+  cluster_oidc_issuer_url = module.cluster.cluster_oidc_issuer_url
+
+  thanos = {
+    oidc = module.oidc.oidc
+  }
+
+  depends_on = [module.argocd_bootstrap]
+}
+----
+
+A more complex complex declaration, one that changes the default values for the compactor retention times, would look like this:
+
+[source,terraform]
+----
+module "thanos" {
+  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks"
+
+  cluster_name            = var.cluster_name
+  argocd_namespace        = module.cluster.argocd_namespace
+  base_domain             = module.cluster.base_domain
+  cluster_issuer          = var.cluster_issuer
+  cluster_oidc_issuer_url = module.cluster.cluster_oidc_issuer_url
+
+  thanos = {
+    oidc = module.oidc.oidc
+    compactor_retention = {
+      raw      = "60d"
+      five_min = "120d"
+      one_hour = "240d"
+    }
+  }
+
+  depends_on = [module.argocd_bootstrap]
+}
+----
+
+Furthermore, you can customize the chart's `values.yaml` by adding an Helm configuration as an HCL structure:
+
+[source,terraform]
+----
+module "thanos" {
+  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks"
+
+  cluster_name            = var.cluster_name
+  argocd_namespace        = module.cluster.argocd_namespace
+  base_domain             = module.cluster.base_domain
+  cluster_issuer          = var.cluster_issuer
+  cluster_oidc_issuer_url = module.cluster.cluster_oidc_issuer_url
+
+  thanos = {
+    oidc = module.oidc.oidc
+  }
+
+  helm_values = [{ # Note the curly brackets here
+    thanos = {
+      map = {
+        string = "string"
+        bool   = true
+      }
+      sequence = [
+        {
+          key1 = "value1"
+          key2 = "value2"
+        },
+        {
+          key1 = "value1"
+          key2 = "value2"
+        },
+      ]
+      sequence2 = [
+        "string1",
+        "string2"
+      ]
+    }
+  }]
+
+  depends_on = [module.argocd_bootstrap]
+}
+----
+
+As you can see on the examples above, the variable `thanos` provides an interface to customize the most frequently used settings. This variable is merged with the local value `thanos_defaults`, which contains some sensible defaults. You can check the default values on the link:./local.tf[`local.tf`] file.
+
+IMPORTANT: This module was developed with OIDC in mind!
+
+There is an OIDC proxy container deployed as a sidecar on each pod that has a web interface. Consequently, the `thanos` variable is expected to have a map `oidc` containing at least the Issuer URL, the Client ID, and the Client Secret.
+
+You can pass these values by pointing an output from another module (as above), or by defining them explicitly:
+
+[source,terraform]
+----
+module "thanos" {
+  ...
+
+  thanos = {
+    oidc = {
+      issuer_url    = "<URL>"
+      client_id     = "<ID>"
+      client_secret = "<SECRET>"
+    }
+  }
+
+  ...
+}
+----
+
+== Technical Reference
+
+=== Dependencies
+
+==== `module.argocd_bootstrap`
+
+This module must be one of the first ones to be deployed and consequently it needs to be deployed exactly after the module `argocd_bootstrap`.
+
+// BEGIN_TF_DOCS
+=== Requirements
+
+No requirements.
+
+=== Providers
+
+The following providers are used by this module:
+
+- [[provider_aws]] <<provider_aws,aws>>
+
+=== Modules
+
+The following Modules are called:
+
+==== [[module_iam_assumable_role_thanos]] <<module_iam_assumable_role_thanos,iam_assumable_role_thanos>>
+
+Source: terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc
+
+Version: 4.0.0
+
+==== [[module_thanos]] <<module_thanos,thanos>>
+
+Source: ../../
+
+Version:
+
+=== Resources
+
+The following resources are used by this module:
+
+- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy[aws_iam_policy.thanos_s3_policy] (resource)
+- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket[aws_s3_bucket.thanos_metrics_store] (resource)
+- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document[aws_iam_policy_document.thanos_s3_policy] (data source)
+- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region[aws_region.current] (data source)
+
+=== Required Inputs
+
+The following input variables are required:
+
+==== [[input_argocd_namespace]] <<input_argocd_namespace,argocd_namespace>>
+
+Description: Namespace used by Argo CD where the Application and AppProject resources should be created.
+
+Type: `string`
+
+==== [[input_base_domain]] <<input_base_domain,base_domain>>
+
+Description: Base domain of the cluster. Value used for the ingress' URL of the application.
+
+Type: `string`
+
+==== [[input_cluster_name]] <<input_cluster_name,cluster_name>>
+
+Description: Name given to the cluster. Value used for the ingress' URL of the application.
+
+Type: `string`
+
+==== [[input_cluster_oidc_issuer_url]] <<input_cluster_oidc_issuer_url,cluster_oidc_issuer_url>>
+
+Description: The URL on the EKS cluster OIDC Issuer.
+
+Type: `string`
+
+=== Optional Inputs
+
+The following input variables are optional (have default values):
+
+==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
+
+Description: SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files.
+
+Type: `string`
+
+Default: `"ca-issuer"`
+
+==== [[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
+
+Description: IDs of the other modules on which this module depends on.
+
+Type: `map(string)`
+
+Default: `{}`
+
+==== [[input_helm_values]] <<input_helm_values,helm_values>>
+
+Description: Helm chart value overrides. They should be passed as a list of HCL structures.
+
+Type: `any`
+
+Default: `[]`
+
+==== [[input_namespace]] <<input_namespace,namespace>>
+
+Description: Namespace where the apllications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
+
+Type: `string`
+
+Default: `"thanos"`
+
+==== [[input_thanos]] <<input_thanos,thanos>>
+
+Description: Most frequently used Thanos settings. This variable is merged with the local value `thanos_defaults`, which contains some sensible defaults. You can check the default values on the link:./local.tf[`local.tf`] file. If there still is anything other that needs to be customized, you can always pass on configuration values using the variable `helm_values`.
+
+Type: `any`
+
+Default: `{}`
+
+=== Outputs
+
+The following outputs are exported:
+
+==== [[output_id]] <<output_id,id>>
+
+Description: ID to pass other modules in order to refer to this module as a dependency. It takes the ID that comes from the main module and passes it along to the code that called this variant in the first place.
+
+==== [[output_metrics_archives]] <<output_metrics_archives,metrics_archives>>
+
+Description: Bucket configuration for `kube-prometheus-stack` and `thanos-sidecar`.
+
+==== [[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>>
+
+Description: Boolean indicating wether Thanos is enabled.
+// END_TF_DOCS
+
+=== Reference in table format 
+
+.Show tables
+[%collapsible]
+====
+// BEGIN_TF_TABLES
+
+
+= Providers
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Version
+|[[provider_aws]] <<provider_aws,aws>> |n/a
+|===
+
+= Modules
+
+[cols="a,a,a",options="header,autowidth"]
+|===
+|Name |Source |Version
+|[[module_iam_assumable_role_thanos]] <<module_iam_assumable_role_thanos,iam_assumable_role_thanos>> |terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc |4.0.0
+|[[module_thanos]] <<module_thanos,thanos>> |../../ |
+|===
+
+= Resources
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Type
+|https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy[aws_iam_policy.thanos_s3_policy] |resource
+|https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket[aws_s3_bucket.thanos_metrics_store] |resource
+|https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document[aws_iam_policy_document.thanos_s3_policy] |data source
+|https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region[aws_region.current] |data source
+|===
+
+= Inputs
+
+[cols="a,a,a,a,a",options="header,autowidth"]
+|===
+|Name |Description |Type |Default |Required
+|[[input_argocd_namespace]] <<input_argocd_namespace,argocd_namespace>>
+|Namespace used by Argo CD where the Application and AppProject resources should be created.
+|`string`
+|n/a
+|yes
+
+|[[input_base_domain]] <<input_base_domain,base_domain>>
+|Base domain of the cluster. Value used for the ingress' URL of the application.
+|`string`
+|n/a
+|yes
+
+|[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
+|SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files.
+|`string`
+|`"ca-issuer"`
+|no
+
+|[[input_cluster_name]] <<input_cluster_name,cluster_name>>
+|Name given to the cluster. Value used for the ingress' URL of the application.
+|`string`
+|n/a
+|yes
+
+|[[input_cluster_oidc_issuer_url]] <<input_cluster_oidc_issuer_url,cluster_oidc_issuer_url>>
+|The URL on the EKS cluster OIDC Issuer.
+|`string`
+|n/a
+|yes
+
+|[[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
+|IDs of the other modules on which this module depends on.
+|`map(string)`
+|`{}`
+|no
+
+|[[input_helm_values]] <<input_helm_values,helm_values>>
+|Helm chart value overrides. They should be passed as a list of HCL structures.
+|`any`
+|`[]`
+|no
+
+|[[input_namespace]] <<input_namespace,namespace>>
+|Namespace where the apllications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
+|`string`
+|`"thanos"`
+|no
+
+|[[input_thanos]] <<input_thanos,thanos>>
+|Most frequently used Thanos settings. This variable is merged with the local value `thanos_defaults`, which contains some sensible defaults. You can check the default values on the link:./local.tf[`local.tf`] file. If there still is anything other that needs to be customized, you can always pass on configuration values using the variable `helm_values`.
+|`any`
+|`{}`
+|no
+
+|===
+
+= Outputs
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Description
+|[[output_id]] <<output_id,id>> |ID to pass other modules in order to refer to this module as a dependency. It takes the ID that comes from the main module and passes it along to the code that called this variant in the first place.
+|[[output_metrics_archives]] <<output_metrics_archives,metrics_archives>> |Bucket configuration for `kube-prometheus-stack` and `thanos-sidecar`.
+|[[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>> |Boolean indicating wether Thanos is enabled.
+|===
+// END_TF_TABLES
+====

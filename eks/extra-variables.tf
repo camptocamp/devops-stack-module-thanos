@@ -1,3 +1,4 @@
 variable "cluster_oidc_issuer_url" {
-  type = string
+  description = "The URL on the EKS cluster OIDC Issuer."
+  type        = string
 }
