@@ -54,7 +54,7 @@ data "aws_iam_policy_document" "thanos_s3_policy" {
 }
 
 module "thanos" {
-  source = "../../"
+  source = "../"
 
   cluster_name     = var.cluster_name
   argocd_namespace = var.argocd_namespace
