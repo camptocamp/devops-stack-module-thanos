@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0-rc2](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-rc1...v1.0.0-rc2) (2022-10-24)
+
+
+### Miscellaneous Chores
+
+* upgrade chart to v11.5.5 and reactivate thanos-sidecar ([#11](https://github.com/camptocamp/devops-stack-module-thanos/issues/11)) ([3c87c2c](https://github.com/camptocamp/devops-stack-module-thanos/commit/3c87c2cb862bee4244499bbdbfd987d103f9a4c5))
+
 ## 1.0.0-rc1 (2022-10-24)
 
 
