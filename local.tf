@@ -53,9 +53,8 @@ locals {
           }
         }
         persistence = {
-          # We had the access mode set as ReadWriteMany, but it was not 
-          # supported with AWS gp2 EBS volumes. Since the compactor is the only
-          # pod accessing this volume, there should be no issue to have this as
+          # We had the access mode set as ReadWriteMany, but it was not supported with AWS gp2 EBS volumes.
+          # Since the compactor is the only pod accessing this volume, there should be no issue to have this as
           # ReadWriteOnce (https://stackoverflow.com/a/57799347).
           accessModes = [
             "ReadWriteOnce"
