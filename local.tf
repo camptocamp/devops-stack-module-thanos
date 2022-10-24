@@ -20,8 +20,8 @@ locals {
 
       query = {
         dnsDiscovery = {
-          enabled = true
-          sidecarsService = "kube-prometheus-stack-thanos-discovery"
+          enabled           = true
+          sidecarsService   = "kube-prometheus-stack-thanos-discovery" # Name of the service that exposes thanos-sidecar
           sidecarsNamespace = "kube-prometheus-stack"
         }
         stores = [
