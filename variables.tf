@@ -20,7 +20,7 @@ variable "argocd_namespace" {
 variable "target_revision" {
   description = "Override of target revision of the application chart."
   type        = string
-  default     = trimspace(file("${path.module}/version.txt"))
+  default     = "v1.0.0"
 }
 
 variable "cluster_issuer" {
