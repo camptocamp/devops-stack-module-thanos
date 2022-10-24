@@ -59,7 +59,7 @@ resource "argocd_application" "this" {
     source {
       repo_url        = "https://github.com/camptocamp/devops-stack-module-thanos.git"
       path            = "charts/thanos"
-      target_revision = "main"
+      target_revision = "chart-upgrade" # TODO remove this and point to version.txt
       helm {
         values = data.utils_deep_merge_yaml.values.output
       }
