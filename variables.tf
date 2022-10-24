@@ -17,6 +17,12 @@ variable "argocd_namespace" {
   type        = string
 }
 
+variable "target_revision" {
+  description = "Override of target revision of the application chart."
+  type        = string
+  default     = trimspace(file("${path.module}/version.txt"))
+}
+
 variable "cluster_issuer" {
   description = "SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files."
   type        = string
