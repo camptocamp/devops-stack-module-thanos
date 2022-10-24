@@ -4,5 +4,5 @@ name: "thanos"
 version: "0"
 dependencies:
   - name: "thanos"
-    version: "^10"
+    version: "^11"
     repository: "https://charts.bitnami.com/bitnami"

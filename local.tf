@@ -19,12 +19,10 @@ locals {
       }
 
       query = {
-        # We have disabled the direct connection to the sidecar consequently 
-        # thanos-query depends on thanos-storegateway to obtain the metrics 
-        # directly from the S3 bucket. Note that storegateway gets new blocks
-        # from the bucket every 30 mins.
         dnsDiscovery = {
-          enabled = false
+          enabled           = true
+          sidecarsService   = "kube-prometheus-stack-thanos-discovery" # Name of the service that exposes thanos-sidecar
+          sidecarsNamespace = "kube-prometheus-stack"
         }
         stores = [
           "thanos-storegateway:10901"
@@ -55,9 +53,8 @@ locals {
           }
         }
         persistence = {
-          # We had the access mode set as ReadWriteMany, but it was not 
-          # supported with AWS gp2 EBS volumes. Since the compactor is the only
-          # pod accessing this volume, there should be no issue to have this as
+          # We had the access mode set as ReadWriteMany, but it was not supported with AWS gp2 EBS volumes.
+          # Since the compactor is the only pod accessing this volume, there should be no issue to have this as
           # ReadWriteOnce (https://stackoverflow.com/a/57799347).
           accessModes = [
             "ReadWriteOnce"
