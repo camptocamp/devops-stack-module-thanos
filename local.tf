@@ -24,7 +24,9 @@ locals {
         # directly from the S3 bucket. Note that storegateway gets new blocks
         # from the bucket every 30 mins.
         dnsDiscovery = {
-          enabled = false
+          enabled = true
+          sidecarsService = "kube-prometheus-stack-thanos-discovery"
+          sidecarsNamespace = "kube-prometheus-stack"
         }
         stores = [
           "thanos-storegateway:10901"
