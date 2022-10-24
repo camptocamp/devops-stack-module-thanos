@@ -1,7 +1,7 @@
 = devops-stack-module-thanos
 // Document attributes to replace along the document
-:chart-version: 10.5.5
-:repo-url-release-commit: https://github.com/bitnami/charts/tree/d4ef1ead76bfa212a9d45ec31e7ef49fa4b98e88/bitnami/thanos
+:chart-version: 11.5.5
+:repo-url-release-commit: https://github.com/bitnami/charts/tree/8ef44e189c6a143153e28f4ad8510b96a41b62a9/bitnami/thanos
 
 A https://devops-stack.io[DevOps Stack] module to deploy and configure https://thanos.io[Thanos].
 
