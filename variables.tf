@@ -17,6 +17,12 @@ variable "argocd_namespace" {
   type        = string
 }
 
+variable "target_revision" {
+  description = "Override of target revision of the application chart."
+  type        = string
+  default     = "v1.0.0" # x-release-please-version
+}
+
 variable "cluster_issuer" {
   description = "SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files."
   type        = string
@@ -24,7 +30,7 @@ variable "cluster_issuer" {
 }
 
 variable "namespace" {
-  description = "Namespace where the apllications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist."
+  description = "Namespace where the applications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist."
   type        = string
   default     = "thanos"
 }

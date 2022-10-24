@@ -105,11 +105,19 @@ Default: `[]`
 
 ==== [[input_namespace]] <<input_namespace,namespace>>
 
-Description: Namespace where the apllications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
+Description: Namespace where the applications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
 
 Type: `string`
 
 Default: `"thanos"`
+
+==== [[input_target_revision]] <<input_target_revision,target_revision>>
+
+Description: Override of target revision of the application chart.
+
+Type: `string`
+
+Default: `"v1.0.0"`
 
 ==== [[input_thanos]] <<input_thanos,thanos>>
 
@@ -206,9 +214,15 @@ Description: Boolean indicating wether Thanos is enabled.
 |no
 
 |[[input_namespace]] <<input_namespace,namespace>>
-|Namespace where the apllications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
+|Namespace where the applications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
 |`string`
 |`"thanos"`
+|no
+
+|[[input_target_revision]] <<input_target_revision,target_revision>>
+|Override of target revision of the application chart.
+|`string`
+|`"v1.0.0"`
 |no
 
 |[[input_thanos]] <<input_thanos,thanos>>
