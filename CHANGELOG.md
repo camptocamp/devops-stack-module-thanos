@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0-rc3](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-rc2...v1.0.0-rc3) (2022-10-26)
+
+
+### Documentation
+
+* correct typo ([#15](https://github.com/camptocamp/devops-stack-module-thanos/issues/15)) ([f85c17a](https://github.com/camptocamp/devops-stack-module-thanos/commit/f85c17a87d6f04531efb5976489f919553bb11be))
+
 ## [1.0.0-rc2](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-rc1...v1.0.0-rc2) (2022-10-24)
 
 
