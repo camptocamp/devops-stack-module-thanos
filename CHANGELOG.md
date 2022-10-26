@@ -1,20 +1,20 @@
 # Changelog
 
-## [1.0.0-rc3](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-rc2...v1.0.0-rc3) (2022-10-26)
+## [1.0.0-alpha.3](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2022-10-26)
 
 
 ### Documentation
 
 * correct typo ([#15](https://github.com/camptocamp/devops-stack-module-thanos/issues/15)) ([f85c17a](https://github.com/camptocamp/devops-stack-module-thanos/commit/f85c17a87d6f04531efb5976489f919553bb11be))
 
-## [1.0.0-rc2](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-rc1...v1.0.0-rc2) (2022-10-24)
+## [1.0.0-alpha.2](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-alpha.1...v1.0.0-alpha.2) (2022-10-24)
 
 
 ### Miscellaneous Chores
 
 * upgrade chart to v11.5.5 and reactivate thanos-sidecar ([#11](https://github.com/camptocamp/devops-stack-module-thanos/issues/11)) ([3c87c2c](https://github.com/camptocamp/devops-stack-module-thanos/commit/3c87c2cb862bee4244499bbdbfd987d103f9a4c5))
 
-## 1.0.0-rc1 (2022-10-24)
+## 1.0.0-alpha.1 (2022-10-24)
 
 
 ### ⚠ BREAKING CHANGES
