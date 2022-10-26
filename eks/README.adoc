@@ -234,7 +234,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v1.0.0"`
+Default: `"v1.0.0-rc2"`
 
 ==== [[input_thanos]] <<input_thanos,thanos>>
 
@@ -353,7 +353,7 @@ Description: Boolean indicating wether Thanos is enabled.
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v1.0.0"`
+|`"v1.0.0-rc2"`
 |no
 
 |[[input_thanos]] <<input_thanos,thanos>>
