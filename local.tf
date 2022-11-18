@@ -257,10 +257,6 @@ locals {
     }
     storegateway_resources = {
       limits = {
-        memory = "2Gi"
-      }
-      requests = {
-        cpu    = "0.5"
         memory = "1Gi"
       }
     }
@@ -268,20 +264,17 @@ locals {
       limits = {
         memory = "1Gi"
       }
-      requests = {
-        cpu    = "0.5"
-        memory = "512Mi"
-      }
     }
     compactor_resources = {
       limits = {
         memory = "1Gi"
       }
-      requests = {
-        cpu    = "0.5"
-        memory = "512Mi"
-      }
     }
+    # This is the size for the PersistentVolume used by the Thanos Compactor to perform its operations.
+    # By default, it is set at 8Gi but the documentation recommends a size of 100-300Gi.
+    # We left the default value at 8Gi only to have a working configuration, but this value MUST be configured otherwise
+    # the compactor will NOT work on a production deployment. The size of this PVC cannot be changed afterwards.
+    compactor_persistence_size = "8Gi"
   }
 
   thanos = merge(
