@@ -10,13 +10,13 @@ locals {
           enabled = false
         }
         resources = local.thanos.storegateway_resources
-      }, can(local.thanos.metrics_storage_iam_role_arn) ? {
-          serviceAccount = {
-            annotations = {
-              "eks.amazonaws.com/role-arn" = local.thanos.metrics_storage_iam_role_arn
-            }
+        }, can(local.thanos.metrics_storage_iam_role_arn) ? {
+        serviceAccount = {
+          annotations = {
+            "eks.amazonaws.com/role-arn" = local.thanos.metrics_storage_iam_role_arn
           }
-      } : null )
+        }
+      } : null)
 
       query = {
         dnsDiscovery = {
@@ -35,7 +35,7 @@ locals {
         retentionResolutionRaw = "${local.thanos.compactor_retention.raw}"
         retentionResolution5m  = "${local.thanos.compactor_retention.five_min}"
         retentionResolution1h  = "${local.thanos.compactor_retention.one_hour}"
-        resources = local.thanos.compactor_resources
+        resources              = local.thanos.compactor_resources
         persistence = {
           # We had the access mode set as ReadWriteMany, but it was not supported with AWS gp2 EBS volumes.
           # Since the compactor is the only pod accessing this volume, there should be no issue to have this as
@@ -45,13 +45,13 @@ locals {
           ]
           size = local.thanos.compactor_persistence_size
         }
-      }, can(local.thanos.metrics_storage_iam_role_arn) ? {
-          serviceAccount = {
-            annotations = {
-              "eks.amazonaws.com/role-arn" = local.thanos.metrics_storage_iam_role_arn
-            }
+        }, can(local.thanos.metrics_storage_iam_role_arn) ? {
+        serviceAccount = {
+          annotations = {
+            "eks.amazonaws.com/role-arn" = local.thanos.metrics_storage_iam_role_arn
           }
-      } : null )
+        }
+      } : null)
 
       bucketweb = merge({
         enabled = "true"
@@ -143,13 +143,13 @@ locals {
             ]
           }]
         }
-      }, can(local.thanos.metrics_storage_iam_role_arn) ? {
-          serviceAccount = {
-            annotations = {
-              "eks.amazonaws.com/role-arn" = local.thanos.metrics_storage_iam_role_arn
-            }
+        }, can(local.thanos.metrics_storage_iam_role_arn) ? {
+        serviceAccount = {
+          annotations = {
+            "eks.amazonaws.com/role-arn" = local.thanos.metrics_storage_iam_role_arn
           }
-      } : null )
+        }
+      } : null)
 
       queryFrontend = {
         sidecars = [{
