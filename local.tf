@@ -2,13 +2,21 @@ locals {
   helm_values = [{
     thanos = {
 
-      storegateway = {
+      objstoreConfig = local.thanos.metrics_storage_configuration
+
+      storegateway = merge({
         enabled = true
         persistence = {
           enabled = false
         }
         resources = local.thanos.storegateway_resources
-      }
+      }, can(local.thanos.metrics_storage_iam_role_arn) ? {
+          serviceAccount = {
+            annotations = {
+              "eks.amazonaws.com/role-arn" = local.thanos.metrics_storage_iam_role_arn
+            }
+          }
+      } : null )
 
       query = {
         dnsDiscovery = {
@@ -22,7 +30,7 @@ locals {
         resources = local.thanos.query_resources
       }
 
-      compactor = {
+      compactor = merge({
         enabled                = true
         retentionResolutionRaw = "${local.thanos.compactor_retention.raw}"
         retentionResolution5m  = "${local.thanos.compactor_retention.five_min}"
@@ -35,10 +43,17 @@ locals {
           accessModes = [
             "ReadWriteOnce"
           ]
+          size = local.thanos.compactor_persistence_size
         }
-      }
+      }, can(local.thanos.metrics_storage_iam_role_arn) ? {
+          serviceAccount = {
+            annotations = {
+              "eks.amazonaws.com/role-arn" = local.thanos.metrics_storage_iam_role_arn
+            }
+          }
+      } : null )
 
-      bucketweb = {
+      bucketweb = merge({
         enabled = "true"
         sidecars = [{
           args = concat([
@@ -128,7 +143,13 @@ locals {
             ]
           }]
         }
-      }
+      }, can(local.thanos.metrics_storage_iam_role_arn) ? {
+          serviceAccount = {
+            annotations = {
+              "eks.amazonaws.com/role-arn" = local.thanos.metrics_storage_iam_role_arn
+            }
+          }
+      } : null )
 
       queryFrontend = {
         sidecars = [{
