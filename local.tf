@@ -7,15 +7,7 @@ locals {
         persistence = {
           enabled = false
         }
-        resources = {
-          limits = {
-            memory = "2Gi"
-          }
-          requests = {
-            cpu    = "0.5"
-            memory = "1Gi"
-          }
-        }
+        resources = local.thanos.storegateway_resources
       }
 
       query = {
@@ -27,15 +19,7 @@ locals {
         stores = [
           "thanos-storegateway:10901"
         ]
-        resources = {
-          limits = {
-            memory = "1Gi"
-          }
-          requests = {
-            cpu    = "0.5"
-            memory = "512Mi"
-          }
-        }
+        resources = local.thanos.query_resources
       }
 
       compactor = {
@@ -43,15 +27,7 @@ locals {
         retentionResolutionRaw = "${local.thanos.compactor_retention.raw}"
         retentionResolution5m  = "${local.thanos.compactor_retention.five_min}"
         retentionResolution1h  = "${local.thanos.compactor_retention.one_hour}"
-        resources = {
-          limits = {
-            memory = "1Gi"
-          }
-          requests = {
-            cpu    = "0.5"
-            memory = "512Mi"
-          }
-        }
+        resources = local.thanos.compactor_resources
         persistence = {
           # We had the access mode set as ReadWriteMany, but it was not supported with AWS gp2 EBS volumes.
           # Since the compactor is the only pod accessing this volume, there should be no issue to have this as
@@ -257,6 +233,33 @@ locals {
       raw      = "60d"
       five_min = "120d"
       one_hour = "240d"
+    }
+    storegateway_resources = {
+      limits = {
+        memory = "2Gi"
+      }
+      requests = {
+        cpu    = "0.5"
+        memory = "1Gi"
+      }
+    }
+    query_resources = {
+      limits = {
+        memory = "1Gi"
+      }
+      requests = {
+        cpu    = "0.5"
+        memory = "512Mi"
+      }
+    }
+    compactor_resources = {
+      limits = {
+        memory = "1Gi"
+      }
+      requests = {
+        cpu    = "0.5"
+        memory = "512Mi"
+      }
     }
   }
 
