@@ -42,13 +42,7 @@ locals {
     }
   }]
 
-  thanos_defaults = {
-    metrics_storage = {
-      bucket       = null
-      region       = null
-      iam_role_arn = null
-    }
-  }
+  thanos_defaults = {}
 
   thanos = merge(
     local.thanos_defaults,

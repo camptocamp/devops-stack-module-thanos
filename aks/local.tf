@@ -16,13 +16,7 @@ locals {
     }
   }]
 
-  thanos_defaults = {
-    metrics_storage = {
-      storage_account     = null
-      storage_account_key = null
-      container           = null
-    }
-  }
+  thanos_defaults = {}
 
   thanos = merge(
     local.thanos_defaults,
