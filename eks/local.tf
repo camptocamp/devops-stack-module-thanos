@@ -1,6 +1,4 @@
 locals {
-  # values.yaml translated into HCL structures.
-  # Possible values available here -> https://github.com/bitnami/charts/tree/master/bitnami/thanos/
   helm_values = [{
     thanos = {
 

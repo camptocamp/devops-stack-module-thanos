@@ -1,4 +1,6 @@
 locals {
+  # values.yaml translated into HCL structures.
+  # Possible values available here -> https://github.com/bitnami/charts/tree/master/bitnami/thanos/
   helm_values = [{
     thanos = {
 
@@ -29,7 +31,8 @@ locals {
         retentionResolution1h  = "${local.thanos.compactor_retention.one_hour}"
         resources              = local.thanos.compactor_resources
         persistence = {
-          # We had the access mode set as ReadWriteMany, but it was not supported with AWS gp2 EBS volumes.
+          # The Access Mode needs to be set as ReadWriteOnce because AWS Elastic Block storage does not support other
+          # modes (https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes).          
           # Since the compactor is the only pod accessing this volume, there should be no issue to have this as
           # ReadWriteOnce (https://stackoverflow.com/a/57799347).
           accessModes = [
