@@ -140,19 +140,11 @@ No requirements.
 
 === Providers
 
-The following providers are used by this module:
-
-- [[provider_aws]] <<provider_aws,aws>>
+No providers.
 
 === Modules
 
 The following Modules are called:
-
-==== [[module_iam_assumable_role_thanos]] <<module_iam_assumable_role_thanos,iam_assumable_role_thanos>>
-
-Source: terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc
-
-Version: 4.0.0
 
 ==== [[module_thanos]] <<module_thanos,thanos>>
 
@@ -162,12 +154,7 @@ Version:
 
 === Resources
 
-The following resources are used by this module:
-
-- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy[aws_iam_policy.thanos_s3_policy] (resource)
-- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket[aws_s3_bucket.thanos_metrics_store] (resource)
-- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document[aws_iam_policy_document.thanos_s3_policy] (data source)
-- https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region[aws_region.current] (data source)
+No resources.
 
 === Required Inputs
 
@@ -188,12 +175,6 @@ Type: `string`
 ==== [[input_cluster_name]] <<input_cluster_name,cluster_name>>
 
 Description: Name given to the cluster. Value used for the ingress' URL of the application.
-
-Type: `string`
-
-==== [[input_cluster_oidc_issuer_url]] <<input_cluster_oidc_issuer_url,cluster_oidc_issuer_url>>
-
-Description: The URL on the EKS cluster OIDC Issuer.
 
 Type: `string`
 
@@ -239,7 +220,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v1.0.0-rc2"`
+Default: `"v1.0.0-alpha.4"`
 
 ==== [[input_thanos]] <<input_thanos,thanos>>
 
@@ -256,14 +237,6 @@ The following outputs are exported:
 ==== [[output_id]] <<output_id,id>>
 
 Description: ID to pass other modules in order to refer to this module as a dependency. It takes the ID that comes from the main module and passes it along to the code that called this variant in the first place.
-
-==== [[output_metrics_archives]] <<output_metrics_archives,metrics_archives>>
-
-Description: Bucket configuration for `kube-prometheus-stack` and `thanos-sidecar`.
-
-==== [[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>>
-
-Description: Boolean indicating wether Thanos is enabled.
 // END_TF_DOCS
 
 === Reference in table format 
@@ -274,32 +247,12 @@ Description: Boolean indicating wether Thanos is enabled.
 // BEGIN_TF_TABLES
 
 
-= Providers
-
-[cols="a,a",options="header,autowidth"]
-|===
-|Name |Version
-|[[provider_aws]] <<provider_aws,aws>> |n/a
-|===
-
 = Modules
 
 [cols="a,a,a",options="header,autowidth"]
 |===
 |Name |Source |Version
-|[[module_iam_assumable_role_thanos]] <<module_iam_assumable_role_thanos,iam_assumable_role_thanos>> |terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc |4.0.0
 |[[module_thanos]] <<module_thanos,thanos>> |../ |
-|===
-
-= Resources
-
-[cols="a,a",options="header,autowidth"]
-|===
-|Name |Type
-|https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy[aws_iam_policy.thanos_s3_policy] |resource
-|https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket[aws_s3_bucket.thanos_metrics_store] |resource
-|https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document[aws_iam_policy_document.thanos_s3_policy] |data source
-|https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region[aws_region.current] |data source
 |===
 
 = Inputs
@@ -331,12 +284,6 @@ Description: Boolean indicating wether Thanos is enabled.
 |n/a
 |yes
 
-|[[input_cluster_oidc_issuer_url]] <<input_cluster_oidc_issuer_url,cluster_oidc_issuer_url>>
-|The URL on the EKS cluster OIDC Issuer.
-|`string`
-|n/a
-|yes
-
 |[[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
 |IDs of the other modules on which this module depends on.
 |`map(string)`
@@ -358,7 +305,7 @@ Description: Boolean indicating wether Thanos is enabled.
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v1.0.0-rc2"`
+|`"v1.0.0-alpha.4"`
 |no
 
 |[[input_thanos]] <<input_thanos,thanos>>
@@ -375,8 +322,6 @@ Description: Boolean indicating wether Thanos is enabled.
 |===
 |Name |Description
 |[[output_id]] <<output_id,id>> |ID to pass other modules in order to refer to this module as a dependency. It takes the ID that comes from the main module and passes it along to the code that called this variant in the first place.
-|[[output_metrics_archives]] <<output_metrics_archives,metrics_archives>> |Bucket configuration for `kube-prometheus-stack` and `thanos-sidecar`.
-|[[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>> |Boolean indicating wether Thanos is enabled.
 |===
 // END_TF_TABLES
 ====
