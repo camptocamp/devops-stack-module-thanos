@@ -18,8 +18,8 @@ module "thanos" {
 
   thanos = {
     metrics_storage = {
-      bucket       = aws_s3_bucket.thanos_metrics_store.id
-      region       = aws_s3_bucket.thanos_metrics_store.region
+      bucket       = aws_s3_bucket.thanos_metrics_storage.id
+      region       = aws_s3_bucket.thanos_metrics_storage.region
       iam_role_arn = module.iam_assumable_role_thanos.iam_role_arn
     }
     oidc = module.oidc.oidc
@@ -46,8 +46,8 @@ module "thanos" {
   thanos = {
     # Bucket configuration
     metrics_storage = {
-      bucket       = aws_s3_bucket.thanos_metrics_store.id
-      region       = aws_s3_bucket.thanos_metrics_store.region
+      bucket       = aws_s3_bucket.thanos_metrics_storage.id
+      region       = aws_s3_bucket.thanos_metrics_storage.region
       iam_role_arn = module.iam_assumable_role_thanos.iam_role_arn
     }
 
@@ -114,8 +114,8 @@ module "thanos" {
 
   thanos = {
     metrics_storage = {
-      bucket       = aws_s3_bucket.thanos_metrics_store.id
-      region       = aws_s3_bucket.thanos_metrics_store.region
+      bucket       = aws_s3_bucket.thanos_metrics_storage.id
+      region       = aws_s3_bucket.thanos_metrics_storage.region
       iam_role_arn = module.iam_assumable_role_thanos.iam_role_arn
     }
     oidc = module.oidc.oidc
@@ -204,8 +204,8 @@ data "aws_iam_policy_document" "thanos_s3_policy" {
     ]
 
     resources = [
-      aws_s3_bucket.thanos_metrics_store.arn,
-      format("%s/*", aws_s3_bucket.thanos_metrics_store.arn),
+      aws_s3_bucket.thanos_metrics_storage.arn,
+      format("%s/*", aws_s3_bucket.thanos_metrics_storage.arn),
     ]
 
     effect = "Allow"
