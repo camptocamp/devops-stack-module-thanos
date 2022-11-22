@@ -43,7 +43,7 @@ locals {
       }
 
       bucketweb = {
-        enabled = "true"
+        enabled = true
         sidecars = [{
           args = concat([
             "--http-address=0.0.0.0:9075",
@@ -73,7 +73,7 @@ locals {
           }]
         }
         ingress = {
-          enabled = "true"
+          enabled = true
           annotations = {
             "cert-manager.io/cluster-issuer"                   = "${var.cluster_issuer}"
             "traefik.ingress.kubernetes.io/router.entrypoints" = "websecure"
