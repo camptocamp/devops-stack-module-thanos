@@ -233,10 +233,23 @@ locals {
     enabled          = true
     query_domain     = "thanos-query.apps.${var.cluster_name}.${var.base_domain}"
     bucketweb_domain = "thanos-bucketweb.apps.${var.cluster_name}.${var.base_domain}"
+
+    # This is the size for the PersistentVolume used by the Thanos Compactor to perform its operations.
+    # By default, it is set at 8Gi but the documentation recommends a size of 100-300Gi.
+    # We left the default value at 8Gi only to have a working configuration, but this value MUST be configured otherwise
+    # the compactor will NOT work on a production deployment. The size of this PV cannot be changed afterwards.
+    compactor_persistence_size = "8Gi"
+
     compactor_retention = {
       raw      = "60d"
       five_min = "120d"
       one_hour = "240d"
+    }
+
+    compactor_resources = {
+      limits = {
+        memory = "1Gi"
+      }
     }
     storegateway_resources = {
       limits = {
@@ -248,16 +261,6 @@ locals {
         memory = "1Gi"
       }
     }
-    compactor_resources = {
-      limits = {
-        memory = "1Gi"
-      }
-    }
-    # This is the size for the PersistentVolume used by the Thanos Compactor to perform its operations.
-    # By default, it is set at 8Gi but the documentation recommends a size of 100-300Gi.
-    # We left the default value at 8Gi only to have a working configuration, but this value MUST be configured otherwise
-    # the compactor will NOT work on a production deployment. The size of this PVC cannot be changed afterwards.
-    compactor_persistence_size = "8Gi"
   }
 
   thanos = merge(

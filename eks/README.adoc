@@ -15,9 +15,13 @@ module "thanos" {
   argocd_namespace        = module.cluster.argocd_namespace
   base_domain             = module.cluster.base_domain
   cluster_issuer          = var.cluster_issuer
-  cluster_oidc_issuer_url = module.cluster.cluster_oidc_issuer_url
 
   thanos = {
+    metrics_storage = {
+      bucket       = aws_s3_bucket.thanos_metrics_store.id
+      region       = aws_s3_bucket.thanos_metrics_store.region
+      iam_role_arn = module.iam_assumable_role_thanos.iam_role_arn
+    }
     oidc = module.oidc.oidc
   }
 
@@ -25,7 +29,9 @@ module "thanos" {
 }
 ----
 
-A more complex complex declaration, one that changes the default values for the compactor retention times, would look like this:
+As you can see, a minimum requirement for this module is an S3 bucket with an IAM policy attached and an OIDC provider (more information below).
+
+Although the declaration above allows you to have a barebones Thanos deployed, it is highly recommended that you customize a few settings for a production-ready deployment. You need to at least configure the resource requirements for a few of the Thanos' components and the size of the persistent volume used by the compactor. You can also configure the compactor retention times, as in the example below.
 
 [source,terraform]
 ----
@@ -36,10 +42,51 @@ module "thanos" {
   argocd_namespace        = module.cluster.argocd_namespace
   base_domain             = module.cluster.base_domain
   cluster_issuer          = var.cluster_issuer
-  cluster_oidc_issuer_url = module.cluster.cluster_oidc_issuer_url
 
   thanos = {
+    # Bucket configuration
+    metrics_storage = {
+      bucket       = aws_s3_bucket.thanos_metrics_store.id
+      region       = aws_s3_bucket.thanos_metrics_store.region
+      iam_role_arn = module.iam_assumable_role_thanos.iam_role_arn
+    }
+
+    # OIDC configuration
     oidc = module.oidc.oidc
+
+    # Configuration of the persistent volume for the compactor
+    compactor_persistent_size = "100Gi"
+
+    # Resources configuration for the pods
+    compactor_resources = {
+      limits = {
+        memory = "1Gi"
+      }
+      requests = {
+        cpu    = "0.5"
+        memory = "512Mi"
+      }
+    }
+    storegateway_resources = {
+      limits = {
+        memory = "1Gi"
+      }
+      requests = {
+        cpu    = "0.5"
+        memory = "1Gi"
+      }
+    }
+    query_resources = {
+      limits = {
+        memory = "1Gi"
+      }
+      requests = {
+        cpu    = "0.5"
+        memory = "512Mi"
+      }
+    }
+
+    # Retention settings for the compactor
     compactor_retention = {
       raw      = "60d"
       five_min = "120d"
@@ -51,7 +98,9 @@ module "thanos" {
 }
 ----
 
-Furthermore, you can customize the chart's `values.yaml` by adding an Helm configuration as an HCL structure:
+As you can see on the examples above, the variable `thanos` provides an interface to customize the most frequently used settings. This variable is merged with the local value `thanos_defaults`, which contains some sensible defaults to have a barebones working deployment. You can check the default values on the link:./local.tf[`local.tf`] file.
+
+If there is a need to configure something besides the common settings that we have provided above, you can customize the chart's `values.yaml` by adding an Helm configuration as an HCL structure:
 
 [source,terraform]
 ----
@@ -62,9 +111,13 @@ module "thanos" {
   argocd_namespace        = module.cluster.argocd_namespace
   base_domain             = module.cluster.base_domain
   cluster_issuer          = var.cluster_issuer
-  cluster_oidc_issuer_url = module.cluster.cluster_oidc_issuer_url
 
   thanos = {
+    metrics_storage = {
+      bucket       = aws_s3_bucket.thanos_metrics_store.id
+      region       = aws_s3_bucket.thanos_metrics_store.region
+      iam_role_arn = module.iam_assumable_role_thanos.iam_role_arn
+    }
     oidc = module.oidc.oidc
   }
 
@@ -95,9 +148,76 @@ module "thanos" {
 }
 ----
 
-As you can see on the examples above, the variable `thanos` provides an interface to customize the most frequently used settings. This variable is merged with the local value `thanos_defaults`, which contains some sensible defaults. You can check the default values on the link:./local.tf[`local.tf`] file.
+=== S3 Bucket
 
-IMPORTANT: This module was developed with OIDC in mind!
+IMPORTANT: You are in charge of creating an S3 bucket for Thanos to store the archived metrics.
+
+We've decided to keep the creation of this bucket outside of this module, mainly because the persistence of the data should not be related to the instantiation of the module itself.
+
+You can create an S3 bucket and an IAM policy using the code below:
+
+[source,terraform]
+----
+resource "aws_s3_bucket" "thanos_metrics_storage" {
+  bucket = format("thanos-metrics-storage-%s", module.eks.cluster_name)
+
+  force_destroy = true
+
+  tags = {
+    Name    = "Thanos metrics storage"
+    Cluster = module.eks.cluster_name
+  }
+}
+
+module "iam_assumable_role_thanos" {
+  source                     = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  version                    = "4.0.0"
+  create_role                = true
+  number_of_role_policy_arns = 1
+  role_name                  = format("thanos-s3-role-%s", module.eks.cluster_name)
+  provider_url               = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
+  role_policy_arns           = [aws_iam_policy.thanos_s3_policy.arn]
+
+  # List of ServiceAccounts that have permission to attach to this IAM role
+  oidc_fully_qualified_subjects = [
+    "system:serviceaccount:thanos:thanos-bucketweb",
+    "system:serviceaccount:thanos:thanos-storegateway",
+    "system:serviceaccount:thanos:thanos-compactor",
+    "system:serviceaccount:thanos:thanos-sidecar",
+    "system:serviceaccount:kube-prometheus-stack:kube-prometheus-stack-prometheus"
+  ]
+}
+
+resource "aws_iam_policy" "thanos_s3_policy" {
+  name_prefix = "thanos-s3-"
+  description = "Thanos IAM policy for cluster ${module.eks.cluster_name}"
+  policy      = data.aws_iam_policy_document.thanos_s3_policy.json
+}
+
+data "aws_iam_policy_document" "thanos_s3_policy" {
+  statement {
+    actions = [
+      "s3:ListBucket",
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:DeleteObject",
+    ]
+
+    resources = [
+      aws_s3_bucket.thanos_metrics_store.arn,
+      format("%s/*", aws_s3_bucket.thanos_metrics_store.arn),
+    ]
+
+    effect = "Allow"
+  }
+}
+----
+
+NOTE: Do not forget that the bucket configuration also needs to be passed to the module `kube-prometheus-stack`.
+
+=== OIDC
+
+NOTE: This module was developed with OIDC in mind.
 
 There is an OIDC proxy container deployed as a sidecar on each pod that has a web interface. Consequently, the `thanos` variable is expected to have a map `oidc` containing at least the Issuer URL, the Client ID, and the Client Secret.
 
@@ -119,6 +239,14 @@ module "thanos" {
   ...
 }
 ----
+
+=== Resource Configuration
+
+Since the resource requirements are not the same on every deployment and because the consumed resources also influence the cost associated, we refrained from configuring default resource requirements for the components of Thanos. We did, however, set memory limits for some of the pods (`query`, `storegateway` and `compactor` all have a 1 GB memory limit). We recommend that you customize these values as you see fit.
+
+IMPORTANT: At the very least you should configure the size for the _PersistentVolume_ used by the compactor.
+
+This value MUST be configured otherwise the compactor will NOT work on a production deployment. The Thanos documentation https://thanos.io/tip/thanos/quick-tutorial.md/#compactor|[recommends] a size of 100-300 GB.
 
 == Technical Reference
 
