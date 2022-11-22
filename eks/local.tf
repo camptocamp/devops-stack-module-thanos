@@ -5,7 +5,7 @@ locals {
       objstoreConfig = {
         type = "S3"
         config = {
-          bucket             = "${local.thanos.metrics_storage.bucket}"
+          bucket             = "${local.thanos.metrics_storage.bucket_id}"
           endpoint           = "s3.amazonaws.com" # Value explicitly specified by Thanos docs for Amazon S3 buckets
           region             = "${local.thanos.metrics_storage.region}"
           signature_version2 = false

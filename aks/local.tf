@@ -5,9 +5,9 @@ locals {
       objstoreConfig = {
         type = "AZURE"
         config = {
+          container           = "${local.thanos.metrics_storage.container_name}"
           storage_account     = "${local.thanos.metrics_storage.storage_account}"
           storage_account_key = "${local.thanos.metrics_storage.storage_account_key}"
-          container           = "${local.thanos.metrics_storage.container}"
         }
       }
 
