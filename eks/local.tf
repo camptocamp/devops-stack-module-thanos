@@ -5,9 +5,9 @@ locals {
       objstoreConfig = {
         type = "S3"
         config = {
-          bucket             = "${local.thanos.metrics_storage.bucket_id}"
+          bucket             = "${var.metrics_storage.bucket_id}"
           endpoint           = "s3.amazonaws.com" # Value explicitly specified by Thanos docs for Amazon S3 buckets
-          region             = "${local.thanos.metrics_storage.region}"
+          region             = "${var.metrics_storage.region}"
           signature_version2 = false
           insecure           = false
         }
@@ -18,32 +18,25 @@ locals {
       bucketweb = {
         serviceAccount = {
           annotations = {
-            "eks.amazonaws.com/role-arn" = local.thanos.metrics_storage.iam_role_arn
+            "eks.amazonaws.com/role-arn" = var.metrics_storage.iam_role_arn
           }
         }
       }
       compactor = {
         serviceAccount = {
           annotations = {
-            "eks.amazonaws.com/role-arn" = local.thanos.metrics_storage.iam_role_arn
+            "eks.amazonaws.com/role-arn" = var.metrics_storage.iam_role_arn
           }
         }
       }
       storegateway = {
         serviceAccount = {
           annotations = {
-            "eks.amazonaws.com/role-arn" = local.thanos.metrics_storage.iam_role_arn
+            "eks.amazonaws.com/role-arn" = var.metrics_storage.iam_role_arn
           }
         }
       }
 
     }
   }]
-
-  thanos_defaults = {}
-
-  thanos = merge(
-    local.thanos_defaults,
-    var.thanos,
-  )
 }
