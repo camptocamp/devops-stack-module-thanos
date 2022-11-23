@@ -301,6 +301,20 @@ Description: Name given to the cluster. Value used for the ingress' URL of the a
 
 Type: `string`
 
+==== [[input_metrics_storage]] <<input_metrics_storage,metrics_storage>>
+
+Description: AWS S3 bucket configuration values for the bucket where the archived metrics will be stored.
+
+Type:
+[source,hcl]
+----
+object({
+    bucket_id    = string
+    region       = string
+    iam_role_arn = string
+  })
+----
+
 === Optional Inputs
 
 The following input variables are optional (have default values):
@@ -418,6 +432,22 @@ Description: ID to pass other modules in order to refer to this module as a depe
 |`any`
 |`[]`
 |no
+
+|[[input_metrics_storage]] <<input_metrics_storage,metrics_storage>>
+|AWS S3 bucket configuration values for the bucket where the archived metrics will be stored.
+|
+
+[source]
+----
+object({
+    bucket_id    = string
+    region       = string
+    iam_role_arn = string
+  })
+----
+
+|n/a
+|yes
 
 |[[input_namespace]] <<input_namespace,namespace>>
 |Namespace where the applications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
