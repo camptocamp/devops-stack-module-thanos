@@ -232,6 +232,8 @@ locals {
     query_domain     = "thanos-query.apps.${var.cluster_name}.${var.base_domain}"
     bucketweb_domain = "thanos-bucketweb.apps.${var.cluster_name}.${var.base_domain}"
 
+    # TODO Create proper Terraform variables for these values instead of bundling everything inside of these locals
+
     # This is the size for the PersistentVolume used by the Thanos Compactor to perform its operations.
     # By default, it is set at 8Gi but the documentation recommends a size of 100-300Gi.
     # We left the default value at 8Gi only to have a working configuration, but this value MUST be configured otherwise
@@ -244,6 +246,7 @@ locals {
       one_hour = "240d"
     }
 
+    # TODO Create flavors instead of needing to pass resources values like this
     compactor_resources = {
       limits = {
         memory = "1Gi"
