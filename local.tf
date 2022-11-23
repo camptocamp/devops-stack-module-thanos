@@ -164,7 +164,7 @@ locals {
           }]
         }
         ingress = {
-          enabled = "true"
+          enabled = true
           annotations = {
             "cert-manager.io/cluster-issuer"                   = "${var.cluster_issuer}"
             "traefik.ingress.kubernetes.io/router.entrypoints" = "websecure"
