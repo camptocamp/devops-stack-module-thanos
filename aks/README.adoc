@@ -9,19 +9,20 @@ This module can be declared by adding the following block on your Terraform conf
 [source,terraform]
 ----
 module "thanos" {
-  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//aks"
+  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//aks?ref=<RELEASE>"
 
   cluster_name            = var.cluster_name
   argocd_namespace        = module.cluster.argocd_namespace
   base_domain             = module.cluster.base_domain
   cluster_issuer          = var.cluster_issuer
 
+  metrics_storage = {
+    container_name       = azurerm_storage_container.thanos.name
+    storage_account_name = azurerm_storage_account.thanos.name
+    storage_account_key  = azurerm_storage_account.thanos.primary_access_key
+  }
+
   thanos = {
-    metrics_storage = {
-      storage_account     = azurerm_storage_account.thanos.name
-      storage_account_key = azurerm_storage_account.thanos.primary_access_key
-      container           = azurerm_storage_container.thanos.name
-    }
     oidc = module.oidc.oidc
   }
 
@@ -36,21 +37,20 @@ Although the declaration above allows you to have a barebones Thanos deployed, i
 [source,terraform]
 ----
 module "thanos" {
-  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//aks"
+  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//aks?ref=<RELEASE>"
 
   cluster_name            = var.cluster_name
   argocd_namespace        = module.cluster.argocd_namespace
   base_domain             = module.cluster.base_domain
   cluster_issuer          = var.cluster_issuer
 
-  thanos = {
-    # Bucket configuration
-    metrics_storage = {
-      storage_account     = azurerm_storage_account.thanos.name
-      storage_account_key = azurerm_storage_account.thanos.primary_access_key
-      container           = azurerm_storage_container.thanos.name
-    }
+  metrics_storage = {
+    container_name       = azurerm_storage_container.thanos.name
+    storage_account_name = azurerm_storage_account.thanos.name
+    storage_account_key  = azurerm_storage_account.thanos.primary_access_key
+  }
 
+  thanos = {
     # OIDC configuration
     oidc = module.oidc.oidc
 
@@ -105,19 +105,20 @@ If there is a need to configure something besides the common settings that we ha
 [source,terraform]
 ----
 module "thanos" {
-  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//aks"
+  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//aks?ref=<RELEASE>"
 
   cluster_name            = var.cluster_name
   argocd_namespace        = module.cluster.argocd_namespace
   base_domain             = module.cluster.base_domain
   cluster_issuer          = var.cluster_issuer
 
+  metrics_storage = {
+    container_name       = azurerm_storage_container.thanos.name
+    storage_account_name = azurerm_storage_account.thanos.name
+    storage_account_key  = azurerm_storage_account.thanos.primary_access_key
+  }
+
   thanos = {
-    metrics_storage = {
-      storage_account     = azurerm_storage_account.thanos.name
-      storage_account_key = azurerm_storage_account.thanos.primary_access_key
-      container           = azurerm_storage_container.thanos.name
-    }
     oidc = module.oidc.oidc
   }
 
@@ -202,7 +203,7 @@ This value MUST be configured otherwise the compactor will NOT work on a product
 
 ==== `module.argocd_bootstrap`
 
-This module must be one of the first ones to be deployed and consequently it needs to be deployed exactly after the module `argocd_bootstrap`.
+This module must be one of the first ones to be deployed and consequently it needs to be deployed after the module `argocd_bootstrap`.
 
 // BEGIN_TF_DOCS
 === Requirements
