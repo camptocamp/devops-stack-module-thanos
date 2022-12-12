@@ -1,4 +1,6 @@
 locals {
+  # values.yaml translated into HCL structures.
+  # Possible values available here -> https://github.com/bitnami/charts/tree/master/bitnami/thanos/
   helm_values = [{
     thanos = {
 
@@ -7,15 +9,7 @@ locals {
         persistence = {
           enabled = false
         }
-        resources = {
-          limits = {
-            memory = "2Gi"
-          }
-          requests = {
-            cpu    = "0.5"
-            memory = "1Gi"
-          }
-        }
+        resources = local.thanos.storegateway_resources
       }
 
       query = {
@@ -27,15 +21,7 @@ locals {
         stores = [
           "thanos-storegateway:10901"
         ]
-        resources = {
-          limits = {
-            memory = "1Gi"
-          }
-          requests = {
-            cpu    = "0.5"
-            memory = "512Mi"
-          }
-        }
+        resources = local.thanos.query_resources
       }
 
       compactor = {
@@ -43,27 +29,21 @@ locals {
         retentionResolutionRaw = "${local.thanos.compactor_retention.raw}"
         retentionResolution5m  = "${local.thanos.compactor_retention.five_min}"
         retentionResolution1h  = "${local.thanos.compactor_retention.one_hour}"
-        resources = {
-          limits = {
-            memory = "1Gi"
-          }
-          requests = {
-            cpu    = "0.5"
-            memory = "512Mi"
-          }
-        }
+        resources              = local.thanos.compactor_resources
         persistence = {
-          # We had the access mode set as ReadWriteMany, but it was not supported with AWS gp2 EBS volumes.
+          # The Access Mode needs to be set as ReadWriteOnce because AWS Elastic Block storage does not support other
+          # modes (https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes).          
           # Since the compactor is the only pod accessing this volume, there should be no issue to have this as
           # ReadWriteOnce (https://stackoverflow.com/a/57799347).
           accessModes = [
             "ReadWriteOnce"
           ]
+          size = local.thanos.compactor_persistence_size
         }
       }
 
       bucketweb = {
-        enabled = "true"
+        enabled = true
         sidecars = [{
           args = concat([
             "--http-address=0.0.0.0:9075",
@@ -93,7 +73,7 @@ locals {
           }]
         }
         ingress = {
-          enabled = "true"
+          enabled = true
           annotations = {
             "cert-manager.io/cluster-issuer"                   = "${var.cluster_issuer}"
             "traefik.ingress.kubernetes.io/router.entrypoints" = "websecure"
@@ -184,7 +164,7 @@ locals {
           }]
         }
         ingress = {
-          enabled = "true"
+          enabled = true
           annotations = {
             "cert-manager.io/cluster-issuer"                   = "${var.cluster_issuer}"
             "traefik.ingress.kubernetes.io/router.entrypoints" = "websecure"
@@ -249,14 +229,38 @@ locals {
   }]
 
   thanos_defaults = {
-    # By default is true because if we call this module it is because we want to enable it
-    enabled          = true
     query_domain     = "thanos-query.apps.${var.cluster_name}.${var.base_domain}"
     bucketweb_domain = "thanos-bucketweb.apps.${var.cluster_name}.${var.base_domain}"
+
+    # TODO Create proper Terraform variables for these values instead of bundling everything inside of these locals
+
+    # This is the size for the PersistentVolume used by the Thanos Compactor to perform its operations.
+    # By default, it is set at 8Gi but the documentation recommends a size of 100-300Gi.
+    # We left the default value at 8Gi only to have a working configuration, but this value MUST be configured otherwise
+    # the compactor will NOT work on a production deployment. The size of this PV cannot be changed afterwards.
+    compactor_persistence_size = "8Gi"
+
     compactor_retention = {
       raw      = "60d"
       five_min = "120d"
       one_hour = "240d"
+    }
+
+    # TODO Create flavors instead of needing to pass resources values like this
+    compactor_resources = {
+      limits = {
+        memory = "1Gi"
+      }
+    }
+    storegateway_resources = {
+      limits = {
+        memory = "1Gi"
+      }
+    }
+    query_resources = {
+      limits = {
+        memory = "1Gi"
+      }
     }
   }
 

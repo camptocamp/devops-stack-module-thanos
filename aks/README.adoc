@@ -1,6 +1,6 @@
-= EKS variant
+= AKS variant
 
-This folder contains the variant to use when deploying in AWS using an EKS cluster.
+This folder contains the variant to use when deploying in Microsoft Azure using an AKS cluster.
 
 == Usage
 
@@ -9,7 +9,7 @@ This module can be declared by adding the following block on your Terraform conf
 [source,terraform]
 ----
 module "thanos" {
-  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks?ref=<RELEASE>"
+  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//aks?ref=<RELEASE>"
 
   cluster_name            = var.cluster_name
   argocd_namespace        = module.cluster.argocd_namespace
@@ -17,9 +17,9 @@ module "thanos" {
   cluster_issuer          = var.cluster_issuer
 
   metrics_storage = {
-    bucket_id    = aws_s3_bucket.thanos_metrics_storage.id
-    region       = aws_s3_bucket.thanos_metrics_storage.region
-    iam_role_arn = module.iam_assumable_role_thanos.iam_role_arn
+    container_name       = azurerm_storage_container.thanos.name
+    storage_account_name = azurerm_storage_account.thanos.name
+    storage_account_key  = azurerm_storage_account.thanos.primary_access_key
   }
 
   thanos = {
@@ -37,7 +37,7 @@ Although the declaration above allows you to have a barebones Thanos deployed, i
 [source,terraform]
 ----
 module "thanos" {
-  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks?ref=<RELEASE>"
+  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//aks?ref=<RELEASE>"
 
   cluster_name            = var.cluster_name
   argocd_namespace        = module.cluster.argocd_namespace
@@ -45,9 +45,9 @@ module "thanos" {
   cluster_issuer          = var.cluster_issuer
 
   metrics_storage = {
-    bucket_id    = aws_s3_bucket.thanos_metrics_storage.id
-    region       = aws_s3_bucket.thanos_metrics_storage.region
-    iam_role_arn = module.iam_assumable_role_thanos.iam_role_arn
+    container_name       = azurerm_storage_container.thanos.name
+    storage_account_name = azurerm_storage_account.thanos.name
+    storage_account_key  = azurerm_storage_account.thanos.primary_access_key
   }
 
   thanos = {
@@ -105,7 +105,7 @@ If there is a need to configure something besides the common settings that we ha
 [source,terraform]
 ----
 module "thanos" {
-  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks?ref=<RELEASE>"
+  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//aks?ref=<RELEASE>"
 
   cluster_name            = var.cluster_name
   argocd_namespace        = module.cluster.argocd_namespace
@@ -113,9 +113,9 @@ module "thanos" {
   cluster_issuer          = var.cluster_issuer
 
   metrics_storage = {
-    bucket_id    = aws_s3_bucket.thanos_metrics_storage.id
-    region       = aws_s3_bucket.thanos_metrics_storage.region
-    iam_role_arn = module.iam_assumable_role_thanos.iam_role_arn
+    container_name       = azurerm_storage_container.thanos.name
+    storage_account_name = azurerm_storage_account.thanos.name
+    storage_account_key  = azurerm_storage_account.thanos.primary_access_key
   }
 
   thanos = {
@@ -155,63 +155,11 @@ IMPORTANT: You are in charge of creating an S3 bucket for Thanos to store the ar
 
 We've decided to keep the creation of this bucket outside of this module, mainly because the persistence of the data should not be related to the instantiation of the module itself.
 
-You can create an S3 bucket and an IAM policy using the code below:
+You can create a bucket using the code below:
 
 [source,terraform]
 ----
-resource "aws_s3_bucket" "thanos_metrics_storage" {
-  bucket = format("thanos-metrics-storage-%s", module.eks.cluster_name)
-
-  force_destroy = true
-
-  tags = {
-    Name    = "Thanos metrics storage"
-    Cluster = module.eks.cluster_name
-  }
-}
-
-module "iam_assumable_role_thanos" {
-  source                     = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                    = "4.0.0"
-  create_role                = true
-  number_of_role_policy_arns = 1
-  role_name                  = format("thanos-s3-role-%s", module.eks.cluster_name)
-  provider_url               = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
-  role_policy_arns           = [aws_iam_policy.thanos_s3_policy.arn]
-
-  # List of ServiceAccounts that have permission to attach to this IAM role
-  oidc_fully_qualified_subjects = [
-    "system:serviceaccount:thanos:thanos-bucketweb",
-    "system:serviceaccount:thanos:thanos-storegateway",
-    "system:serviceaccount:thanos:thanos-compactor",
-    "system:serviceaccount:thanos:thanos-sidecar",
-    "system:serviceaccount:kube-prometheus-stack:kube-prometheus-stack-prometheus"
-  ]
-}
-
-resource "aws_iam_policy" "thanos_s3_policy" {
-  name_prefix = "thanos-s3-"
-  description = "Thanos IAM policy for cluster ${module.eks.cluster_name}"
-  policy      = data.aws_iam_policy_document.thanos_s3_policy.json
-}
-
-data "aws_iam_policy_document" "thanos_s3_policy" {
-  statement {
-    actions = [
-      "s3:ListBucket",
-      "s3:PutObject",
-      "s3:GetObject",
-      "s3:DeleteObject",
-    ]
-
-    resources = [
-      aws_s3_bucket.thanos_metrics_storage.arn,
-      format("%s/*", aws_s3_bucket.thanos_metrics_storage.arn),
-    ]
-
-    effect = "Allow"
-  }
-}
+# TODO
 ----
 
 NOTE: Do not forget that the bucket configuration also needs to be passed to the module `kube-prometheus-stack`.
@@ -304,15 +252,15 @@ Type: `string`
 
 ==== [[input_metrics_storage]] <<input_metrics_storage,metrics_storage>>
 
-Description: AWS S3 bucket configuration values for the bucket where the archived metrics will be stored.
+Description: Azure Blob Storage configuration values for the storage container where the archived metrics will be stored.
 
 Type:
 [source,hcl]
 ----
 object({
-    bucket_id    = string
-    region       = string
-    iam_role_arn = string
+    container_name       = string
+    storage_account_name = string
+    storage_account_key  = string
   })
 ----
 
@@ -435,15 +383,15 @@ Description: ID to pass other modules in order to refer to this module as a depe
 |no
 
 |[[input_metrics_storage]] <<input_metrics_storage,metrics_storage>>
-|AWS S3 bucket configuration values for the bucket where the archived metrics will be stored.
+|Azure Blob Storage configuration values for the storage container where the archived metrics will be stored.
 |
 
 [source]
 ----
 object({
-    bucket_id    = string
-    region       = string
-    iam_role_arn = string
+    container_name       = string
+    storage_account_name = string
+    storage_account_key  = string
   })
 ----
 

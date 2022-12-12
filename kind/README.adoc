@@ -1,6 +1,6 @@
-= EKS variant
+= KinD variant
 
-This folder contains the variant to use when deploying in AWS using an EKS cluster.
+This folder contains the variant to use when deploying locally using a https://github.com/camptocamp/devops-stack-module-cluster-kind[KinD] cluster and an S3 bucket deployed using the https://github.com/camptocamp/devops-stack-module-minio[MinIO] module of the https://devops-stack.io[DevOps Stack].
 
 == Usage
 
@@ -9,35 +9,38 @@ This module can be declared by adding the following block on your Terraform conf
 [source,terraform]
 ----
 module "thanos" {
-  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks?ref=<RELEASE>"
+  source = "git::https://github.com/camptocamp/devops-stack-module-thanos//kind?ref=<RELEASE>"
 
-  cluster_name            = var.cluster_name
-  argocd_namespace        = module.cluster.argocd_namespace
-  base_domain             = module.cluster.base_domain
-  cluster_issuer          = var.cluster_issuer
+  cluster_name     = module.kind.cluster_name
+  argocd_namespace = local.argocd_namespace
+  base_domain      = module.kind.base_domain
+  cluster_issuer   = local.cluster_issuer
 
   metrics_storage = {
-    bucket_id    = aws_s3_bucket.thanos_metrics_storage.id
-    region       = aws_s3_bucket.thanos_metrics_storage.region
-    iam_role_arn = module.iam_assumable_role_thanos.iam_role_arn
+    bucket_name       = "thanos" # Name given to the bucket
+    endpoint          = module.minio.endpoint
+    access_key        = "readwrite_user" # Name given to the read-write user created by the module MinIO.
+    secret_access_key = module.minio.readwrite_secret_key
   }
 
   thanos = {
     oidc = module.oidc.oidc
   }
 
-  depends_on = [module.argocd_bootstrap]
+  depends_on = [module.oidc]
 }
 ----
 
-As you can see, a minimum requirement for this module is an S3 bucket with an IAM policy attached and an OIDC provider (more information below).
+As you can see, a minimum requirement for this module is an S3 bucket that uses a user with read/write permissions, both created in the MinIO module we provide (more information below).
 
-Although the declaration above allows you to have a barebones Thanos deployed, it is highly recommended that you customize a few settings for a production-ready deployment. You need to at least configure the resource requirements for a few of the Thanos' components and the size of the persistent volume used by the compactor. You can also configure the compactor retention times, as in the example below.
+NOTE: There are multiple other options that can be set, as in the other modules, but we will not go into detail as this variant is mainly for test and development purposes. You can check the documentation on the other modules to get an idea.
+
+If there is a need to configure something besides the common settings that we have provided, you can customize the chart's `values.yaml` by adding an Helm configuration as an HCL structure:
 
 [source,terraform]
 ----
 module "thanos" {
-  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks?ref=<RELEASE>"
+  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks"
 
   cluster_name            = var.cluster_name
   argocd_namespace        = module.cluster.argocd_namespace
@@ -45,77 +48,10 @@ module "thanos" {
   cluster_issuer          = var.cluster_issuer
 
   metrics_storage = {
-    bucket_id    = aws_s3_bucket.thanos_metrics_storage.id
-    region       = aws_s3_bucket.thanos_metrics_storage.region
-    iam_role_arn = module.iam_assumable_role_thanos.iam_role_arn
-  }
-
-  thanos = {
-    # OIDC configuration
-    oidc = module.oidc.oidc
-
-    # Configuration of the persistent volume for the compactor
-    compactor_persistent_size = "100Gi"
-
-    # Resources configuration for the pods
-    compactor_resources = {
-      limits = {
-        memory = "1Gi"
-      }
-      requests = {
-        cpu    = "0.5"
-        memory = "512Mi"
-      }
-    }
-    storegateway_resources = {
-      limits = {
-        memory = "1Gi"
-      }
-      requests = {
-        cpu    = "0.5"
-        memory = "1Gi"
-      }
-    }
-    query_resources = {
-      limits = {
-        memory = "1Gi"
-      }
-      requests = {
-        cpu    = "0.5"
-        memory = "512Mi"
-      }
-    }
-
-    # Retention settings for the compactor
-    compactor_retention = {
-      raw      = "60d"
-      five_min = "120d"
-      one_hour = "240d"
-    }
-  }
-
-  depends_on = [module.argocd_bootstrap]
-}
-----
-
-As you can see on the examples above, the variable `thanos` provides an interface to customize the most frequently used settings. This variable is merged with the local value `thanos_defaults`, which contains some sensible defaults to have a barebones working deployment. You can check the default values on the link:./local.tf[`local.tf`] file.
-
-If there is a need to configure something besides the common settings that we have provided above, you can customize the chart's `values.yaml` by adding an Helm configuration as an HCL structure:
-
-[source,terraform]
-----
-module "thanos" {
-  source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//eks?ref=<RELEASE>"
-
-  cluster_name            = var.cluster_name
-  argocd_namespace        = module.cluster.argocd_namespace
-  base_domain             = module.cluster.base_domain
-  cluster_issuer          = var.cluster_issuer
-
-  metrics_storage = {
-    bucket_id    = aws_s3_bucket.thanos_metrics_storage.id
-    region       = aws_s3_bucket.thanos_metrics_storage.region
-    iam_role_arn = module.iam_assumable_role_thanos.iam_role_arn
+    bucket_name       = "thanos" # Name given to the bucket
+    endpoint          = module.minio.endpoint
+    access_key        = "readwrite_user" # Name given to the read-write user created by the module MinIO.
+    secret_access_key = module.minio.readwrite_secret_key
   }
 
   thanos = {
@@ -155,62 +91,23 @@ IMPORTANT: You are in charge of creating an S3 bucket for Thanos to store the ar
 
 We've decided to keep the creation of this bucket outside of this module, mainly because the persistence of the data should not be related to the instantiation of the module itself.
 
-You can create an S3 bucket and an IAM policy using the code below:
+You can create an S3 bucket using the https://github.com/camptocamp/devops-stack-module-minio[MinIO] module by simply adding the bucket name to that module's declaration.
 
 [source,terraform]
 ----
-resource "aws_s3_bucket" "thanos_metrics_storage" {
-  bucket = format("thanos-metrics-storage-%s", module.eks.cluster_name)
+module "minio" {
+  source = "git::https://github.com/camptocamp/devops-stack-module-minio?ref=<RELEASE>"
 
-  force_destroy = true
+  cluster_name     = module.kind.cluster_name
+  base_domain      = module.kind.base_domain
+  argocd_namespace = local.argocd_namespace
 
-  tags = {
-    Name    = "Thanos metrics storage"
-    Cluster = module.eks.cluster_name
-  }
-}
-
-module "iam_assumable_role_thanos" {
-  source                     = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                    = "4.0.0"
-  create_role                = true
-  number_of_role_policy_arns = 1
-  role_name                  = format("thanos-s3-role-%s", module.eks.cluster_name)
-  provider_url               = replace(module.eks.cluster_oidc_issuer_url, "https://", "")
-  role_policy_arns           = [aws_iam_policy.thanos_s3_policy.arn]
-
-  # List of ServiceAccounts that have permission to attach to this IAM role
-  oidc_fully_qualified_subjects = [
-    "system:serviceaccount:thanos:thanos-bucketweb",
-    "system:serviceaccount:thanos:thanos-storegateway",
-    "system:serviceaccount:thanos:thanos-compactor",
-    "system:serviceaccount:thanos:thanos-sidecar",
-    "system:serviceaccount:kube-prometheus-stack:kube-prometheus-stack-prometheus"
+  minio_buckets = [
+    "thanos", # <--
+    "loki",
   ]
-}
 
-resource "aws_iam_policy" "thanos_s3_policy" {
-  name_prefix = "thanos-s3-"
-  description = "Thanos IAM policy for cluster ${module.eks.cluster_name}"
-  policy      = data.aws_iam_policy_document.thanos_s3_policy.json
-}
-
-data "aws_iam_policy_document" "thanos_s3_policy" {
-  statement {
-    actions = [
-      "s3:ListBucket",
-      "s3:PutObject",
-      "s3:GetObject",
-      "s3:DeleteObject",
-    ]
-
-    resources = [
-      aws_s3_bucket.thanos_metrics_storage.arn,
-      format("%s/*", aws_s3_bucket.thanos_metrics_storage.arn),
-    ]
-
-    effect = "Allow"
-  }
+  depends_on = [module.ingress, module.cert-manager]
 }
 ----
 
@@ -243,19 +140,19 @@ module "thanos" {
 
 === Resource Configuration
 
-Since the resource requirements are not the same on every deployment and because the consumed resources also influence the cost associated, we refrained from configuring default resource requirements for the components of Thanos. We did, however, set memory limits for some of the pods (`query`, `storegateway` and `compactor` all have a 1 GB memory limit). We recommend that you customize these values as you see fit.
-
-IMPORTANT: At the very least you should configure the size for the _PersistentVolume_ used by the compactor.
-
-This value MUST be configured otherwise the compactor will NOT work on a production deployment. The Thanos documentation https://thanos.io/tip/thanos/quick-tutorial.md/#compactor|[recommends] a size of 100-300 GB.
+Since the resource requirements are not the same on every deployment and because the consumed resources also influence the cost associated, we refrained from configuring default resource requirements for the components of Thanos. We did, however, set memory limits for some of the pods (`query`, `storegateway` and `compactor` all have a 1 GB memory limit). These values should be customized as you see fit, although there is not really a need in a test deployment.
 
 == Technical Reference
 
 === Dependencies
 
-==== `module.argocd_bootstrap`
+==== `module.oidc`
 
-This module must be one of the first ones to be deployed and consequently it needs to be deployed after the module `argocd_bootstrap`.
+This module needs an OIDC provider to function and consequently it must be one deployed after the module `oidc`.
+
+==== `module.minio`
+
+This module needs to have the configuration for the S3 bucket and consequently it must be one deployed after the module `minio`.
 
 // BEGIN_TF_DOCS
 === Requirements
@@ -304,15 +201,16 @@ Type: `string`
 
 ==== [[input_metrics_storage]] <<input_metrics_storage,metrics_storage>>
 
-Description: AWS S3 bucket configuration values for the bucket where the archived metrics will be stored.
+Description: MinIO S3 bucket configuration values for the bucket where the archived metrics will be stored.
 
 Type:
 [source,hcl]
 ----
 object({
-    bucket_id    = string
-    region       = string
-    iam_role_arn = string
+    bucket_name       = string
+    endpoint          = string
+    access_key        = string
+    secret_access_key = string
   })
 ----
 
@@ -435,15 +333,16 @@ Description: ID to pass other modules in order to refer to this module as a depe
 |no
 
 |[[input_metrics_storage]] <<input_metrics_storage,metrics_storage>>
-|AWS S3 bucket configuration values for the bucket where the archived metrics will be stored.
+|MinIO S3 bucket configuration values for the bucket where the archived metrics will be stored.
 |
 
 [source]
 ----
 object({
-    bucket_id    = string
-    region       = string
-    iam_role_arn = string
+    bucket_name       = string
+    endpoint          = string
+    access_key        = string
+    secret_access_key = string
   })
 ----
 

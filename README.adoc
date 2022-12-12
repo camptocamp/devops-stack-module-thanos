@@ -12,9 +12,7 @@ The Thanos chart used by this module is shipped in this repository as well, in o
 |*{chart-version}* |https://github.com/bitnami/charts/tree/master/bitnami/thanos[Chart] |https://artifacthub.io/packages/helm/bitnami/thanos?modal=values[`values.yaml`]
 |===
 
-*Since this module is meant to be instantiated using its variants, the usage documentation is available in each variant* ( xref:./eks/README.adoc[EKS] ).
-// Example line with other variants
-// *Since this module is meant to be instantiated using its variants, the usage documentation is available in each variant* ( xref:./eks/README.adoc[EKS] | xref:./aks/README.adoc[AKS] | xref:./sks/README.adoc[SKS] ).
+*Since this module is meant to be instantiated using its variants, the usage documentation is available in each variant* ( xref:./aks/README.adoc[AKS] | xref:./eks/README.adoc[EKS] | xref:./kind/README.adoc[KinD] ).
 
 Below you will only find the technical reference automatically generated from the `*.tf` files on the root module. 
 
@@ -116,7 +114,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v1.0.0-rc2"`
+Default: `"v1.0.0-alpha.4"`
 
 ==== [[input_thanos]] <<input_thanos,thanos>>
 
@@ -133,10 +131,6 @@ The following outputs are exported:
 ==== [[output_id]] <<output_id,id>>
 
 Description: ID to pass other modules in order to refer to this module as a dependency.
-
-==== [[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>>
-
-Description: Boolean indicating whether Thanos is enabled.
 // END_TF_DOCS
 
 === Reference in table format 
@@ -221,7 +215,7 @@ Description: Boolean indicating whether Thanos is enabled.
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v1.0.0-rc2"`
+|`"v1.0.0-alpha.4"`
 |no
 
 |[[input_thanos]] <<input_thanos,thanos>>
@@ -238,7 +232,6 @@ Description: Boolean indicating whether Thanos is enabled.
 |===
 |Name |Description
 |[[output_id]] <<output_id,id>> |ID to pass other modules in order to refer to this module as a dependency.
-|[[output_thanos_enabled]] <<output_thanos_enabled,thanos_enabled>> |Boolean indicating whether Thanos is enabled.
 |===
 // END_TF_TABLES
 ====
