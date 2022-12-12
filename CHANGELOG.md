@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0-alpha.5](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-alpha.4...v1.0.0-alpha.5) (2022-12-12)
+
+
+### Features
+
+* redesign metrics storage bucket configuration and add resources variables ([#20](https://github.com/camptocamp/devops-stack-module-thanos/issues/20)) ([f4b33ee](https://github.com/camptocamp/devops-stack-module-thanos/commit/f4b33ee6e9faca8be60aabf5e1aedf3c3e2a7340))
+
 ## [1.0.0-alpha.4](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-rc3...v1.0.0-alpha.4) (2022-10-26)
 
 
