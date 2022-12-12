@@ -155,6 +155,124 @@ This module needs an OIDC provider to function and consequently it must be one d
 This module needs to have the configuration for the S3 bucket and consequently it must be one deployed after the module `minio`.
 
 // BEGIN_TF_DOCS
+=== Requirements
+
+No requirements.
+
+=== Providers
+
+No providers.
+
+=== Modules
+
+The following Modules are called:
+
+==== [[module_thanos]] <<module_thanos,thanos>>
+
+Source: ../
+
+Version:
+
+=== Resources
+
+No resources.
+
+=== Required Inputs
+
+The following input variables are required:
+
+==== [[input_argocd_namespace]] <<input_argocd_namespace,argocd_namespace>>
+
+Description: Namespace used by Argo CD where the Application and AppProject resources should be created.
+
+Type: `string`
+
+==== [[input_base_domain]] <<input_base_domain,base_domain>>
+
+Description: Base domain of the cluster. Value used for the ingress' URL of the application.
+
+Type: `string`
+
+==== [[input_cluster_name]] <<input_cluster_name,cluster_name>>
+
+Description: Name given to the cluster. Value used for the ingress' URL of the application.
+
+Type: `string`
+
+==== [[input_metrics_storage]] <<input_metrics_storage,metrics_storage>>
+
+Description: MinIO S3 bucket configuration values for the bucket where the archived metrics will be stored.
+
+Type:
+[source,hcl]
+----
+object({
+    bucket_name       = string
+    endpoint          = string
+    access_key        = string
+    secret_access_key = string
+  })
+----
+
+=== Optional Inputs
+
+The following input variables are optional (have default values):
+
+==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
+
+Description: SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files.
+
+Type: `string`
+
+Default: `"ca-issuer"`
+
+==== [[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
+
+Description: IDs of the other modules on which this module depends on.
+
+Type: `map(string)`
+
+Default: `{}`
+
+==== [[input_helm_values]] <<input_helm_values,helm_values>>
+
+Description: Helm chart value overrides. They should be passed as a list of HCL structures.
+
+Type: `any`
+
+Default: `[]`
+
+==== [[input_namespace]] <<input_namespace,namespace>>
+
+Description: Namespace where the applications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
+
+Type: `string`
+
+Default: `"thanos"`
+
+==== [[input_target_revision]] <<input_target_revision,target_revision>>
+
+Description: Override of target revision of the application chart.
+
+Type: `string`
+
+Default: `"v1.0.0-alpha.4"`
+
+==== [[input_thanos]] <<input_thanos,thanos>>
+
+Description: Most frequently used Thanos settings. This variable is merged with the local value `thanos_defaults`, which contains some sensible defaults. You can check the default values on the link:./local.tf[`local.tf`] file. If there still is anything other that needs to be customized, you can always pass on configuration values using the variable `helm_values`.
+
+Type: `any`
+
+Default: `{}`
+
+=== Outputs
+
+The following outputs are exported:
+
+==== [[output_id]] <<output_id,id>>
+
+Description: ID to pass other modules in order to refer to this module as a dependency. It takes the ID that comes from the main module and passes it along to the code that called this variant in the first place.
 // END_TF_DOCS
 
 === Reference in table format 
@@ -163,5 +281,100 @@ This module needs to have the configuration for the S3 bucket and consequently i
 [%collapsible]
 ====
 // BEGIN_TF_TABLES
+
+
+= Modules
+
+[cols="a,a,a",options="header,autowidth"]
+|===
+|Name |Source |Version
+|[[module_thanos]] <<module_thanos,thanos>> |../ |
+|===
+
+= Inputs
+
+[cols="a,a,a,a,a",options="header,autowidth"]
+|===
+|Name |Description |Type |Default |Required
+|[[input_argocd_namespace]] <<input_argocd_namespace,argocd_namespace>>
+|Namespace used by Argo CD where the Application and AppProject resources should be created.
+|`string`
+|n/a
+|yes
+
+|[[input_base_domain]] <<input_base_domain,base_domain>>
+|Base domain of the cluster. Value used for the ingress' URL of the application.
+|`string`
+|n/a
+|yes
+
+|[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
+|SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files.
+|`string`
+|`"ca-issuer"`
+|no
+
+|[[input_cluster_name]] <<input_cluster_name,cluster_name>>
+|Name given to the cluster. Value used for the ingress' URL of the application.
+|`string`
+|n/a
+|yes
+
+|[[input_dependency_ids]] <<input_dependency_ids,dependency_ids>>
+|IDs of the other modules on which this module depends on.
+|`map(string)`
+|`{}`
+|no
+
+|[[input_helm_values]] <<input_helm_values,helm_values>>
+|Helm chart value overrides. They should be passed as a list of HCL structures.
+|`any`
+|`[]`
+|no
+
+|[[input_metrics_storage]] <<input_metrics_storage,metrics_storage>>
+|MinIO S3 bucket configuration values for the bucket where the archived metrics will be stored.
+|
+
+[source]
+----
+object({
+    bucket_name       = string
+    endpoint          = string
+    access_key        = string
+    secret_access_key = string
+  })
+----
+
+|n/a
+|yes
+
+|[[input_namespace]] <<input_namespace,namespace>>
+|Namespace where the applications's Kubernetes resources should be created. Namespace will be created in case it doesn't exist.
+|`string`
+|`"thanos"`
+|no
+
+|[[input_target_revision]] <<input_target_revision,target_revision>>
+|Override of target revision of the application chart.
+|`string`
+|`"v1.0.0-alpha.4"`
+|no
+
+|[[input_thanos]] <<input_thanos,thanos>>
+|Most frequently used Thanos settings. This variable is merged with the local value `thanos_defaults`, which contains some sensible defaults. You can check the default values on the link:./local.tf[`local.tf`] file. If there still is anything other that needs to be customized, you can always pass on configuration values using the variable `helm_values`.
+|`any`
+|`{}`
+|no
+
+|===
+
+= Outputs
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Description
+|[[output_id]] <<output_id,id>> |ID to pass other modules in order to refer to this module as a dependency. It takes the ID that comes from the main module and passes it along to the code that called this variant in the first place.
+|===
 // END_TF_TABLES
 ====
