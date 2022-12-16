@@ -11,15 +11,15 @@ This module can be declared by adding the following block on your Terraform conf
 module "thanos" {
   source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//aks?ref=<RELEASE>"
 
-  cluster_name            = var.cluster_name
-  argocd_namespace        = module.cluster.argocd_namespace
-  base_domain             = module.cluster.base_domain
-  cluster_issuer          = var.cluster_issuer
+  cluster_name     = var.cluster_name
+  argocd_namespace = module.cluster.argocd_namespace
+  base_domain      = module.cluster.base_domain
+  cluster_issuer   = var.cluster_issuer
 
   metrics_storage = {
-    container_name       = azurerm_storage_container.thanos.name
-    storage_account_name = azurerm_storage_account.thanos.name
-    storage_account_key  = azurerm_storage_account.thanos.primary_access_key
+    container           = azurerm_storage_container.thanos.name
+    storage_account     = azurerm_storage_account.thanos.name
+    storage_account_key = azurerm_storage_account.thanos.primary_access_key
   }
 
   thanos = {
@@ -39,15 +39,15 @@ Although the declaration above allows you to have a barebones Thanos deployed, i
 module "thanos" {
   source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//aks?ref=<RELEASE>"
 
-  cluster_name            = var.cluster_name
-  argocd_namespace        = module.cluster.argocd_namespace
-  base_domain             = module.cluster.base_domain
-  cluster_issuer          = var.cluster_issuer
+  cluster_name     = var.cluster_name
+  argocd_namespace = module.cluster.argocd_namespace
+  base_domain      = module.cluster.base_domain
+  cluster_issuer   = var.cluster_issuer
 
   metrics_storage = {
-    container_name       = azurerm_storage_container.thanos.name
-    storage_account_name = azurerm_storage_account.thanos.name
-    storage_account_key  = azurerm_storage_account.thanos.primary_access_key
+    container           = azurerm_storage_container.thanos.name
+    storage_account     = azurerm_storage_account.thanos.name
+    storage_account_key = azurerm_storage_account.thanos.primary_access_key
   }
 
   thanos = {
@@ -107,15 +107,15 @@ If there is a need to configure something besides the common settings that we ha
 module "thanos" {
   source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//aks?ref=<RELEASE>"
 
-  cluster_name            = var.cluster_name
-  argocd_namespace        = module.cluster.argocd_namespace
-  base_domain             = module.cluster.base_domain
-  cluster_issuer          = var.cluster_issuer
+  cluster_name     = var.cluster_name
+  argocd_namespace = module.cluster.argocd_namespace
+  base_domain      = module.cluster.base_domain
+  cluster_issuer   = var.cluster_issuer
 
   metrics_storage = {
-    container_name       = azurerm_storage_container.thanos.name
-    storage_account_name = azurerm_storage_account.thanos.name
-    storage_account_key  = azurerm_storage_account.thanos.primary_access_key
+    container           = azurerm_storage_container.thanos.name
+    storage_account     = azurerm_storage_account.thanos.name
+    storage_account_key = azurerm_storage_account.thanos.primary_access_key
   }
 
   thanos = {
@@ -258,9 +258,9 @@ Type:
 [source,hcl]
 ----
 object({
-    container_name       = string
-    storage_account_name = string
-    storage_account_key  = string
+    container           = string
+    storage_account     = string
+    storage_account_key = string
   })
 ----
 
@@ -306,7 +306,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v1.0.0-alpha.4"`
+Default: `"v1.0.0-alpha.5"`
 
 ==== [[input_thanos]] <<input_thanos,thanos>>
 
@@ -389,9 +389,9 @@ Description: ID to pass other modules in order to refer to this module as a depe
 [source]
 ----
 object({
-    container_name       = string
-    storage_account_name = string
-    storage_account_key  = string
+    container           = string
+    storage_account     = string
+    storage_account_key = string
   })
 ----
 
@@ -407,7 +407,7 @@ object({
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v1.0.0-alpha.4"`
+|`"v1.0.0-alpha.5"`
 |no
 
 |[[input_thanos]] <<input_thanos,thanos>>
