@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0-alpha.6](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2022-12-16)
+
+
+### Bug Fixes
+
+* change values names to the same as in kube-prometheus-stack module ([#23](https://github.com/camptocamp/devops-stack-module-thanos/issues/23)) ([5e57dea](https://github.com/camptocamp/devops-stack-module-thanos/commit/5e57deacd7d8e1cac187f4d7ee581559d3ab1082))
+
 ## [1.0.0-alpha.5](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-alpha.4...v1.0.0-alpha.5) (2022-12-12)
 
 
