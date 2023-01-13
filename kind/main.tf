@@ -7,6 +7,7 @@ module "thanos" {
   target_revision  = var.target_revision
   cluster_issuer   = var.cluster_issuer
   namespace        = var.namespace
+  app_autosync     = var.app_autosync
   dependency_ids   = var.dependency_ids
 
   thanos = var.thanos
