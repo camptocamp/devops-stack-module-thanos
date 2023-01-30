@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.0-alpha.8](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-alpha.7...v1.0.0-alpha.8) (2023-01-30)
+
+
+### Features
+
+* **helm:** bump chart to v12 ([#26](https://github.com/camptocamp/devops-stack-module-thanos/issues/26)) ([ad51036](https://github.com/camptocamp/devops-stack-module-thanos/commit/ad510362c6b90db46e8e7d61dc4a1f12aa034511))
+
+
+### Miscellaneous Chores
+
+* release 1.0.0-alpha.8 ([#29](https://github.com/camptocamp/devops-stack-module-thanos/issues/29)) ([40db790](https://github.com/camptocamp/devops-stack-module-thanos/commit/40db790c4df850beb7677b83faaf6e323f7c57f7))
+
 ## [1.0.0-alpha.7](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-alpha.6...v1.0.0-alpha.7) (2023-01-30)
 
 
