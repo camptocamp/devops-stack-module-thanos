@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0-alpha.7](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-alpha.6...v1.0.0-alpha.7) (2023-01-30)
+
+
+### Features
+
+* add variable to configure sync on the application resource ([#25](https://github.com/camptocamp/devops-stack-module-thanos/issues/25)) ([f1ba6b9](https://github.com/camptocamp/devops-stack-module-thanos/commit/f1ba6b9d7d22aa88163082f43d4c29cc51362abb))
+
 ## [1.0.0-alpha.6](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2022-12-16)
 
 
