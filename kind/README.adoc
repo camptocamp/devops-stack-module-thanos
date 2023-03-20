@@ -155,13 +155,7 @@ This module needs an OIDC provider to function and consequently it must be one d
 This module needs to have the configuration for the S3 bucket and consequently it must be one deployed after the module `minio`.
 
 // BEGIN_TF_DOCS
-=== Requirements
 
-No requirements.
-
-=== Providers
-
-No providers.
 
 === Modules
 
@@ -172,10 +166,6 @@ The following Modules are called:
 Source: ../
 
 Version:
-
-=== Resources
-
-No resources.
 
 === Required Inputs
 
@@ -280,7 +270,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v1.0.0-alpha.7"`
+Default: `"v1.0.0-alpha.8"`
 
 ==== [[input_thanos]] <<input_thanos,thanos>>
 
@@ -408,7 +398,7 @@ object({
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v1.0.0-alpha.7"`
+|`"v1.0.0-alpha.8"`
 |no
 
 |[[input_thanos]] <<input_thanos,thanos>>
