@@ -258,13 +258,7 @@ This value MUST be configured otherwise the compactor will NOT work on a product
 This module must be one of the first ones to be deployed and consequently it needs to be deployed after the module `argocd_bootstrap`.
 
 // BEGIN_TF_DOCS
-=== Requirements
 
-No requirements.
-
-=== Providers
-
-No providers.
 
 === Modules
 
@@ -275,10 +269,6 @@ The following Modules are called:
 Source: ../
 
 Version:
-
-=== Resources
-
-No resources.
 
 === Required Inputs
 
@@ -376,13 +366,21 @@ Type: `string`
 
 Default: `"thanos"`
 
+==== [[input_sensitive_values]] <<input_sensitive_values,sensitive_values>>
+
+Description: n/a
+
+Type: `map(string)`
+
+Default: `{}`
+
 ==== [[input_target_revision]] <<input_target_revision,target_revision>>
 
 Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v1.0.0-alpha.7"`
+Default: `"v1.0.0-alpha.8"`
 
 ==== [[input_thanos]] <<input_thanos,thanos>>
 
@@ -506,10 +504,16 @@ object({
 |`"thanos"`
 |no
 
+|[[input_sensitive_values]] <<input_sensitive_values,sensitive_values>>
+|n/a
+|`map(string)`
+|`{}`
+|no
+
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v1.0.0-alpha.7"`
+|`"v1.0.0-alpha.8"`
 |no
 
 |[[input_thanos]] <<input_thanos,thanos>>
