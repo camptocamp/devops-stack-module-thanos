@@ -12,5 +12,9 @@ module "thanos" {
 
   thanos = var.thanos
 
+  sensitive_values = merge({
+    "thanos.objstoreConfig.config.storage_account_key" = var.metrics_storage.storage_account_key
+  }, var.sensitive_values)
+
   helm_values = concat(local.helm_values, var.helm_values)
 }

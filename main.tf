@@ -61,6 +61,13 @@ resource "argocd_application" "this" {
       path            = "charts/thanos"
       target_revision = var.target_revision
       helm {
+        dynamic "parameter" {
+          for_each = var.sensitive_values
+          content {
+            name  = parameter.key
+            value = sensitive(parameter.value)
+          }
+        }
         values = data.utils_deep_merge_yaml.values.output
       }
     }

@@ -70,3 +70,8 @@ variable "thanos" {
   type        = any
   default     = {}
 }
+
+variable "sensitive_values" {
+  type    = map(string)
+  default = {}
+}
