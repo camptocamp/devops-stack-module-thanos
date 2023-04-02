@@ -1,7 +1,9 @@
 locals {
+  use_managed_identity = var.metrics_storage.managed_identity_node_rg_name != null
+
   helm_values = [{
     # TODO check possible single merge call
-    thanos = merge(var.metrics_storage.use_managed_identity.enabled ? {
+    thanos = merge(local.use_managed_identity ? {
       commonLabels = {
         aadpodidbinding = "thanos"
       }
@@ -11,12 +13,12 @@ locals {
         config = merge({
           container       = var.metrics_storage.container
           storage_account = var.metrics_storage.storage_account
-          }, var.metrics_storage.use_managed_identity.enabled ? null : {
+          }, local.use_managed_identity ? null : {
           storage_account_key = var.metrics_storage.storage_account_key
         })
       }
     })
-    }, var.metrics_storage.use_managed_identity.enabled ? {
+    }, local.use_managed_identity ? {
     azureIdentity = {
       resourceID = azurerm_user_assigned_identity.thanos[0].id
       clientID   = azurerm_user_assigned_identity.thanos[0].client_id

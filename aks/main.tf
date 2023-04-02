@@ -1,18 +1,18 @@
 data "azurerm_resource_group" "node" {
-  count = var.metrics_storage.use_managed_identity.enabled ? 1 : 0
+  count = local.use_managed_identity ? 1 : 0
 
-  name = var.metrics_storage.use_managed_identity.node_rg_name
+  name = var.metrics_storage.managed_identity_node_rg_name
 }
 
 data "azurerm_storage_container" "container" {
-  count = var.metrics_storage.use_managed_identity.enabled ? 1 : 0
+  count = local.use_managed_identity ? 1 : 0
 
   name                 = var.metrics_storage.container
   storage_account_name = var.metrics_storage.storage_account
 }
 
 resource "azurerm_user_assigned_identity" "thanos" {
-  count = var.metrics_storage.use_managed_identity.enabled ? 1 : 0
+  count = local.use_managed_identity ? 1 : 0
 
   resource_group_name = data.azurerm_resource_group.node[0].name
   location            = data.azurerm_resource_group.node[0].location
@@ -20,7 +20,7 @@ resource "azurerm_user_assigned_identity" "thanos" {
 }
 
 resource "azurerm_role_assignment" "contributor" {
-  count = var.metrics_storage.use_managed_identity.enabled ? 1 : 0
+  count = local.use_managed_identity ? 1 : 0
 
   scope                = data.azurerm_storage_container.container[0].resource_manager_id
   role_definition_name = "Storage Blob Data Contributor"
