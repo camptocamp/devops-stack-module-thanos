@@ -208,6 +208,12 @@ This module must be one of the first ones to be deployed and consequently it nee
 // BEGIN_TF_DOCS
 
 
+=== Providers
+
+The following providers are used by this module:
+
+- [[provider_azurerm]] <<provider_azurerm,azurerm>>
+
 === Modules
 
 The following Modules are called:
@@ -217,6 +223,15 @@ The following Modules are called:
 Source: ../
 
 Version:
+
+=== Resources
+
+The following resources are used by this module:
+
+- https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment[azurerm_role_assignment.contributor] (resource)
+- https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity[azurerm_user_assigned_identity.thanos] (resource)
+- https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group[azurerm_resource_group.node] (data source)
+- https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_container[azurerm_storage_container.container] (data source)
 
 === Required Inputs
 
@@ -242,15 +257,16 @@ Type: `string`
 
 ==== [[input_metrics_storage]] <<input_metrics_storage,metrics_storage>>
 
-Description: Azure Blob Storage configuration values for the storage container where the archived metrics will be stored.
+Description: Azure Blob Storage configuration for metric archival.
 
 Type:
 [source,hcl]
 ----
 object({
-    container           = string
-    storage_account     = string
-    storage_account_key = string
+    container       = string
+    storage_account = string
+    managed_identity_node_rg_name = optional(string, null)
+    storage_account_key = optional(string, null)
   })
 ----
 
@@ -347,12 +363,31 @@ Description: ID to pass other modules in order to refer to this module as a depe
 // BEGIN_TF_TABLES
 
 
+= Providers
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Version
+|[[provider_azurerm]] <<provider_azurerm,azurerm>> |n/a
+|===
+
 = Modules
 
 [cols="a,a,a",options="header,autowidth"]
 |===
 |Name |Source |Version
 |[[module_thanos]] <<module_thanos,thanos>> |../ |
+|===
+
+= Resources
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Type
+|https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment[azurerm_role_assignment.contributor] |resource
+|https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity[azurerm_user_assigned_identity.thanos] |resource
+|https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group[azurerm_resource_group.node] |data source
+|https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_container[azurerm_storage_container.container] |data source
 |===
 
 = Inputs
@@ -423,15 +458,16 @@ object({
 |no
 
 |[[input_metrics_storage]] <<input_metrics_storage,metrics_storage>>
-|Azure Blob Storage configuration values for the storage container where the archived metrics will be stored.
+|Azure Blob Storage configuration for metric archival.
 |
 
 [source]
 ----
 object({
-    container           = string
-    storage_account     = string
-    storage_account_key = string
+    container       = string
+    storage_account = string
+    managed_identity_node_rg_name = optional(string, null)
+    storage_account_key = optional(string, null)
   })
 ----
 
