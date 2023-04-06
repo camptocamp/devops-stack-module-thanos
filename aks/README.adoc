@@ -257,7 +257,7 @@ Type: `string`
 
 ==== [[input_metrics_storage]] <<input_metrics_storage,metrics_storage>>
 
-Description: Azure metrics storage configuration
+Description: Azure Blob Storage configuration for metric archival.
 
 Type:
 [source,hcl]
@@ -458,7 +458,7 @@ object({
 |no
 
 |[[input_metrics_storage]] <<input_metrics_storage,metrics_storage>>
-|Azure metrics storage configuration
+|Azure Blob Storage configuration for metric archival.
 |
 
 [source]
