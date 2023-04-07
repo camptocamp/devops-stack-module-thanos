@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-alpha.8...v1.0.0) (2023-04-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **azure:** use managed identity to access object storage ([#33](https://github.com/camptocamp/devops-stack-module-thanos/issues/33))
+
+### Features
+
+* **azure:** use managed identity to access object storage ([#33](https://github.com/camptocamp/devops-stack-module-thanos/issues/33)) ([6efba02](https://github.com/camptocamp/devops-stack-module-thanos/commit/6efba0296746870dad1518937673aa2afaebb406))
+
 ## [1.0.0-alpha.8](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-alpha.7...v1.0.0-alpha.8) (2023-01-30)
 
 
