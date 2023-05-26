@@ -12,7 +12,7 @@ resource "argocd_project" "this" {
   }
 
   spec {
-    description  = "thanos application project"
+    description  = "Thanos application project"
     source_repos = ["https://github.com/camptocamp/devops-stack-module-thanos.git"]
 
     destination {
