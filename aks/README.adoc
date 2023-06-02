@@ -274,15 +274,17 @@ Description: Base domain of the cluster. Value used for the ingress' URL of the 
 
 Type: `string`
 
+=== Optional Inputs
+
+The following input variables are optional (have default values):
+
 ==== [[input_argocd_namespace]] <<input_argocd_namespace,argocd_namespace>>
 
 Description: Namespace used by Argo CD where the Application and AppProject resources should be created.
 
 Type: `string`
 
-=== Optional Inputs
-
-The following input variables are optional (have default values):
+Default: `"argocd"`
 
 ==== [[input_target_revision]] <<input_target_revision,target_revision>>
 
@@ -446,8 +448,8 @@ object({
 |[[input_argocd_namespace]] <<input_argocd_namespace,argocd_namespace>>
 |Namespace used by Argo CD where the Application and AppProject resources should be created.
 |`string`
-|n/a
-|yes
+|`"argocd"`
+|no
 
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
