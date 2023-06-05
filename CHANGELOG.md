@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0...v1.0.1) (2023-06-05)
+
+
+### Bug Fixes
+
+* add default argocd_namespace ([#37](https://github.com/camptocamp/devops-stack-module-thanos/issues/37)) ([ef1ce92](https://github.com/camptocamp/devops-stack-module-thanos/commit/ef1ce929546dc702b95ca4a1ab23be3030c60cbd))
+
 ## [1.0.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0-alpha.8...v1.0.0) (2023-04-06)
 
 
