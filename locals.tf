@@ -148,7 +148,7 @@ locals {
             "--email-domain=*",
             "--redirect-url=https://${local.thanos.query_domain}/oauth2/callback",
           ], local.thanos.oidc.oauth2_proxy_extra_args)
-          image = "quay.io/oauth2-proxy/oauth2-proxy:v7.1.3"
+          image = "quay.io/oauth2-proxy/oauth2-proxy:v7.4.0"
           name  = "thanos-proxy"
           ports = [{
             containerPort = 9075
