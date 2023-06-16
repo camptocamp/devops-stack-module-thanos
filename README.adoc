@@ -1,6 +1,6 @@
 = devops-stack-module-thanos
 // Document attributes to replace along the document
-:chart-version: 12.0.0
+:chart-version: 12.6.3
 
 A https://devops-stack.io[DevOps Stack] module to deploy and configure https://thanos.io[Thanos].
 
