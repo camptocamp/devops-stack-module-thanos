@@ -39,9 +39,11 @@ module "thanos" {
 }
 ----
 
-IMPORTANT: You are in charge of creating the S3 bucket to store the PV backups. We've decided to keep the creation of this bucket outside of this module, mainly because the persistence of the data should not be related to the instantiation of the module itself.
+IMPORTANT: You are in charge of creating a S3 bucket for Thanos to store the archived metrics. We've decided to keep the creation of this bucket outside of this module, mainly because the persistence of the data should not be related to the instantiation of the module itself.
 
-TIP: Check the SKS deployment example to see how to create the S3 bucket and to better understand the values passed on the example above.
+TIP: Check the xref:ROOT:ROOT:tutorials/deploy_sks.adoc[SKS deployment example] to see how to create the S3 bucket and to better understand the values passed on the example above.
+
+NOTE: Do not forget that the bucket configuration also needs to be passed to the module `kube-prometheus-stack`.
 
 === OIDC
 
@@ -55,7 +57,6 @@ You can pass these values by pointing an output from another module (as above), 
 ----
 module "thanos" {
   ...
-
   thanos = {
     oidc = {
       issuer_url    = "<URL>"
@@ -63,7 +64,6 @@ module "thanos" {
       client_secret = "<SECRET>"
     }
   }
-
   ...
 }
 ----

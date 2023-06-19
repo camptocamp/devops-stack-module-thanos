@@ -11,10 +11,10 @@ This module can be declared by adding the following block on your Terraform conf
 module "thanos" {
   source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//aks?ref=<RELEASE>"
 
-  cluster_name     = var.cluster_name
-  argocd_namespace = module.cluster.argocd_namespace
-  base_domain      = module.cluster.base_domain
-  cluster_issuer   = var.cluster_issuer
+  cluster_name     = TODO
+  base_domain      = TODO
+  cluster_issuer   = local.cluster_issuer
+  argocd_namespace = module.argocd_bootstrap.argocd_namespace
 
   metrics_storage = {
     container           = azurerm_storage_container.thanos.name
@@ -26,11 +26,21 @@ module "thanos" {
     oidc = module.oidc.oidc
   }
 
-  depends_on = [module.argocd_bootstrap]
+  dependency_ids = {
+    argocd       = module.argocd_bootstrap.id
+    traefik      = module.traefik.id
+    cert-manager = module.cert-manager.id
+  }
 }
 ----
 
-As you can see, a minimum requirement for this module is an S3 bucket with an IAM policy attached and an OIDC provider (more information below).
+As you can see, a minimum requirement for this module is an Azure Blob Storage bucket and an OIDC provider (more information below).
+
+IMPORTANT: You are in charge of creating an Azure Blob Storage for Thanos to store the archived metrics. We've decided to keep the creation of this bucket outside of this module, mainly because the persistence of the data should not be related to the instantiation of the module itself.
+
+TIP: Check the xref:ROOT:ROOT:tutorials/deploy_aks.adoc[AKS deployment example] to see how to create the storage and to better understand the values passed on the example above.
+
+NOTE: Do not forget that the bucket configuration also needs to be passed to the module `kube-prometheus-stack`.
 
 Although the declaration above allows you to have a barebones Thanos deployed, it is highly recommended that you customize a few settings for a production-ready deployment. You need to at least configure the resource requirements for a few of the Thanos' components and the size of the persistent volume used by the compactor. You can also configure the compactor retention times, as in the example below.
 
@@ -39,10 +49,10 @@ Although the declaration above allows you to have a barebones Thanos deployed, i
 module "thanos" {
   source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//aks?ref=<RELEASE>"
 
-  cluster_name     = var.cluster_name
-  argocd_namespace = module.cluster.argocd_namespace
-  base_domain      = module.cluster.base_domain
-  cluster_issuer   = var.cluster_issuer
+  cluster_name     = TODO
+  base_domain      = TODO
+  cluster_issuer   = local.cluster_issuer
+  argocd_namespace = module.argocd_bootstrap.argocd_namespace
 
   metrics_storage = {
     container           = azurerm_storage_container.thanos.name
@@ -107,10 +117,10 @@ If there is a need to configure something besides the common settings that we ha
 module "thanos" {
   source = "git::https://github.com/camptocamp/devops-stack-module-thanos.git//aks?ref=<RELEASE>"
 
-  cluster_name     = var.cluster_name
-  argocd_namespace = module.cluster.argocd_namespace
-  base_domain      = module.cluster.base_domain
-  cluster_issuer   = var.cluster_issuer
+  cluster_name     = TODO
+  base_domain      = TODO
+  cluster_issuer   = local.cluster_issuer
+  argocd_namespace = module.argocd_bootstrap.argocd_namespace
 
   metrics_storage = {
     container           = azurerm_storage_container.thanos.name
@@ -149,21 +159,6 @@ module "thanos" {
 }
 ----
 
-=== S3 Bucket
-
-IMPORTANT: You are in charge of creating an S3 bucket for Thanos to store the archived metrics.
-
-We've decided to keep the creation of this bucket outside of this module, mainly because the persistence of the data should not be related to the instantiation of the module itself.
-
-You can create a bucket using the code below:
-
-[source,terraform]
-----
-# TODO
-----
-
-NOTE: Do not forget that the bucket configuration also needs to be passed to the module `kube-prometheus-stack`.
-
 === OIDC
 
 NOTE: This module was developed with OIDC in mind.
@@ -176,7 +171,6 @@ You can pass these values by pointing an output from another module (as above), 
 ----
 module "thanos" {
   ...
-
   thanos = {
     oidc = {
       issuer_url    = "<URL>"
@@ -184,7 +178,6 @@ module "thanos" {
       client_secret = "<SECRET>"
     }
   }
-
   ...
 }
 ----
@@ -201,9 +194,13 @@ This value MUST be configured otherwise the compactor will NOT work on a product
 
 === Dependencies
 
-==== `module.argocd_bootstrap`
+==== `module.argocd_bootstrap.id`
 
-This module must be one of the first ones to be deployed and consequently it needs to be deployed after the module `argocd_bootstrap`.
+Obviously, the module depends on an already running Argo CD in the cluster in order for the application to be created.
+
+==== `module.traefik.id` and `module.cert-manager.id`
+
+This module has multiple ingresses and consequently it must be deployed after the module `traefik` and `cert-manager`.
 
 // BEGIN_TF_DOCS
 === Requirements
