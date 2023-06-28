@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.1...v1.1.0) (2023-06-28)
+
+
+### Features
+
+* add first version of the SKS variant ([9574559](https://github.com/camptocamp/devops-stack-module-thanos/commit/9574559061bb8f2e81d9dffb8a01be7524bfdc3f))
+* upgrade chart version of the OAuth2-Proxy ([3eaa966](https://github.com/camptocamp/devops-stack-module-thanos/commit/3eaa9668b5703bf634213d535e7975dc677fdba0))
+* upgrade Thanos chart to v12.6.3 ([f16b6a1](https://github.com/camptocamp/devops-stack-module-thanos/commit/f16b6a1875ad8969aa9a8db7f149623be4a16c29))
+
 ## [1.0.1](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.0...v1.0.1) (2023-06-05)
 
 
