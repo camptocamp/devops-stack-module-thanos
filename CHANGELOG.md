@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.1.0...v2.0.0) (2023-07-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* add support to oboukili/argocd >= v5 ([#41](https://github.com/camptocamp/devops-stack-module-thanos/issues/41))
+
+### Features
+
+* add support to oboukili/argocd &gt;= v5 ([#41](https://github.com/camptocamp/devops-stack-module-thanos/issues/41)) ([2622962](https://github.com/camptocamp/devops-stack-module-thanos/commit/26229620933c2b36ab3d7c4dd72616ac88dcc460))
+
 ## [1.1.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.0.1...v1.1.0) (2023-06-28)
 
 
