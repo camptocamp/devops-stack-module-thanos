@@ -1,6 +1,7 @@
 = devops-stack-module-thanos
 // Document attributes to replace along the document
-:chart-version: 12.6.3
+:thanos-chart-version: 12.6.3
+:original-repo-url: https://github.com/bitnami/charts/tree/master/bitnami/thanos
 
 A https://devops-stack.io[DevOps Stack] module to deploy and configure https://thanos.io[Thanos].
 
@@ -9,7 +10,7 @@ The Thanos chart used by this module is shipped in this repository as well, in o
 [cols="1,1,1",options="autowidth,header"]
 |===
 |Current Chart Version |Original Repository |Default Values
-|*{chart-version}* |https://github.com/bitnami/charts/tree/master/bitnami/thanos[Chart] |https://artifacthub.io/packages/helm/bitnami/thanos/{chart-version}?modal=values[`values.yaml`]
+|*{thanos-chart-version}* |{original-repo-url}[Chart] |https://artifacthub.io/packages/helm/bitnami/thanos/{chart-version}?modal=values[`values.yaml`]
 |===
 
 *Since this module is meant to be instantiated using its variants, the usage documentation is available in each variant* ( xref:./aks/README.adoc[AKS] | xref:./eks/README.adoc[EKS] | xref:./kind/README.adoc[KinD] ).
