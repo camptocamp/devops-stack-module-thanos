@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/camptocamp/devops-stack-module-thanos/compare/v2.0.0...v2.0.1) (2023-08-09)
+
+
+### Bug Fixes
+
+* readd support to deactivate auto-sync which was broken by [#41](https://github.com/camptocamp/devops-stack-module-thanos/issues/41) ([6f989bc](https://github.com/camptocamp/devops-stack-module-thanos/commit/6f989bc8a2e5a3078656c47aa565161f249ea6b2))
+
 ## [2.0.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v1.1.0...v2.0.0) (2023-07-11)
 
 
