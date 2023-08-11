@@ -1,8 +1,7 @@
----
-apiVersion: "v2"
-name: "thanos"
-version: "0"
+apiVersion: v2
 dependencies:
-  - name: "thanos"
-    version: "12.6.3"
-    repository: "https://charts.bitnami.com/bitnami"
+- name: thanos
+  repository: https://charts.bitnami.com/bitnami
+  version: 12.11.0
+name: thanos
+version: "0"
