@@ -16,5 +16,9 @@ terraform {
       source  = "hashicorp/null"
       version = ">= 3"
     }
+    vault = {
+      source  = "hashicorp/vault"
+      version = ">= 3"
+    }
   }
 }

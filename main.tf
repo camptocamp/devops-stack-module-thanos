@@ -2,6 +2,14 @@ resource "null_resource" "dependencies" {
   triggers = var.dependency_ids
 }
 
+resource "vault_generic_secret" "thanos_secrets" {
+  path = "secret/devops-stack/internal/thanos"
+  data_json = jsonencode({
+    thanos-oidc-client-secret = local.thanos.oidc.client_secret
+    thanos-oidc-cookie-secret = random_password.oauth2_cookie_secret.result
+  })
+}
+
 resource "argocd_project" "this" {
   metadata {
     name      = "thanos"
@@ -60,8 +68,12 @@ resource "argocd_application" "this" {
       repo_url        = "https://github.com/camptocamp/devops-stack-module-thanos.git"
       path            = "charts/thanos"
       target_revision = var.target_revision
-      helm {
-        values = data.utils_deep_merge_yaml.values.output
+      plugin {
+        name = "avp-helm"
+        env {
+          name  = "HELM_VALUES"
+          value = data.utils_deep_merge_yaml.values.output
+        }
       }
     }
 
