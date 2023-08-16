@@ -3,7 +3,7 @@ resource "null_resource" "dependencies" {
 }
 
 resource "vault_generic_secret" "thanos_secrets" {
-  path = "secret/devops-stack/internal/thanos"
+  path = "secret/devops-stack/thanos/in-module"
   data_json = jsonencode({
     thanos-oidc-client-secret = local.thanos.oidc.client_secret
     thanos-oidc-cookie-secret = random_password.oauth2_cookie_secret.result
