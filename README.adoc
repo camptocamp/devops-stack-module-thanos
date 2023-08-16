@@ -31,17 +31,21 @@ The following requirements are needed by this module:
 
 - [[requirement_utils]] <<requirement_utils,utils>> (>= 1)
 
+- [[requirement_vault]] <<requirement_vault,vault>> (>= 3)
+
 === Providers
 
 The following providers are used by this module:
+
+- [[provider_null]] <<provider_null,null>> (>= 3)
+
+- [[provider_vault]] <<provider_vault,vault>> (>= 3)
 
 - [[provider_random]] <<provider_random,random>> (>= 3)
 
 - [[provider_utils]] <<provider_utils,utils>> (>= 1)
 
 - [[provider_argocd]] <<provider_argocd,argocd>> (>= 4)
-
-- [[provider_null]] <<provider_null,null>> (>= 3)
 
 === Resources
 
@@ -52,6 +56,7 @@ The following resources are used by this module:
 - https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.dependencies] (resource)
 - https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.this] (resource)
 - https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password[random_password.oauth2_cookie_secret] (resource)
+- https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/generic_secret[vault_generic_secret.thanos_secrets] (resource)
 - https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml[utils_deep_merge_yaml.values] (data source)
 
 === Required Inputs
@@ -88,7 +93,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v1.0.1"`
+Default: `"v1.1.0"`
 
 ==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
 
@@ -178,6 +183,7 @@ Description: ID to pass other modules in order to refer to this module as a depe
 |[[requirement_null]] <<requirement_null,null>> |>= 3
 |[[requirement_random]] <<requirement_random,random>> |>= 3
 |[[requirement_utils]] <<requirement_utils,utils>> |>= 1
+|[[requirement_vault]] <<requirement_vault,vault>> |>= 3
 |===
 
 = Providers
@@ -186,9 +192,10 @@ Description: ID to pass other modules in order to refer to this module as a depe
 |===
 |Name |Version
 |[[provider_null]] <<provider_null,null>> |>= 3
+|[[provider_vault]] <<provider_vault,vault>> |>= 3
+|[[provider_argocd]] <<provider_argocd,argocd>> |>= 4
 |[[provider_random]] <<provider_random,random>> |>= 3
 |[[provider_utils]] <<provider_utils,utils>> |>= 1
-|[[provider_argocd]] <<provider_argocd,argocd>> |>= 4
 |===
 
 = Resources
@@ -201,6 +208,7 @@ Description: ID to pass other modules in order to refer to this module as a depe
 |https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.dependencies] |resource
 |https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource[null_resource.this] |resource
 |https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password[random_password.oauth2_cookie_secret] |resource
+|https://registry.terraform.io/providers/hashicorp/vault/latest/docs/resources/generic_secret[vault_generic_secret.thanos_secrets] |resource
 |https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml[utils_deep_merge_yaml.values] |data source
 |===
 
@@ -230,7 +238,7 @@ Description: ID to pass other modules in order to refer to this module as a depe
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v1.0.1"`
+|`"v1.1.0"`
 |no
 
 |[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>

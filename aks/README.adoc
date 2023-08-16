@@ -215,6 +215,8 @@ The following requirements are needed by this module:
 
 - [[requirement_utils]] <<requirement_utils,utils>> (>= 1)
 
+- [[requirement_vault]] <<requirement_vault,vault>> (>= 3)
+
 === Providers
 
 The following providers are used by this module:
@@ -252,10 +254,10 @@ Type:
 [source,hcl]
 ----
 object({
-    container       = string
-    storage_account = string
+    container                     = string
+    storage_account               = string
     managed_identity_node_rg_name = optional(string, null)
-    storage_account_key = optional(string, null)
+    storage_account_key           = optional(string, null)
   })
 ----
 
@@ -289,7 +291,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v1.0.1"`
+Default: `"v1.1.0"`
 
 ==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
 
@@ -379,6 +381,7 @@ Description: ID to pass other modules in order to refer to this module as a depe
 |[[requirement_null]] <<requirement_null,null>> |>= 3
 |[[requirement_random]] <<requirement_random,random>> |>= 3
 |[[requirement_utils]] <<requirement_utils,utils>> |>= 1
+|[[requirement_vault]] <<requirement_vault,vault>> |>= 3
 |===
 
 = Providers
@@ -420,10 +423,10 @@ Description: ID to pass other modules in order to refer to this module as a depe
 [source]
 ----
 object({
-    container       = string
-    storage_account = string
+    container                     = string
+    storage_account               = string
     managed_identity_node_rg_name = optional(string, null)
-    storage_account_key = optional(string, null)
+    storage_account_key           = optional(string, null)
   })
 ----
 
@@ -451,7 +454,7 @@ object({
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v1.0.1"`
+|`"v1.1.0"`
 |no
 
 |[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
