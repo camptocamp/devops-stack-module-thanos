@@ -1,6 +1,6 @@
 dependencies:
 - name: thanos
   repository: https://charts.bitnami.com/bitnami
-  version: 12.11.4
-digest: sha256:93bc64a01ed905fe0e258eecfb2aaa4dd65d50b9707b49c9881c7faa85ae2e2a
-generated: "2023-08-28T07:03:23.156341051Z"
+  version: 12.13.1
+digest: sha256:84b9aa5680662d6ece5207cdce80de162759da4fb4433554baa59c159eea1cbb
+generated: "2023-09-07T07:03:35.500185348Z"
