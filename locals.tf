@@ -1,4 +1,6 @@
 locals {
+  oauth2_proxy_image = "quay.io/oauth2-proxy/oauth2-proxy:v7.5.0"
+
   # values.yaml translated into HCL structures.
   # Possible values available here -> https://github.com/bitnami/charts/tree/master/bitnami/thanos/
   helm_values = [{
@@ -57,7 +59,7 @@ locals {
             "--email-domain=*",
             "--redirect-url=https://${local.thanos.bucketweb_domain}/oauth2/callback",
           ], local.thanos.oidc.oauth2_proxy_extra_args)
-          image = "quay.io/oauth2-proxy/oauth2-proxy:v7.1.3"
+          image = local.oauth2_proxy_image
           name  = "thanos-proxy"
           ports = [{
             containerPort = 9075
@@ -148,7 +150,7 @@ locals {
             "--email-domain=*",
             "--redirect-url=https://${local.thanos.query_domain}/oauth2/callback",
           ], local.thanos.oidc.oauth2_proxy_extra_args)
-          image = "quay.io/oauth2-proxy/oauth2-proxy:v7.4.0"
+          image = local.oauth2_proxy_image
           name  = "thanos-proxy"
           ports = [{
             containerPort = 9075
