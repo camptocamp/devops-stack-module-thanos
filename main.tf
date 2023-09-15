@@ -3,8 +3,10 @@ resource "null_resource" "dependencies" {
 }
 
 resource "argocd_project" "this" {
+  count = var.argocd_project == null ? 1 : 0
+
   metadata {
-    name      = "thanos"
+    name      = var.destination_cluster != "in-cluster" ? "thanos-${var.destination_cluster}" : "thanos"
     namespace = var.argocd_namespace
     annotations = {
       "devops-stack.io/argocd_namespace" = var.argocd_namespace
@@ -12,11 +14,11 @@ resource "argocd_project" "this" {
   }
 
   spec {
-    description  = "Thanos application project"
+    description  = "Thanos application project for cluster ${var.destination_cluster}"
     source_repos = ["https://github.com/camptocamp/devops-stack-module-thanos.git"]
 
     destination {
-      name      = "in-cluster"
+      name      = var.destination_cluster
       namespace = var.namespace
     }
 
@@ -43,7 +45,7 @@ data "utils_deep_merge_yaml" "values" {
 
 resource "argocd_application" "this" {
   metadata {
-    name      = "thanos"
+    name      = var.destination_cluster != "in-cluster" ? "thanos-${var.destination_cluster}" : "thanos"
     namespace = var.argocd_namespace
   }
 
@@ -55,7 +57,7 @@ resource "argocd_application" "this" {
   wait = var.app_autosync == { "allow_empty" = tobool(null), "prune" = tobool(null), "self_heal" = tobool(null) } ? false : true
 
   spec {
-    project = argocd_project.this.metadata.0.name
+    project = var.argocd_project == null ? argocd_project.this[0].metadata.0.name : var.argocd_project
 
     source {
       repo_url        = "https://github.com/camptocamp/devops-stack-module-thanos.git"
@@ -67,7 +69,7 @@ resource "argocd_application" "this" {
     }
 
     destination {
-      name      = "in-cluster"
+      name      = var.destination_cluster
       namespace = var.namespace
     }
 
