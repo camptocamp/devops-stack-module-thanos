@@ -47,6 +47,10 @@ resource "argocd_application" "this" {
   metadata {
     name      = var.destination_cluster != "in-cluster" ? "thanos-${var.destination_cluster}" : "thanos"
     namespace = var.argocd_namespace
+    labels = merge({
+      "application" = "thanos"
+      "cluster"     = var.destination_cluster
+    }, var.argocd_labels)
   }
 
   timeouts {
