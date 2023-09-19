@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v2.4.0...v2.5.0) (2023-09-19)
+
+
+### Features
+
+* **thanos:** add deep_merge_append_list variable ([#56](https://github.com/camptocamp/devops-stack-module-thanos/issues/56)) ([7b553bc](https://github.com/camptocamp/devops-stack-module-thanos/commit/7b553bcf2e4826ef025d8f4dec70069fb3a8241e))
+
 ## [2.4.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v2.3.0...v2.4.0) (2023-09-08)
 
 
