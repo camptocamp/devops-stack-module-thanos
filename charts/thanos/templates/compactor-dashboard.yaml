@@ -108,7 +108,7 @@ data:
               "expr": "sum by (job, resolution) (rate(thanos_compact_group_compactions_total{job=~\"$job\"}[$__rate_interval]))",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "compaction {{job}} {{resolution}}",
+              "legendFormat": "compaction {{"{{"}}job{{"}}"}} {{"{{"}}resolution{{"}}"}}",
               "refId": "A",
               "step": 10
             }
@@ -312,7 +312,7 @@ data:
               "expr": "sum by (job, resolution) (rate(thanos_compact_downsample_total{job=~\"$job\"}[$__rate_interval]))",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "downsample {{job}} {{resolution}}",
+              "legendFormat": "downsample {{"{{"}}job{{"}}"}} {{"{{"}}resolution{{"}}"}}",
               "refId": "A",
               "step": 10
             }
@@ -519,7 +519,7 @@ data:
               "expr": "sum by (job) (rate(thanos_compact_garbage_collection_total{job=~\"$job\"}[$__rate_interval]))",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "garbage collection {{job}}",
+              "legendFormat": "garbage collection {{"{{"}}job{{"}}"}}",
               "refId": "A",
               "step": 10
             }
@@ -716,7 +716,7 @@ data:
               "expr": "histogram_quantile(0.50, sum by (job, le) (rate(thanos_compact_garbage_collection_duration_seconds_bucket{job=~\"$job\"}[$interval]))) * 1",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "p50 {{job}}",
+              "legendFormat": "p50 {{"{{"}}job{{"}}"}}",
               "logBase": 10,
               "refId": "A",
               "step": 10
@@ -728,7 +728,7 @@ data:
               "expr": "histogram_quantile(0.90, sum by (job, le) (rate(thanos_compact_garbage_collection_duration_seconds_bucket{job=~\"$job\"}[$interval]))) * 1",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "p90 {{job}}",
+              "legendFormat": "p90 {{"{{"}}job{{"}}"}}",
               "logBase": 10,
               "refId": "B",
               "step": 10
@@ -740,7 +740,7 @@ data:
               "expr": "histogram_quantile(0.99, sum by (job, le) (rate(thanos_compact_garbage_collection_duration_seconds_bucket{job=~\"$job\"}[$interval]))) * 1",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "p99 {{job}}",
+              "legendFormat": "p99 {{"{{"}}job{{"}}"}}",
               "logBase": 10,
               "refId": "C",
               "step": 10
@@ -855,7 +855,7 @@ data:
               "expr": "sum by (job) (rate(thanos_compact_blocks_cleaned_total{job=~\"$job\"}[$__rate_interval]))",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "Blocks cleanup {{job}}",
+              "legendFormat": "Blocks cleanup {{"{{"}}job{{"}}"}}",
               "refId": "A",
               "step": 10
             }
@@ -943,7 +943,7 @@ data:
               "expr": "sum by (job) (rate(thanos_compact_block_cleanup_failures_total{job=~\"$job\"}[$__rate_interval]))",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "Blocks cleanup failures {{job}}",
+              "legendFormat": "Blocks cleanup failures {{"{{"}}job{{"}}"}}",
               "refId": "A",
               "step": 10
             }
@@ -1031,7 +1031,7 @@ data:
               "expr": "sum by (job) (rate(thanos_compact_blocks_marked_for_deletion_total{job=~\"$job\"}[$__rate_interval]))",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "Blocks marked {{job}}",
+              "legendFormat": "Blocks marked {{"{{"}}job{{"}}"}}",
               "refId": "A",
               "step": 10
             }
@@ -1145,7 +1145,7 @@ data:
               "expr": "sum by (job) (rate(thanos_blocks_meta_syncs_total{job=~\"$job\"}[$__rate_interval]))",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "sync {{job}}",
+              "legendFormat": "sync {{"{{"}}job{{"}}"}}",
               "refId": "A",
               "step": 10
             }
@@ -1342,7 +1342,7 @@ data:
               "expr": "histogram_quantile(0.50, sum by (job, le) (rate(thanos_blocks_meta_sync_duration_seconds_bucket{job=~\"$job\"}[$interval]))) * 1",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "p50 {{job}}",
+              "legendFormat": "p50 {{"{{"}}job{{"}}"}}",
               "logBase": 10,
               "refId": "A",
               "step": 10
@@ -1354,7 +1354,7 @@ data:
               "expr": "histogram_quantile(0.90, sum by (job, le) (rate(thanos_blocks_meta_sync_duration_seconds_bucket{job=~\"$job\"}[$interval]))) * 1",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "p90 {{job}}",
+              "legendFormat": "p90 {{"{{"}}job{{"}}"}}",
               "logBase": 10,
               "refId": "B",
               "step": 10
@@ -1366,7 +1366,7 @@ data:
               "expr": "histogram_quantile(0.99, sum by (job, le) (rate(thanos_blocks_meta_sync_duration_seconds_bucket{job=~\"$job\"}[$interval]))) * 1",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "p99 {{job}}",
+              "legendFormat": "p99 {{"{{"}}job{{"}}"}}",
               "logBase": 10,
               "refId": "C",
               "step": 10
@@ -1481,7 +1481,7 @@ data:
               "expr": "sum by (job, operation) (rate(thanos_objstore_bucket_operations_total{job=~\"$job\"}[$__rate_interval]))",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "{{job}} {{operation}}",
+              "legendFormat": "{{"{{"}}job{{"}}"}} {{"{{"}}operation{{"}}"}}",
               "refId": "A",
               "step": 10
             }
@@ -1678,7 +1678,7 @@ data:
               "expr": "histogram_quantile(0.50, sum by (job, le) (rate(thanos_objstore_bucket_operation_duration_seconds_bucket{job=~\"$job\"}[$interval]))) * 1",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "p50 {{job}}",
+              "legendFormat": "p50 {{"{{"}}job{{"}}"}}",
               "logBase": 10,
               "refId": "A",
               "step": 10
@@ -1690,7 +1690,7 @@ data:
               "expr": "histogram_quantile(0.90, sum by (job, le) (rate(thanos_objstore_bucket_operation_duration_seconds_bucket{job=~\"$job\"}[$interval]))) * 1",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "p90 {{job}}",
+              "legendFormat": "p90 {{"{{"}}job{{"}}"}}",
               "logBase": 10,
               "refId": "B",
               "step": 10
@@ -1702,7 +1702,7 @@ data:
               "expr": "histogram_quantile(0.99, sum by (job, le) (rate(thanos_objstore_bucket_operation_duration_seconds_bucket{job=~\"$job\"}[$interval]))) * 1",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "p99 {{job}}",
+              "legendFormat": "p99 {{"{{"}}job{{"}}"}}",
               "logBase": 10,
               "refId": "C",
               "step": 10
@@ -1798,7 +1798,7 @@ data:
                   "expr": "go_memstats_alloc_bytes{job=~\"$job\"}",
                   "format": "time_series",
                   "intervalFactor": 2,
-                  "legendFormat": "alloc all {{instance}}",
+                  "legendFormat": "alloc all {{"{{"}}instance{{"}}"}}",
                   "step": 10
                 },
                 {
@@ -1808,7 +1808,7 @@ data:
                   "expr": "go_memstats_heap_alloc_bytes{job=~\"$job\"}",
                   "format": "time_series",
                   "intervalFactor": 2,
-                  "legendFormat": "alloc heap {{instance}}",
+                  "legendFormat": "alloc heap {{"{{"}}instance{{"}}"}}",
                   "step": 10
                 },
                 {
@@ -1818,7 +1818,7 @@ data:
                   "expr": "rate(go_memstats_alloc_bytes_total{job=~\"$job\"}[30s])",
                   "format": "time_series",
                   "intervalFactor": 2,
-                  "legendFormat": "alloc rate all {{instance}}",
+                  "legendFormat": "alloc rate all {{"{{"}}instance{{"}}"}}",
                   "step": 10
                 },
                 {
@@ -1828,7 +1828,7 @@ data:
                   "expr": "rate(go_memstats_heap_alloc_bytes{job=~\"$job\"}[30s])",
                   "format": "time_series",
                   "intervalFactor": 2,
-                  "legendFormat": "alloc rate heap {{instance}}",
+                  "legendFormat": "alloc rate heap {{"{{"}}instance{{"}}"}}",
                   "step": 10
                 },
                 {
@@ -1838,7 +1838,7 @@ data:
                   "expr": "go_memstats_stack_inuse_bytes{job=~\"$job\"}",
                   "format": "time_series",
                   "intervalFactor": 2,
-                  "legendFormat": "inuse heap {{instance}}",
+                  "legendFormat": "inuse heap {{"{{"}}instance{{"}}"}}",
                   "step": 10
                 },
                 {
@@ -1848,7 +1848,7 @@ data:
                   "expr": "go_memstats_heap_inuse_bytes{job=~\"$job\"}",
                   "format": "time_series",
                   "intervalFactor": 2,
-                  "legendFormat": "inuse stack {{instance}}",
+                  "legendFormat": "inuse stack {{"{{"}}instance{{"}}"}}",
                   "step": 10
                 }
               ],
@@ -1924,7 +1924,7 @@ data:
                   "expr": "go_goroutines{job=~\"$job\"}",
                   "format": "time_series",
                   "intervalFactor": 2,
-                  "legendFormat": "{{instance}}",
+                  "legendFormat": "{{"{{"}}instance{{"}}"}}",
                   "step": 10
                 }
               ],
@@ -2000,7 +2000,7 @@ data:
                   "expr": "go_gc_duration_seconds{job=~\"$job\"}",
                   "format": "time_series",
                   "intervalFactor": 2,
-                  "legendFormat": "{{quantile}} {{instance}}",
+                  "legendFormat": "{{"{{"}}quantile{{"}}"}} {{"{{"}}instance{{"}}"}}",
                   "step": 10
                 }
               ],
