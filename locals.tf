@@ -17,7 +17,12 @@ locals {
       }
     }
     thanos = {
-
+      metrics = {
+        enabled = true
+        serviceMonitor = {
+          enabled = true
+        }
+      }
       storegateway = {
         enabled = true
         persistence = {
