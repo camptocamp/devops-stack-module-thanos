@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.6.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v2.5.0...v2.6.0) (2023-10-19)
+
+
+### Features
+
+* add standard variables and variable to add labels to Argo CD app ([7db831d](https://github.com/camptocamp/devops-stack-module-thanos/commit/7db831da02d6e3d193cfb0b72a561f203abfb56a))
+* add variables to set AppProject and destination cluster ([1822dcf](https://github.com/camptocamp/devops-stack-module-thanos/commit/1822dcf2f8dd62875048cdf6976da601b972af4a))
+* update OAuth2-Proxy image to v7.5.0 ([88b6d99](https://github.com/camptocamp/devops-stack-module-thanos/commit/88b6d99039b7720348c9b8febed214b054071420))
+
 ## [2.5.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v2.4.0...v2.5.0) (2023-09-19)
 
 
