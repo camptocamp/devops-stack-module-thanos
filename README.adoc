@@ -38,11 +38,11 @@ The following providers are used by this module:
 
 - [[provider_null]] <<provider_null,null>> (>= 3)
 
+- [[provider_argocd]] <<provider_argocd,argocd>> (>= 5)
+
 - [[provider_random]] <<provider_random,random>> (>= 3)
 
 - [[provider_utils]] <<provider_utils,utils>> (>= 1)
-
-- [[provider_argocd]] <<provider_argocd,argocd>> (>= 5)
 
 === Resources
 
@@ -113,7 +113,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v2.4.0"`
+Default: `"v2.5.0"`
 
 ==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
 
@@ -218,10 +218,10 @@ Description: ID to pass other modules in order to refer to this module as a depe
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
+|[[provider_null]] <<provider_null,null>> |>= 3
+|[[provider_argocd]] <<provider_argocd,argocd>> |>= 5
 |[[provider_random]] <<provider_random,random>> |>= 3
 |[[provider_utils]] <<provider_utils,utils>> |>= 1
-|[[provider_argocd]] <<provider_argocd,argocd>> |>= 5
-|[[provider_null]] <<provider_null,null>> |>= 3
 |===
 
 = Resources
@@ -281,7 +281,7 @@ Description: ID to pass other modules in order to refer to this module as a depe
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v2.4.0"`
+|`"v2.5.0"`
 |no
 
 |[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
