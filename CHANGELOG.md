@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v2.6.0...v2.7.0) (2023-11-03)
+
+
+### Features
+
+* **chart:** patch update of dependencies on thanos chart ([#55](https://github.com/camptocamp/devops-stack-module-thanos/issues/55)) ([c076227](https://github.com/camptocamp/devops-stack-module-thanos/commit/c076227e9f04cad15f8b88fa459dc27518cf5736))
+
 ## [2.6.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v2.5.0...v2.6.0) (2023-10-19)
 
 
