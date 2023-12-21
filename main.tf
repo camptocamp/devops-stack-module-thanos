@@ -68,7 +68,8 @@ resource "argocd_application" "this" {
       path            = "charts/thanos"
       target_revision = var.target_revision
       helm {
-        values = data.utils_deep_merge_yaml.values.output
+        release_name = "thanos"
+        values       = data.utils_deep_merge_yaml.values.output
       }
     }
 
