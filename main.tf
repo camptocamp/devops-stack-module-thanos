@@ -2,6 +2,11 @@ resource "null_resource" "dependencies" {
   triggers = var.dependency_ids
 }
 
+resource "random_password" "redis_password" {
+  length  = 16
+  special = false
+}
+
 resource "argocd_project" "this" {
   count = var.argocd_project == null ? 1 : 0
 
