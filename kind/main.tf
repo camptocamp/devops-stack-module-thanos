@@ -3,7 +3,6 @@ module "thanos" {
 
   cluster_name           = var.cluster_name
   base_domain            = var.base_domain
-  argocd_namespace       = var.argocd_namespace
   argocd_project         = var.argocd_project
   argocd_labels          = var.argocd_labels
   destination_cluster    = var.destination_cluster
