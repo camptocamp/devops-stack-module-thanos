@@ -1,5 +1,27 @@
 # Changelog
 
+## [3.0.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v2.7.0...v3.0.0) (2024-01-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove the ArgoCD namespace variable
+* remove the namespace variable
+* hardcode the release name to remove the destination cluster
+
+### Features
+
+* **aks:** add support to use workload identity for storage authentication ([ffc3dce](https://github.com/camptocamp/devops-stack-module-thanos/commit/ffc3dcecf9079063f96de61dfac34bac71d37a0e))
+* **chart:** minor update of dependencies on thanos chart ([#63](https://github.com/camptocamp/devops-stack-module-thanos/issues/63)) ([603dc15](https://github.com/camptocamp/devops-stack-module-thanos/commit/603dc153399276f59b8d91d0760613ca85da4c26))
+
+
+### Bug Fixes
+
+* change the default cluster issuer ([adf5067](https://github.com/camptocamp/devops-stack-module-thanos/commit/adf5067477c8a16be9dbd2e90d1157bb2235d970))
+* hardcode the release name to remove the destination cluster ([811f702](https://github.com/camptocamp/devops-stack-module-thanos/commit/811f702fc1722d83b5ae69a38caf2d62354b4b3d))
+* remove the ArgoCD namespace variable ([61771f6](https://github.com/camptocamp/devops-stack-module-thanos/commit/61771f6af29ab627e3137f45fc982c5891b4717d))
+* remove the namespace variable ([b242859](https://github.com/camptocamp/devops-stack-module-thanos/commit/b242859cbb0fa6d9c1a25958dd074335290f3d64))
+
 ## [2.7.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v2.6.0...v2.7.0) (2023-11-03)
 
 
