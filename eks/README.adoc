@@ -311,7 +311,7 @@ Description: SSL certificate issuer to use. Usually you would configure this val
 
 Type: `string`
 
-Default: `"ca-issuer"`
+Default: `"selfsigned-issuer"`
 
 ==== [[input_helm_values]] <<input_helm_values,helm_values>>
 
@@ -463,7 +463,7 @@ object({
 |[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
 |SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files.
 |`string`
-|`"ca-issuer"`
+|`"selfsigned-issuer"`
 |no
 
 |[[input_helm_values]] <<input_helm_values,helm_values>>

@@ -235,9 +235,10 @@ Version:
 
 The following resources are used by this module:
 
-- https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment[azurerm_role_assignment.contributor] (resource)
+- https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/federated_identity_credential[azurerm_federated_identity_credential.thanos] (resource)
+- https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment[azurerm_role_assignment.storage_contributor] (resource)
 - https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity[azurerm_user_assigned_identity.thanos] (resource)
-- https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group[azurerm_resource_group.node] (data source)
+- https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group[azurerm_resource_group.node_resource_group] (data source)
 - https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_container[azurerm_storage_container.container] (data source)
 
 === Required Inputs
@@ -252,10 +253,11 @@ Type:
 [source,hcl]
 ----
 object({
-    container                     = string
-    storage_account               = string
-    managed_identity_node_rg_name = optional(string, null)
-    storage_account_key           = optional(string, null)
+    container                        = string
+    storage_account                  = string
+    managed_identity_node_rg_name    = optional(string, null)
+    managed_identity_oidc_issuer_url = optional(string, null)
+    storage_account_key              = optional(string, null)
   })
 ----
 
@@ -313,7 +315,7 @@ Description: SSL certificate issuer to use. Usually you would configure this val
 
 Type: `string`
 
-Default: `"ca-issuer"`
+Default: `"selfsigned-issuer"`
 
 ==== [[input_helm_values]] <<input_helm_values,helm_values>>
 
@@ -418,9 +420,10 @@ Description: ID to pass other modules in order to refer to this module as a depe
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Type
-|https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment[azurerm_role_assignment.contributor] |resource
+|https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/federated_identity_credential[azurerm_federated_identity_credential.thanos] |resource
+|https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment[azurerm_role_assignment.storage_contributor] |resource
 |https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity[azurerm_user_assigned_identity.thanos] |resource
-|https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group[azurerm_resource_group.node] |data source
+|https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group[azurerm_resource_group.node_resource_group] |data source
 |https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_container[azurerm_storage_container.container] |data source
 |===
 
@@ -436,10 +439,11 @@ Description: ID to pass other modules in order to refer to this module as a depe
 [source]
 ----
 object({
-    container                     = string
-    storage_account               = string
-    managed_identity_node_rg_name = optional(string, null)
-    storage_account_key           = optional(string, null)
+    container                        = string
+    storage_account                  = string
+    managed_identity_node_rg_name    = optional(string, null)
+    managed_identity_oidc_issuer_url = optional(string, null)
+    storage_account_key              = optional(string, null)
   })
 ----
 
@@ -485,7 +489,7 @@ object({
 |[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
 |SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files.
 |`string`
-|`"ca-issuer"`
+|`"selfsigned-issuer"`
 |no
 
 |[[input_helm_values]] <<input_helm_values,helm_values>>
