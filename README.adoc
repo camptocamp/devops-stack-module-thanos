@@ -113,7 +113,7 @@ Description: SSL certificate issuer to use. Usually you would configure this val
 
 Type: `string`
 
-Default: `"ca-issuer"`
+Default: `"selfsigned-issuer"`
 
 ==== [[input_helm_values]] <<input_helm_values,helm_values>>
 
@@ -202,10 +202,10 @@ Description: ID to pass other modules in order to refer to this module as a depe
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
-|[[provider_null]] <<provider_null,null>> |>= 3
 |[[provider_random]] <<provider_random,random>> |>= 3
 |[[provider_utils]] <<provider_utils,utils>> |>= 1
 |[[provider_argocd]] <<provider_argocd,argocd>> |>= 5
+|[[provider_null]] <<provider_null,null>> |>= 3
 |===
 
 = Resources
@@ -265,7 +265,7 @@ Description: ID to pass other modules in order to refer to this module as a depe
 |[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
 |SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files.
 |`string`
-|`"ca-issuer"`
+|`"selfsigned-issuer"`
 |no
 
 |[[input_helm_values]] <<input_helm_values,helm_values>>
