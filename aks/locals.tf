@@ -2,11 +2,39 @@ locals {
   use_managed_identity = var.metrics_storage.managed_identity_node_rg_name != null
 
   helm_values = [{
-    # TODO check possible single merge call
     thanos = merge(local.use_managed_identity ? {
-      commonLabels = {
-        aadpodidbinding = "thanos"
+
+      bucketweb = {
+        podLabels = {
+          "azure.workload.identity/use" = "true"
+        }
+        serviceAccount = {
+          annotations = {
+            "azure.workload.identity/client-id" = azurerm_user_assigned_identity.thanos[0].client_id
+          }
+        }
       }
+      compactor = {
+        podLabels = {
+          "azure.workload.identity/use" = "true"
+        }
+        serviceAccount = {
+          annotations = {
+            "azure.workload.identity/client-id" = azurerm_user_assigned_identity.thanos[0].client_id
+          }
+        }
+      }
+      storegateway = {
+        podLabels = {
+          "azure.workload.identity/use" = "true"
+        }
+        serviceAccount = {
+          annotations = {
+            "azure.workload.identity/client-id" = azurerm_user_assigned_identity.thanos[0].client_id
+          }
+        }
+      }
+
       } : null, {
       objstoreConfig = {
         type = "AZURE"
@@ -18,10 +46,5 @@ locals {
         })
       }
     })
-    }, local.use_managed_identity ? {
-    azureIdentity = {
-      resourceID = azurerm_user_assigned_identity.thanos[0].id
-      clientID   = azurerm_user_assigned_identity.thanos[0].client_id
-    }
-  } : null]
+  }]
 }
