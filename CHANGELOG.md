@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/camptocamp/devops-stack-module-thanos/compare/v3.0.0...v3.0.1) (2024-01-22)
+
+
+### Bug Fixes
+
+* **aks:** add dependencies to fix reading of storage account ([#68](https://github.com/camptocamp/devops-stack-module-thanos/issues/68)) ([128b0b8](https://github.com/camptocamp/devops-stack-module-thanos/commit/128b0b839790c89cdcdde4d65c5a6b9812e1a34e))
+
 ## [3.0.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v2.7.0...v3.0.0) (2024-01-18)
 
 
