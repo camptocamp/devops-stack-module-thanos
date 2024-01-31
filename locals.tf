@@ -73,7 +73,7 @@ locals {
         resources              = local.thanos.compactor_resources
         persistence = {
           # The Access Mode needs to be set as ReadWriteOnce because AWS Elastic Block storage does not support other
-          # modes (https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes).          
+          # modes (https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes).
           # Since the compactor is the only pod accessing this volume, there should be no issue to have this as
           # ReadWriteOnce (https://stackoverflow.com/a/57799347).
           accessModes = [
@@ -127,7 +127,7 @@ locals {
           hostname = ""
           extraRules = [
             {
-              host = "thanos-bucketweb.apps.${var.base_domain}"
+              host = "thanos-bucketweb.${trimprefix("${var.subdomain}.${var.base_domain}", ".")}"
               http = {
                 paths = [
                   {
@@ -168,7 +168,7 @@ locals {
           extraTls = [{
             secretName = "thanos-bucketweb-tls"
             hosts = [
-              "thanos-bucketweb.apps.${var.base_domain}",
+              "thanos-bucketweb.${trimprefix("${var.subdomain}.${var.base_domain}", ".")}",
               "${local.thanos.bucketweb_domain}"
             ]
           }]
@@ -261,7 +261,7 @@ locals {
           hostname = ""
           extraRules = [
             {
-              host = "thanos-query.apps.${var.base_domain}"
+              host = "thanos-query.${trimprefix("${var.subdomain}.${var.base_domain}", ".")}"
               http = {
                 paths = [
                   {
@@ -302,7 +302,7 @@ locals {
           extraTls = [{
             secretName = "thanos-query-tls"
             hosts = [
-              "thanos-query.apps.${var.base_domain}",
+              "thanos-query.${trimprefix("${var.subdomain}.${var.base_domain}", ".")}",
               "${local.thanos.query_domain}"
             ]
           }]
@@ -316,8 +316,8 @@ locals {
   }]
 
   thanos_defaults = {
-    query_domain     = "thanos-query.apps.${var.cluster_name}.${var.base_domain}"
-    bucketweb_domain = "thanos-bucketweb.apps.${var.cluster_name}.${var.base_domain}"
+    query_domain     = "thanos-query.${trimprefix("${var.subdomain}.${var.cluster_name}", ".")}.${var.base_domain}"
+    bucketweb_domain = "thanos-bucketweb.${trimprefix("${var.subdomain}.${var.cluster_name}", ".")}.${var.base_domain}"
 
     # TODO Create proper Terraform variables for these values instead of bundling everything inside of these locals
 
