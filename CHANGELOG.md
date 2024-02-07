@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v3.0.1...v3.1.0) (2024-02-07)
+
+
+### Features
+
+* configure Thanos caching ([#64](https://github.com/camptocamp/devops-stack-module-thanos/issues/64)) ([131e6e4](https://github.com/camptocamp/devops-stack-module-thanos/commit/131e6e4868edefbc80fa20491aba26fa0c464875))
+
 ## [3.0.1](https://github.com/camptocamp/devops-stack-module-thanos/compare/v3.0.0...v3.0.1) (2024-01-22)
 
 
