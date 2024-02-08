@@ -27,23 +27,23 @@ locals {
         extraFlags = [
           # Store Gateway index cache config -> https://thanos.io/tip/components/store.md/#index-cache
           <<-EOT
---index-cache.config="config":
-  addr: "thanos-redis-master:6379"
-  password: ${random_password.redis_password.result}
-  db: 0
-  dial_timeout: 5s
-  read_timeout: 3s
-  write_timeout: 3s
-  max_get_multi_concurrency: 1000
-  get_multi_batch_size: 100
-  max_set_multi_concurrency: 1000
-  set_multi_batch_size: 100
-  tls_enabled: false
-  cache_size: 0
-  max_async_buffer_size: 1000000
-  max_async_concurrency: 200
-  expiration: 2h
-"type": "REDIS"
+          --index-cache.config="config":
+            addr: "thanos-redis-master:6379"
+            password: ${random_password.redis_password.result}
+            db: 0
+            dial_timeout: 5s
+            read_timeout: 3s
+            write_timeout: 3s
+            max_get_multi_concurrency: 1000
+            get_multi_batch_size: 100
+            max_set_multi_concurrency: 1000
+            set_multi_batch_size: 100
+            tls_enabled: false
+            cache_size: 0
+            max_async_buffer_size: 1000000
+            max_async_concurrency: 200
+            expiration: 2h
+          "type": "REDIS"
           EOT
         ]
       }
@@ -174,43 +174,43 @@ locals {
         extraFlags = [
           # Query Frontend response cache config -> https://thanos.io/tip/components/query-frontend.md/#caching
           <<-EOT
---query-range.response-cache-config="config":
-  addr: "thanos-redis-master:6379"
-  password: ${random_password.redis_password.result}
-  db: 1
-  dial_timeout: 5s
-  read_timeout: 3s
-  write_timeout: 3s
-  max_get_multi_concurrency: 1000
-  get_multi_batch_size: 100
-  max_set_multi_concurrency: 1000
-  set_multi_batch_size: 100
-  tls_enabled: false
-  cache_size: 0
-  max_async_buffer_size: 1000000
-  max_async_concurrency: 200
-  expiration: 2h
-"type": "REDIS"   
+          --query-range.response-cache-config="config":
+            addr: "thanos-redis-master:6379"
+            password: ${random_password.redis_password.result}
+            db: 1
+            dial_timeout: 5s
+            read_timeout: 3s
+            write_timeout: 3s
+            max_get_multi_concurrency: 1000
+            get_multi_batch_size: 100
+            max_set_multi_concurrency: 1000
+            set_multi_batch_size: 100
+            tls_enabled: false
+            cache_size: 0
+            max_async_buffer_size: 1000000
+            max_async_concurrency: 200
+            expiration: 2h
+          "type": "REDIS"   
           EOT
           ,
           <<-EOT
---labels.response-cache-config="config":
-  addr: "thanos-redis-master:6379"
-  password: ${random_password.redis_password.result}
-  db: 2
-  dial_timeout: 5s
-  read_timeout: 3s
-  write_timeout: 3s
-  max_get_multi_concurrency: 1000
-  get_multi_batch_size: 100
-  max_set_multi_concurrency: 1000
-  set_multi_batch_size: 100
-  tls_enabled: false
-  cache_size: 0
-  max_async_buffer_size: 1000000
-  max_async_concurrency: 200
-  expiration: 2h
-"type": "REDIS"   
+          --labels.response-cache-config="config":
+            addr: "thanos-redis-master:6379"
+            password: ${random_password.redis_password.result}
+            db: 2
+            dial_timeout: 5s
+            read_timeout: 3s
+            write_timeout: 3s
+            max_get_multi_concurrency: 1000
+            get_multi_batch_size: 100
+            max_set_multi_concurrency: 1000
+            set_multi_batch_size: 100
+            tls_enabled: false
+            cache_size: 0
+            max_async_buffer_size: 1000000
+            max_async_concurrency: 200
+            expiration: 2h
+          "type": "REDIS"   
           EOT
           ,
         ]
