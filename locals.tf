@@ -17,7 +17,12 @@ locals {
       }
     }
     thanos = {
-
+      metrics = {
+        enabled = true
+        serviceMonitor = {
+          enabled = var.enable_service_monitor
+        }
+      }
       storegateway = {
         enabled = true
         persistence = {
@@ -304,6 +309,9 @@ locals {
         }
       }
 
+    }
+    grafana_dashboard = {
+      enabled = var.enable_monitoring_dashboard
     }
   }]
 

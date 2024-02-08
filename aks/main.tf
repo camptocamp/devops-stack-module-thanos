@@ -67,10 +67,12 @@ module "thanos" {
   target_revision        = var.target_revision
   cluster_issuer         = var.cluster_issuer
   deep_merge_append_list = var.deep_merge_append_list
+  enable_service_monitor = var.enable_service_monitor
   app_autosync           = var.app_autosync
   dependency_ids         = var.dependency_ids
 
-  thanos = var.thanos
+  thanos                      = var.thanos
+  enable_monitoring_dashboard = var.enable_monitoring_dashboard
 
   helm_values = concat(local.helm_values, var.helm_values)
 }
