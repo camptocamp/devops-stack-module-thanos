@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v3.1.0...v3.2.0) (2024-02-09)
+
+
+### Features
+
+* add Grafana dashboards and alerts to monitor Thanos ([4c55520](https://github.com/camptocamp/devops-stack-module-thanos/commit/4c55520b9b374c1955d6fee69e01b3b18406f892))
+
 ## [3.1.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v3.0.1...v3.1.0) (2024-02-07)
 
 
