@@ -106,7 +106,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v3.0.1"`
+Default: `"v3.1.0"`
 
 ==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
 
@@ -171,6 +171,22 @@ Description: Most frequently used Thanos settings. This variable is merged with 
 Type: `any`
 
 Default: `{}`
+
+==== [[input_enable_service_monitor]] <<input_enable_service_monitor,enable_service_monitor>>
+
+Description: Boolean to enable the deployment of a service monitor for Prometheus. This also enables the deployment of default Prometheus rules, which are embedded inside the chart templates and are taken from the official Thanos examples, available https://github.com/thanos-io/thanos/blob/main/examples/alerts/alerts.yaml[here].
+
+Type: `bool`
+
+Default: `false`
+
+==== [[input_enable_monitoring_dashboard]] <<input_enable_monitoring_dashboard,enable_monitoring_dashboard>>
+
+Description: Boolean to enable the provisioning of multiple Grafana dashboards, one for each component of Thanos. These dashboards are embedded inside the chart templates and are taken from the official Thanos examples, available https://github.com/thanos-io/thanos/tree/main/examples/dashboards[here]. Requires the variable `enable_service_monitor` to be set to `true`.
+
+Type: `bool`
+
+Default: `true`
 
 === Outputs
 
@@ -261,7 +277,7 @@ Description: ID to pass other modules in order to refer to this module as a depe
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v3.0.1"`
+|`"v3.1.0"`
 |no
 
 |[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
@@ -318,6 +334,18 @@ object({
 |Most frequently used Thanos settings. This variable is merged with the local value `thanos_defaults`, which contains some sensible defaults. You can check the default values on the link:./local.tf[`local.tf`] file. If there still is anything other that needs to be customized, you can always pass on configuration values using the variable `helm_values`.
 |`any`
 |`{}`
+|no
+
+|[[input_enable_service_monitor]] <<input_enable_service_monitor,enable_service_monitor>>
+|Boolean to enable the deployment of a service monitor for Prometheus. This also enables the deployment of default Prometheus rules, which are embedded inside the chart templates and are taken from the official Thanos examples, available https://github.com/thanos-io/thanos/blob/main/examples/alerts/alerts.yaml[here].
+|`bool`
+|`false`
+|no
+
+|[[input_enable_monitoring_dashboard]] <<input_enable_monitoring_dashboard,enable_monitoring_dashboard>>
+|Boolean to enable the provisioning of multiple Grafana dashboards, one for each component of Thanos. These dashboards are embedded inside the chart templates and are taken from the official Thanos examples, available https://github.com/thanos-io/thanos/tree/main/examples/dashboards[here]. Requires the variable `enable_service_monitor` to be set to `true`.
+|`bool`
+|`true`
 |no
 
 |===
