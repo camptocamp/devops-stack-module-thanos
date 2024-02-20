@@ -36,13 +36,13 @@ The following requirements are needed by this module:
 
 The following providers are used by this module:
 
+- [[provider_null]] <<provider_null,null>> (>= 3)
+
 - [[provider_random]] <<provider_random,random>> (>= 3)
 
 - [[provider_utils]] <<provider_utils,utils>> (>= 1)
 
 - [[provider_argocd]] <<provider_argocd,argocd>> (>= 5)
-
-- [[provider_null]] <<provider_null,null>> (>= 3)
 
 === Resources
 
@@ -78,7 +78,7 @@ The following input variables are optional (have default values):
 
 ==== [[input_subdomain]] <<input_subdomain,subdomain>>
 
-Description: Sub domain of the cluster. Value used for the ingress' URL of the application.
+Description: Subdomain of the cluster. Value used for the ingress' URL of the application.
 
 Type: `string`
 
@@ -265,7 +265,7 @@ Description: ID to pass other modules in order to refer to this module as a depe
 |yes
 
 |[[input_subdomain]] <<input_subdomain,subdomain>>
-|Sub domain of the cluster. Value used for the ingress' URL of the application.
+|Subdomain of the cluster. Value used for the ingress' URL of the application.
 |`string`
 |`"apps"`
 |no
