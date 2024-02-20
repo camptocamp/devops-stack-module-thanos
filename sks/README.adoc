@@ -156,6 +156,14 @@ Type: `string`
 
 The following input variables are optional (have default values):
 
+==== [[input_subdomain]] <<input_subdomain,subdomain>>
+
+Description: Sub domain of the cluster. Value used for the ingress' URL of the application.
+
+Type: `string`
+
+Default: `"apps"`
+
 ==== [[input_argocd_project]] <<input_argocd_project,argocd_project>>
 
 Description: Name of the Argo CD AppProject where the Application should be created. If not set, the Application will be created in a new AppProject only for this Application.
@@ -186,7 +194,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v3.1.0"`
+Default: `"v3.2.0"`
 
 ==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
 
@@ -342,6 +350,12 @@ object({
 |n/a
 |yes
 
+|[[input_subdomain]] <<input_subdomain,subdomain>>
+|Sub domain of the cluster. Value used for the ingress' URL of the application.
+|`string`
+|`"apps"`
+|no
+
 |[[input_argocd_project]] <<input_argocd_project,argocd_project>>
 |Name of the Argo CD AppProject where the Application should be created. If not set, the Application will be created in a new AppProject only for this Application.
 |`string`
@@ -363,7 +377,7 @@ object({
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v3.1.0"`
+|`"v3.2.0"`
 |no
 
 |[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
