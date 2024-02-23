@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.3.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v3.2.0...v3.3.0) (2024-02-23)
+
+
+### Features
+
+* add a subdomain variable ([46fbe8d](https://github.com/camptocamp/devops-stack-module-thanos/commit/46fbe8d5625ed697b335f7fbec5de52b4441bfbc))
+
+
+### Bug Fixes
+
+* make subdomain variable non-nullable ([4ace0e5](https://github.com/camptocamp/devops-stack-module-thanos/commit/4ace0e53353d01b5896bb0df97fc07a9cb623dcc))
+* remove annotation for the redirection middleware ([2bef626](https://github.com/camptocamp/devops-stack-module-thanos/commit/2bef6260dc17f4363f2be4d525c64fed428d659a))
+
 ## [3.2.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v3.1.0...v3.2.0) (2024-02-09)
 
 
