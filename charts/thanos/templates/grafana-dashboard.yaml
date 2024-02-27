@@ -1,4 +1,4 @@
-{{- if $.Values.grafana_dashboard.enabled }}
+{{- if $.Values.thanos.metrics.serviceMonitor.enabled }}
 {{- $files := .Files.Glob "dashboards/*.json" }}
 {{- if $files }}
 apiVersion: v1

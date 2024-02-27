@@ -302,9 +302,6 @@ locals {
       }
 
     }
-    grafana_dashboard = {
-      enabled = var.enable_monitoring_dashboard
-    }
   }]
 
   thanos_defaults = {
