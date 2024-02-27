@@ -92,13 +92,7 @@ variable "thanos" {
 }
 
 variable "enable_service_monitor" {
-  description = "Boolean to enable the deployment of a service monitor for Prometheus. This also enables the deployment of default Prometheus rules, which are embedded inside the chart templates and are taken from the official Thanos examples, available https://github.com/thanos-io/thanos/blob/main/examples/alerts/alerts.yaml[here]."
+  description = "Boolean to enable the deployment of a service monitor for Prometheus. This also enables the deployment of default Prometheus rules and Grafana dashboards, which are embedded inside the chart templates and are taken from the official Thanos examples, available https://github.com/thanos-io/thanos/blob/main/examples/alerts/alerts.yaml[here]."
   type        = bool
   default     = false
-}
-
-variable "enable_monitoring_dashboard" {
-  description = "Boolean to enable the provisioning of multiple Grafana dashboards, one for each component of Thanos. These dashboards are embedded inside the chart templates and are taken from the official Thanos examples, available https://github.com/thanos-io/thanos/tree/main/examples/dashboards[here]. Requires the variable `enable_service_monitor` to be set to `true`."
-  type        = bool
-  default     = true
 }
