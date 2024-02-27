@@ -1,6 +1,12 @@
 locals {
   oauth2_proxy_image = "quay.io/oauth2-proxy/oauth2-proxy:v7.5.0"
 
+  ingress_annotations = {
+    "cert-manager.io/cluster-issuer"                   = "${var.cluster_issuer}"
+    "traefik.ingress.kubernetes.io/router.entrypoints" = "websecure"
+    "traefik.ingress.kubernetes.io/router.tls"         = "true"
+  }
+
   # values.yaml translated into HCL structures.
   # Possible values available here -> https://github.com/bitnami/charts/tree/master/bitnami/thanos/
   helm_values = [{
@@ -114,16 +120,10 @@ locals {
           }]
         }
         ingress = {
-          enabled = true
-          annotations = {
-            "cert-manager.io/cluster-issuer"                   = "${var.cluster_issuer}"
-            "traefik.ingress.kubernetes.io/router.entrypoints" = "websecure"
-            "traefik.ingress.kubernetes.io/router.tls"         = "true"
-            "ingress.kubernetes.io/ssl-redirect"               = "true"
-            "kubernetes.io/ingress.allow-http"                 = "false"
-          }
-          tls      = false
-          hostname = ""
+          enabled     = true
+          annotations = local.ingress_annotations
+          tls         = false
+          hostname    = ""
           extraRules = [
             {
               host = "thanos-bucketweb.${trimprefix("${var.subdomain}.${var.base_domain}", ".")}"
@@ -247,17 +247,10 @@ locals {
           }]
         }
         ingress = {
-          enabled = true
-          annotations = {
-            "cert-manager.io/cluster-issuer"                   = "${var.cluster_issuer}"
-            "traefik.ingress.kubernetes.io/router.entrypoints" = "websecure"
-            "traefik.ingress.kubernetes.io/router.middlewares" = "traefik-withclustername@kubernetescrd"
-            "traefik.ingress.kubernetes.io/router.tls"         = "true"
-            "ingress.kubernetes.io/ssl-redirect"               = "true"
-            "kubernetes.io/ingress.allow-http"                 = "false"
-          }
-          tls      = false
-          hostname = ""
+          enabled     = true
+          annotations = local.ingress_annotations
+          tls         = false
+          hostname    = ""
           extraRules = [
             {
               host = "thanos-query.${trimprefix("${var.subdomain}.${var.base_domain}", ".")}"
