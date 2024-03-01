@@ -29,12 +29,16 @@ locals {
           enabled = var.enable_service_monitor
         }
       }
+
       storegateway = {
         enabled = true
         persistence = {
           enabled = false
         }
         resources = local.thanos.storegateway_resources
+        networkPolicy = {
+          enabled = false
+        }
         extraFlags = [
           # Store Gateway index cache config -> https://thanos.io/tip/components/store.md/#index-cache
           <<-EOT
@@ -69,6 +73,9 @@ locals {
           "thanos-storegateway:10901"
         ]
         resources = local.thanos.query_resources
+        networkPolicy = {
+          enabled = false
+        }
       }
 
       compactor = {
@@ -86,6 +93,9 @@ locals {
             "ReadWriteOnce"
           ]
           size = local.thanos.compactor_persistence_size
+        }
+        networkPolicy = {
+          enabled = false
         }
       }
 
@@ -171,6 +181,9 @@ locals {
               "${local.thanos.bucketweb_domain}"
             ]
           }]
+        }
+        networkPolicy = {
+          enabled = false
         }
       }
 
@@ -299,8 +312,20 @@ locals {
             ]
           }]
         }
+        networkPolicy = {
+          enabled = false
+        }
       }
-
+      receive = {
+        networkPolicy = {
+          enabled = false
+        }
+      }
+      ruler = {
+        networkPolicy = {
+          enabled = false
+        }
+      }
     }
   }]
 
