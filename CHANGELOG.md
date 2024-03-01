@@ -6,7 +6,17 @@
 ### ⚠ BREAKING CHANGES
 
 * **chart:** major update of dependencies on thanos chart
+
+  The breaking change on the Thanos chart is the activation of the NetworkPolicies by default and now the configuration is per component instead of globally.
+
+  See official information [here](https://github.com/bitnami/charts/blob/main/bitnami/thanos/README.md#to-1300).
+
+  On my tests, I found out that the official NetworkPolicies were blocking the access through Traefik. Since the work of activating the NetworkPolicies on the DevOps Stack modules is already on the horizon, I decided to deactivate them and keep the current behaviour of the module for the time being.
+
 * remove specific var and use the ServiceMonitor boolean
+
+  The variable `enable_monitoring_dashboard` introduced on the last release was removed, because on the other modules we've decided to simply deploy the dashboards automatically as long as the `serviceMonitor` for the metrics is activated. So we've reverted this addition to keep the behavior of the modules consistent.
+
 
 ### Features
 
