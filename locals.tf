@@ -234,7 +234,7 @@ locals {
         sidecars = [{
           args = concat([
             "--http-address=0.0.0.0:9075",
-            "--upstream=http://localhost:10902",
+            "--upstream=http://localhost:9090",
             "--provider=oidc",
             "--oidc-issuer-url=${replace(local.thanos.oidc.issuer_url, "\"", "\\\"")}",
             "--client-id=${replace(local.thanos.oidc.client_id, "\"", "\\\"")}",
