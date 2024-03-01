@@ -1,5 +1,25 @@
 # Changelog
 
+## [4.0.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v3.3.0...v4.0.0) (2024-03-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* **chart:** major update of dependencies on thanos chart
+* remove specific var and use the ServiceMonitor boolean
+
+### Features
+
+* **chart:** major update of dependencies on thanos chart ([bbd5e67](https://github.com/camptocamp/devops-stack-module-thanos/commit/bbd5e67d68d83528d6f6eb33d2b5eb2e1c5ed7f5))
+
+
+### Bug Fixes
+
+* change backend port that was changed in the original chart ([0ac7aab](https://github.com/camptocamp/devops-stack-module-thanos/commit/0ac7aabf0a32d562844dadbbfabd21de925d7a3b))
+* disable networkPolicy on all components ([5a84b3a](https://github.com/camptocamp/devops-stack-module-thanos/commit/5a84b3a548841cfb87f2bb23e2333862c4e3198f))
+* remove legacy ingress annotations ([f3eee6a](https://github.com/camptocamp/devops-stack-module-thanos/commit/f3eee6ae543a6889b9e5dcd5fd509b4e3f0caa7e))
+* remove specific var and use the ServiceMonitor boolean ([de3db09](https://github.com/camptocamp/devops-stack-module-thanos/commit/de3db094082ed39ae0cce9c96e9bb1c6b891503d))
+
 ## [3.3.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v3.2.0...v3.3.0) (2024-02-23)
 
 
