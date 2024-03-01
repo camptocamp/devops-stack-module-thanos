@@ -1,5 +1,35 @@
 # Changelog
 
+## [4.0.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v3.3.0...v4.0.0) (2024-03-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* **chart:** major update of dependencies on thanos chart
+
+  The breaking change on the Thanos chart is the activation of the NetworkPolicies by default and now the configuration is per component instead of globally.
+
+  See official information [here](https://github.com/bitnami/charts/blob/main/bitnami/thanos/README.md#to-1300).
+
+  On my tests, I found out that the official NetworkPolicies were blocking the access through Traefik. Since the work of activating the NetworkPolicies on the DevOps Stack modules is already on the horizon, I decided to deactivate them and keep the current behaviour of the module for the time being.
+
+* remove specific var and use the ServiceMonitor boolean
+
+  The variable `enable_monitoring_dashboard` introduced on the last release was removed, because on the other modules we've decided to simply deploy the dashboards automatically as long as the `serviceMonitor` for the metrics is activated. So we've reverted this addition to keep the behavior of the modules consistent.
+
+
+### Features
+
+* **chart:** major update of dependencies on thanos chart ([bbd5e67](https://github.com/camptocamp/devops-stack-module-thanos/commit/bbd5e67d68d83528d6f6eb33d2b5eb2e1c5ed7f5))
+
+
+### Bug Fixes
+
+* change backend port that was changed in the original chart ([0ac7aab](https://github.com/camptocamp/devops-stack-module-thanos/commit/0ac7aabf0a32d562844dadbbfabd21de925d7a3b))
+* disable networkPolicy on all components ([5a84b3a](https://github.com/camptocamp/devops-stack-module-thanos/commit/5a84b3a548841cfb87f2bb23e2333862c4e3198f))
+* remove legacy ingress annotations ([f3eee6a](https://github.com/camptocamp/devops-stack-module-thanos/commit/f3eee6ae543a6889b9e5dcd5fd509b4e3f0caa7e))
+* remove specific var and use the ServiceMonitor boolean ([de3db09](https://github.com/camptocamp/devops-stack-module-thanos/commit/de3db094082ed39ae0cce9c96e9bb1c6b891503d))
+
 ## [3.3.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v3.2.0...v3.3.0) (2024-02-23)
 
 
