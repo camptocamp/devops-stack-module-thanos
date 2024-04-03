@@ -20,6 +20,10 @@ locals {
         persistence = {
           enabled = false
         }
+        resources = {
+          requests = { for k, v in var.resources.redis.requests : k => v if v != null }
+          limits   = { for k, v in var.resources.redis.limits : k => v if v != null }
+        }
       }
     }
     thanos = {
@@ -35,7 +39,10 @@ locals {
         persistence = {
           enabled = false
         }
-        resources = local.thanos.storegateway_resources
+        resources = {
+          requests = { for k, v in var.resources.storegateway.requests : k => v if v != null }
+          limits   = { for k, v in var.resources.storegateway.limits : k => v if v != null }
+        }
         networkPolicy = {
           enabled = false
         }
@@ -72,7 +79,10 @@ locals {
         stores = [
           "thanos-storegateway:10901"
         ]
-        resources = local.thanos.query_resources
+        resources = {
+          requests = { for k, v in var.resources.query.requests : k => v if v != null }
+          limits   = { for k, v in var.resources.query.limits : k => v if v != null }
+        }
         networkPolicy = {
           enabled = false
         }
@@ -83,7 +93,10 @@ locals {
         retentionResolutionRaw = "${local.thanos.compactor_retention.raw}"
         retentionResolution5m  = "${local.thanos.compactor_retention.five_min}"
         retentionResolution1h  = "${local.thanos.compactor_retention.one_hour}"
-        resources              = local.thanos.compactor_resources
+        resources = {
+          requests = { for k, v in var.resources.compactor.requests : k => v if v != null }
+          limits   = { for k, v in var.resources.compactor.limits : k => v if v != null }
+        }
         persistence = {
           # The Access Mode needs to be set as ReadWriteOnce because AWS Elastic Block storage does not support other
           # modes (https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes).
@@ -101,6 +114,10 @@ locals {
 
       bucketweb = {
         enabled = true
+        resources = {
+          requests = { for k, v in var.resources.bucketweb.requests : k => v if v != null }
+          limits   = { for k, v in var.resources.bucketweb.limits : k => v if v != null }
+        }
         sidecars = [{
           args = concat([
             "--http-address=0.0.0.0:9075",
@@ -188,6 +205,10 @@ locals {
       }
 
       queryFrontend = {
+        resources = {
+          requests = { for k, v in var.resources.query_frontend.requests : k => v if v != null }
+          limits   = { for k, v in var.resources.query_frontend.limits : k => v if v != null }
+        }
         extraFlags = [
           # Query Frontend response cache config -> https://thanos.io/tip/components/query-frontend.md/#caching
           <<-EOT
