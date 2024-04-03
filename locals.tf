@@ -1,5 +1,5 @@
 locals {
-  oauth2_proxy_image = "quay.io/oauth2-proxy/oauth2-proxy:v7.5.0"
+  oauth2_proxy_image = "quay.io/oauth2-proxy/oauth2-proxy:v7.6.0"
 
   ingress_annotations = {
     "cert-manager.io/cluster-issuer"                   = "${var.cluster_issuer}"
