@@ -72,6 +72,8 @@ module "thanos" {
   app_autosync           = var.app_autosync
   dependency_ids         = var.dependency_ids
 
+  resources = var.resources
+
   thanos = var.thanos
 
   helm_values = concat(local.helm_values, var.helm_values)
