@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.1.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v4.0.0...v4.1.0) (2024-04-16)
+
+
+### Features
+
+* add variable to set resources with default values ([ff2d2ba](https://github.com/camptocamp/devops-stack-module-thanos/commit/ff2d2bac07115d0ca547dcf3cffabf7d1de57060))
+* upgrade OAuth Proxy image version ([5072bbc](https://github.com/camptocamp/devops-stack-module-thanos/commit/5072bbc0f90f32d283111f358704e1b8f8d806ee))
+
 ## [4.0.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v3.3.0...v4.0.0) (2024-03-01)
 
 
