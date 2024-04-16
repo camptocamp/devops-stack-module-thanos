@@ -17,9 +17,9 @@ module "thanos" {
   argocd_namespace = module.argocd_bootstrap.argocd_namespace
 
   metrics_storage = {
-    bucket_id    = aws_s3_bucket.thanos_metrics_storage.id
-    region       = aws_s3_bucket.thanos_metrics_storage.region
-    iam_role_arn = module.iam_assumable_role_thanos.iam_role_arn
+    bucket_id               = resource.aws_s3_bucket.thanos_metrics_storage.id
+    create_role             = true
+    cluster_oidc_issuer_url = module.eks.cluster_oidc_issuer_url
   }
   thanos = {
     oidc = module.oidc.oidc
@@ -34,9 +34,14 @@ module "thanos" {
 }  
 ----
 
-As you can see, a minimum requirement for this module is an S3 bucket with an IAM policy attached and an OIDC provider (more information below).
+As you can see, a minimum requirement for this module is an S3 bucket and an OIDC provider (more information below).
 
-IMPORTANT: You are in charge of creating a S3 bucket for Thanos to store the archived metrics. We've decided to keep the creation of this bucket outside of this module, mainly because the persistence of the data should not be related to the instantiation of the module itself.
+IMPORTANT
+====
+You are in charge of creating a S3 bucket for Thanos to store the archived metrics. We've decided to keep the creation of this bucket outside of this module, mainly because the persistence of the data should not be related to the instantiation of the module itself.
+
+However, the IAM role used to give permissions to the Thanos components to access the bucket can be created by the module itself. If you want to create the role, you can set the attribute `create_role` to `true` and the module will create the role for you. If you already have a role created, you can pass the ARN of the role to the module using the attribute `iam_role_arn`.
+====
 
 TIP: Check the xref:ROOT:ROOT:tutorials/deploy_eks.adoc[EKS deployment example] to see how to create the S3 bucket and to better understand the values passed on the example above.
 
@@ -55,9 +60,9 @@ module "thanos" {
   argocd_namespace = module.argocd_bootstrap.argocd_namespace
 
   metrics_storage = {
-    bucket_id    = aws_s3_bucket.thanos_metrics_storage.id
-    region       = aws_s3_bucket.thanos_metrics_storage.region
-    iam_role_arn = module.iam_assumable_role_thanos.iam_role_arn
+    bucket_id               = resource.aws_s3_bucket.thanos_metrics_storage.id
+    create_role             = true
+    cluster_oidc_issuer_url = module.eks.cluster_oidc_issuer_url
   }
 
   thanos = {
@@ -128,9 +133,9 @@ module "thanos" {
   argocd_namespace = module.argocd_bootstrap.argocd_namespace
 
   metrics_storage = {
-    bucket_id    = aws_s3_bucket.thanos_metrics_storage.id
-    region       = aws_s3_bucket.thanos_metrics_storage.region
-    iam_role_arn = module.iam_assumable_role_thanos.iam_role_arn
+    bucket_id               = resource.aws_s3_bucket.thanos_metrics_storage.id
+    create_role             = true
+    cluster_oidc_issuer_url = module.eks.cluster_oidc_issuer_url
   }
 
   thanos = {
@@ -168,6 +173,14 @@ module "thanos" {
   }
 }
 ----
+
+=== S3 bucket and IAM role
+
+Thanos needs an S3 bucket to store the archived metrics. The bucket can be created and its ID should be passed to the module, along with the attribute `create_role` explicitly set. Set it to true if you want the module to create the required IAM role.
+
+However, if you want to create and manage this IAM role yourself, you can simply pass the ARN of the role to the module using the attribute `iam_role_arn` while setting the attribute `create_role` to `false`.
+
+TIP: The code https://github.com/camptocamp/devops-stack/blob/main/examples/eks/s3_thanos.tf.disabled[in this example] should help you create the IAM policy and role with the required permissions.
 
 === OIDC
 
@@ -377,88 +390,6 @@ Type: `any`
 
 Default: `{}`
 
-==== [[input_resources]] <<input_resources,resources>>
-
-Description: Resource limits and requests for Thanos' components. Follow the style on https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/[official documentation] to understand the format of the values.
-
-IMPORTANT: These are not production values. You should always adjust them to your needs.
-
-Type:
-[source,hcl]
-----
-object({
-
-    query = optional(object({
-      requests = optional(object({
-        cpu    = optional(string, "250m")
-        memory = optional(string, "512Mi")
-      }), {})
-      limits = optional(object({
-        cpu    = optional(string)
-        memory = optional(string, "512Mi")
-      }), {})
-    }), {})
-
-    query_frontend = optional(object({
-      requests = optional(object({
-        cpu    = optional(string, "250m")
-        memory = optional(string, "256Mi")
-      }), {})
-      limits = optional(object({
-        cpu    = optional(string)
-        memory = optional(string, "512Mi")
-      }), {})
-    }), {})
-
-    bucketweb = optional(object({
-      requests = optional(object({
-        cpu    = optional(string, "50m")
-        memory = optional(string, "128Mi")
-      }), {})
-      limits = optional(object({
-        cpu    = optional(string)
-        memory = optional(string, "128Mi")
-      }), {})
-    }), {})
-
-    compactor = optional(object({
-      requests = optional(object({
-        cpu    = optional(string, "250m")
-        memory = optional(string, "256Mi")
-      }), {})
-      limits = optional(object({
-        cpu    = optional(string)
-        memory = optional(string, "512Mi")
-      }), {})
-    }), {})
-
-    storegateway = optional(object({
-      requests = optional(object({
-        cpu    = optional(string, "250m")
-        memory = optional(string, "512Mi")
-      }), {})
-      limits = optional(object({
-        cpu    = optional(string)
-        memory = optional(string, "512Mi")
-      }), {})
-    }), {})
-
-    redis = optional(object({
-      requests = optional(object({
-        cpu    = optional(string, "200m")
-        memory = optional(string, "256Mi")
-      }), {})
-      limits = optional(object({
-        cpu    = optional(string)
-        memory = optional(string, "512Mi")
-      }), {})
-    }), {})
-
-  })
-----
-
-Default: `{}`
-
 ==== [[input_enable_service_monitor]] <<input_enable_service_monitor,enable_service_monitor>>
 
 Description: Boolean to enable the deployment of a service monitor for Prometheus. This also enables the deployment of default Prometheus rules and Grafana dashboards, which are embedded inside the chart templates and are taken from the official Thanos examples, available https://github.com/thanos-io/thanos/blob/main/examples/alerts/alerts.yaml[here].
@@ -617,89 +548,6 @@ object({
 |[[input_thanos]] <<input_thanos,thanos>>
 |Most frequently used Thanos settings. This variable is merged with the local value `thanos_defaults`, which contains some sensible defaults. You can check the default values on the link:./local.tf[`local.tf`] file. If there still is anything other that needs to be customized, you can always pass on configuration values using the variable `helm_values`.
 |`any`
-|`{}`
-|no
-
-|[[input_resources]] <<input_resources,resources>>
-|Resource limits and requests for Thanos' components. Follow the style on https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/[official documentation] to understand the format of the values.
-
-IMPORTANT: These are not production values. You should always adjust them to your needs.
-
-|
-
-[source]
-----
-object({
-
-    query = optional(object({
-      requests = optional(object({
-        cpu    = optional(string, "250m")
-        memory = optional(string, "512Mi")
-      }), {})
-      limits = optional(object({
-        cpu    = optional(string)
-        memory = optional(string, "512Mi")
-      }), {})
-    }), {})
-
-    query_frontend = optional(object({
-      requests = optional(object({
-        cpu    = optional(string, "250m")
-        memory = optional(string, "256Mi")
-      }), {})
-      limits = optional(object({
-        cpu    = optional(string)
-        memory = optional(string, "512Mi")
-      }), {})
-    }), {})
-
-    bucketweb = optional(object({
-      requests = optional(object({
-        cpu    = optional(string, "50m")
-        memory = optional(string, "128Mi")
-      }), {})
-      limits = optional(object({
-        cpu    = optional(string)
-        memory = optional(string, "128Mi")
-      }), {})
-    }), {})
-
-    compactor = optional(object({
-      requests = optional(object({
-        cpu    = optional(string, "250m")
-        memory = optional(string, "256Mi")
-      }), {})
-      limits = optional(object({
-        cpu    = optional(string)
-        memory = optional(string, "512Mi")
-      }), {})
-    }), {})
-
-    storegateway = optional(object({
-      requests = optional(object({
-        cpu    = optional(string, "250m")
-        memory = optional(string, "512Mi")
-      }), {})
-      limits = optional(object({
-        cpu    = optional(string)
-        memory = optional(string, "512Mi")
-      }), {})
-    }), {})
-
-    redis = optional(object({
-      requests = optional(object({
-        cpu    = optional(string, "200m")
-        memory = optional(string, "256Mi")
-      }), {})
-      limits = optional(object({
-        cpu    = optional(string)
-        memory = optional(string, "512Mi")
-      }), {})
-    }), {})
-
-  })
-----
-
 |`{}`
 |no
 

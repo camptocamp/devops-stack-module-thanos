@@ -5,7 +5,7 @@
 
 A https://devops-stack.io[DevOps Stack] module to deploy and configure https://thanos.io[Thanos].
 
-The Thanos chart used by this module is shipped in this repository as well, in order to avoid any unwanted behaviors caused by unsupported versions. 
+The Thanos chart used by this module is shipped in this repository as well, in order to avoid any unwanted behaviors caused by unsupported versions.
 
 [cols="1,1,1",options="autowidth,header"]
 |===
