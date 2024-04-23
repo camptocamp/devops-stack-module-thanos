@@ -1,5 +1,16 @@
 # Changelog
 
+## [5.0.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v4.1.0...v5.0.0) (2024-04-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* **eks:** add option to create IAM role for the metrics storage
+
+### Features
+
+* **eks:** add option to create IAM role for the metrics storage ([90f9f54](https://github.com/camptocamp/devops-stack-module-thanos/commit/90f9f541e80a9cd1a5b59720c541d117501fa7d4))
+
 ## [4.1.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v4.0.0...v4.1.0) (2024-04-16)
 
 
