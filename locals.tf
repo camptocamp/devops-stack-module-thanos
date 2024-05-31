@@ -44,7 +44,7 @@ locals {
           limits   = { for k, v in var.resources.storegateway.limits : k => v if v != null }
         }
         networkPolicy = {
-          enabled = false
+          enabled = var.network_policy_thanos
         }
         extraFlags = [
           # Store Gateway index cache config -> https://thanos.io/tip/components/store.md/#index-cache
@@ -84,7 +84,7 @@ locals {
           limits   = { for k, v in var.resources.query.limits : k => v if v != null }
         }
         networkPolicy = {
-          enabled = false
+          enabled = var.network_policy_thanos
         }
       }
 
@@ -108,7 +108,7 @@ locals {
           size = local.thanos.compactor_persistence_size
         }
         networkPolicy = {
-          enabled = false
+          enabled = var.network_policy_thanos
         }
       }
 
@@ -200,7 +200,7 @@ locals {
           }]
         }
         networkPolicy = {
-          enabled = false
+          enabled = var.network_policy_thanos
         }
       }
 
@@ -334,17 +334,17 @@ locals {
           }]
         }
         networkPolicy = {
-          enabled = false
+          enabled = var.network_policy_thanos
         }
       }
       receive = {
         networkPolicy = {
-          enabled = false
+          enabled = var.network_policy_thanos
         }
       }
       ruler = {
         networkPolicy = {
-          enabled = false
+          enabled = var.network_policy_thanos
         }
       }
     }

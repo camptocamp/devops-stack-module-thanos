@@ -62,6 +62,7 @@ module "thanos" {
   enable_service_monitor = var.enable_service_monitor
   app_autosync           = var.app_autosync
   dependency_ids         = var.dependency_ids
+  network_policy_thanos  = var.network_policy_thanos
 
   resources = var.resources
 
