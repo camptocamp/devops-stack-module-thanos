@@ -1,7 +1,6 @@
 locals {
   helm_values = [{
     thanos = {
-      clusterDomain = "${var.cluster_id}.cluster.local"
       objstoreConfig = {
         type = "S3"
         config = {
