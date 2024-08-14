@@ -1,5 +1,16 @@
 # Changelog
 
+## [6.0.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v5.0.0...v6.0.0) (2024-08-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* **sks:** remove the cluster_id variable
+
+### Features
+
+*  **sks:** remove the cluster_id variable ([6d7b628](https://github.com/camptocamp/devops-stack-module-thanos/commit/6d7b6280c67373d65f04f069b35a58f64174dd3a))
+
 ## [5.0.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v4.1.0...v5.0.0) (2024-04-23)
 
 
