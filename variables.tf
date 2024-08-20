@@ -175,7 +175,7 @@ variable "enable_service_monitor" {
   default     = false
 }
 
-variable "network_policy_thanos" {
+variable "enable_network_policies" {
   description = "Enable or disable network policy for Thanos components."
   type        = bool
   default     = false

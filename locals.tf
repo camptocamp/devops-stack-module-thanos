@@ -44,7 +44,7 @@ locals {
           limits   = { for k, v in var.resources.storegateway.limits : k => v if v != null }
         }
         networkPolicy = {
-          enabled = var.network_policy_thanos
+          enabled = var.enable_network_policies
         }
         extraFlags = [
           # Store Gateway index cache config -> https://thanos.io/tip/components/store.md/#index-cache
@@ -84,7 +84,7 @@ locals {
           limits   = { for k, v in var.resources.query.limits : k => v if v != null }
         }
         networkPolicy = {
-          enabled = var.network_policy_thanos
+          enabled = var.enable_network_policies
         }
       }
 
@@ -108,7 +108,7 @@ locals {
           size = local.thanos.compactor_persistence_size
         }
         networkPolicy = {
-          enabled = var.network_policy_thanos
+          enabled = var.enable_network_policies
         }
       }
 
@@ -200,7 +200,18 @@ locals {
           }]
         }
         networkPolicy = {
-          enabled = var.network_policy_thanos
+          enabled = var.enable_network_policies
+          extraIngress = var.enable_network_policies ? [
+            {
+              from = {
+                namespaceSelector = {
+                  matchLabels = {
+                    "app.kubernetes.io/metadata.name" = "traefik"
+                  }
+                }
+              }
+            }
+          ] : []
         }
       }
 
@@ -334,17 +345,28 @@ locals {
           }]
         }
         networkPolicy = {
-          enabled = var.network_policy_thanos
+          enabled = var.enable_network_policies
+          extraIngress = var.enable_network_policies ? [
+            {
+              from = {
+                namespaceSelector = {
+                  matchLabels = {
+                    "app.kubernetes.io/metadata.name" = "traefik"
+                  }
+                }
+              }
+            }
+          ] : []
         }
       }
       receive = {
         networkPolicy = {
-          enabled = var.network_policy_thanos
+          enabled = var.enable_network_policies
         }
       }
       ruler = {
         networkPolicy = {
-          enabled = var.network_policy_thanos
+          enabled = var.enable_network_policies
         }
       }
     }
