@@ -344,7 +344,7 @@ Type: `bool`
 
 Default: `false`
 
-==== [[input_network_policy_thanos]] <<input_network_policy_thanos,network_policy_thanos>>
+==== [[input_enable_network_policies]] <<input_enable_network_policies,enable_network_policies>>
 
 Description: Enable or disable network policy for Thanos components.
 
@@ -595,7 +595,7 @@ object({
 |`false`
 |no
 
-|[[input_network_policy_thanos]] <<input_network_policy_thanos,network_policy_thanos>>
+|[[input_enable_network_policies]] <<input_enable_network_policies,enable_network_policies>>
 |Enable or disable network policy for Thanos components.
 |`bool`
 |`false`

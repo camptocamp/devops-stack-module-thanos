@@ -203,13 +203,13 @@ locals {
           enabled = var.enable_network_policies
           extraIngress = var.enable_network_policies ? [
             {
-              from = {
+              from = [{
                 podSelector = {
                   matchLabels = {
                     "app" = "traefik"
                   }
                 }
-              }
+              }]
             }
           ] : []
         }

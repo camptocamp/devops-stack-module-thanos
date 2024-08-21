@@ -38,9 +38,9 @@ The following providers are used by this module:
 
 - [[provider_random]] <<provider_random,random>> (>= 3)
 
-- [[provider_argocd]] <<provider_argocd,argocd>> (>= 5)
-
 - [[provider_utils]] <<provider_utils,utils>> (>= 1)
+
+- [[provider_argocd]] <<provider_argocd,argocd>> (>= 5)
 
 - [[provider_null]] <<provider_null,null>> (>= 3)
 
@@ -270,7 +270,7 @@ Type: `bool`
 
 Default: `false`
 
-==== [[input_network_policy_thanos]] <<input_network_policy_thanos,network_policy_thanos>>
+==== [[input_enable_network_policies]] <<input_enable_network_policies,enable_network_policies>>
 
 Description: Enable or disable network policy for Thanos components.
 
@@ -309,10 +309,10 @@ Description: ID to pass other modules in order to refer to this module as a depe
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
-|[[provider_random]] <<provider_random,random>> |>= 3
-|[[provider_utils]] <<provider_utils,utils>> |>= 1
-|[[provider_argocd]] <<provider_argocd,argocd>> |>= 5
 |[[provider_null]] <<provider_null,null>> |>= 3
+|[[provider_random]] <<provider_random,random>> |>= 3
+|[[provider_argocd]] <<provider_argocd,argocd>> |>= 5
+|[[provider_utils]] <<provider_utils,utils>> |>= 1
 |===
 
 = Resources
@@ -521,7 +521,7 @@ object({
 |`false`
 |no
 
-|[[input_network_policy_thanos]] <<input_network_policy_thanos,network_policy_thanos>>
+|[[input_enable_network_policies]] <<input_enable_network_policies,enable_network_policies>>
 |Enable or disable network policy for Thanos components.
 |`bool`
 |`false`
