@@ -44,7 +44,7 @@ locals {
           limits   = { for k, v in var.resources.storegateway.limits : k => v if v != null }
         }
         networkPolicy = {
-          enabled = false
+          enabled = var.enable_network_policies
         }
         extraFlags = [
           # Store Gateway index cache config -> https://thanos.io/tip/components/store.md/#index-cache
@@ -84,7 +84,7 @@ locals {
           limits   = { for k, v in var.resources.query.limits : k => v if v != null }
         }
         networkPolicy = {
-          enabled = false
+          enabled = var.enable_network_policies
         }
       }
 
@@ -108,7 +108,7 @@ locals {
           size = local.thanos.compactor_persistence_size
         }
         networkPolicy = {
-          enabled = false
+          enabled = var.enable_network_policies
         }
       }
 
@@ -200,7 +200,25 @@ locals {
           }]
         }
         networkPolicy = {
-          enabled = false
+          enabled = var.enable_network_policies
+          extraIngress = var.enable_network_policies ? [
+            {
+              from = [{
+                namespaceSelector = {
+                  matchLabels = {
+                    "kubernetes.io/metadata.name" = "traefik"
+                  }
+                }
+                },
+                {
+                  podSelector = {
+                    matchLabels = {
+                      "app" = "traefik"
+                    }
+                  }
+              }]
+            }
+          ] : []
         }
       }
 
@@ -334,17 +352,35 @@ locals {
           }]
         }
         networkPolicy = {
-          enabled = false
+          enabled = var.enable_network_policies
+          extraIngress = var.enable_network_policies ? [
+            {
+              from = [{
+                namespaceSelector = {
+                  matchLabels = {
+                    "kubernetes.io/metadata.name" = "traefik"
+                  }
+                }
+                },
+                {
+                  podSelector = {
+                    matchLabels = {
+                      "app" = "traefik"
+                    }
+                  }
+              }]
+            }
+          ] : []
         }
       }
       receive = {
         networkPolicy = {
-          enabled = false
+          enabled = var.enable_network_policies
         }
       }
       ruler = {
         networkPolicy = {
-          enabled = false
+          enabled = var.enable_network_policies
         }
       }
     }
