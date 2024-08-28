@@ -204,11 +204,18 @@ locals {
           extraIngress = var.enable_network_policies ? [
             {
               from = [{
-                podSelector = {
+                namespaceSelector = {
                   matchLabels = {
-                    "app" = "traefik"
+                    "kubernetes.io/metadata.name" = "traefik"
                   }
                 }
+                },
+                {
+                  podSelector = {
+                    matchLabels = {
+                      "app" = "traefik"
+                    }
+                  }
               }]
             }
           ] : []
@@ -349,11 +356,18 @@ locals {
           extraIngress = var.enable_network_policies ? [
             {
               from = [{
-                podSelector = {
+                namespaceSelector = {
                   matchLabels = {
-                    "app" = "traefik"
+                    "kubernetes.io/metadata.name" = "traefik"
                   }
                 }
+                },
+                {
+                  podSelector = {
+                    matchLabels = {
+                      "app" = "traefik"
+                    }
+                  }
               }]
             }
           ] : []
