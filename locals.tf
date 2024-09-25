@@ -357,10 +357,10 @@ locals {
     # TODO Create proper Terraform variables for these values instead of bundling everything inside of these locals
 
     # This is the size for the PersistentVolume used by the Thanos Compactor to perform its operations.
-    # By default, it is set at 8Gi but the documentation recommends a size of 100-300Gi.
-    # We left the default value at 8Gi only to have a working configuration, but this value MUST be configured otherwise
+    # By default, it is set at 10Gi but the documentation recommends a size of 100-300Gi.
+    # We left the default value at 10Gi only to have a working configuration, but this value MUST be configured otherwise
     # the compactor will NOT work on a production deployment. The size of this PV cannot be changed afterwards.
-    compactor_persistence_size = "8Gi"
+    compactor_persistence_size = "10Gi"
 
     compactor_retention = {
       raw      = "60d"
