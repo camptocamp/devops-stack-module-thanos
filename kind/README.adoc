@@ -153,7 +153,7 @@ This module requires a S3 bucket to store the metrics so it needs to be deployed
 
 The following requirements are needed by this module:
 
-- [[requirement_argocd]] <<requirement_argocd,argocd>> (>= 5)
+- [[requirement_argocd]] <<requirement_argocd,argocd>> (>= 6)
 
 - [[requirement_null]] <<requirement_null,null>> (>= 3)
 
@@ -421,7 +421,7 @@ Description: ID to pass other modules in order to refer to this module as a depe
 [cols="a,a",options="header,autowidth"]
 |===
 |Name |Version
-|[[requirement_argocd]] <<requirement_argocd,argocd>> |>= 5
+|[[requirement_argocd]] <<requirement_argocd,argocd>> |>= 6
 |[[requirement_null]] <<requirement_null,null>> |>= 3
 |[[requirement_random]] <<requirement_random,random>> |>= 3
 |[[requirement_utils]] <<requirement_utils,utils>> |>= 1
