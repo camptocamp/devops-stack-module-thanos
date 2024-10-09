@@ -1,5 +1,16 @@
 # Changelog
 
+## [7.0.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v6.0.0...v7.0.0) (2024-10-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* point the Argo CD provider to the new repository ([#88](https://github.com/camptocamp/devops-stack-module-thanos/issues/88))
+
+### Features
+
+* point the Argo CD provider to the new repository ([#88](https://github.com/camptocamp/devops-stack-module-thanos/issues/88)) ([503c776](https://github.com/camptocamp/devops-stack-module-thanos/commit/503c77666b8d53460c747d1d7ca8256ea96d5423))
+
 ## [6.0.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v5.0.0...v6.0.0) (2024-08-14)
 
 
