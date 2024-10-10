@@ -1,14 +1,15 @@
 locals {
   oauth2_proxy_image = "quay.io/oauth2-proxy/oauth2-proxy:v7.6.0"
 
+  domain      = trimprefix("${var.subdomain}.${var.base_domain}", ".")
+  domain_full = trimprefix("${var.subdomain}.${var.cluster_name}.${var.base_domain}", ".")
+
   ingress_annotations = {
     "cert-manager.io/cluster-issuer"                   = "${var.cluster_issuer}"
     "traefik.ingress.kubernetes.io/router.entrypoints" = "websecure"
     "traefik.ingress.kubernetes.io/router.tls"         = "true"
   }
 
-  # values.yaml translated into HCL structures.
-  # Possible values available here -> https://github.com/bitnami/charts/tree/master/bitnami/thanos/
   helm_values = [{
     redis = {
       architecture = "standalone"
@@ -129,7 +130,7 @@ locals {
             "--cookie-secure=false",
             "--cookie-secret=${replace(random_password.oauth2_cookie_secret.result, "\"", "\\\"")}",
             "--email-domain=*",
-            "--redirect-url=https://${local.thanos.bucketweb_domain}/oauth2/callback",
+            "--redirect-url=https://thanos-bucketweb.${local.domain_full}/oauth2/callback",
           ], var.oidc.oauth2_proxy_extra_args)
           image = local.oauth2_proxy_image
           name  = "thanos-proxy"
@@ -151,52 +152,35 @@ locals {
           annotations = local.ingress_annotations
           tls         = false
           hostname    = ""
-          extraRules = [
-            {
-              host = "thanos-bucketweb.${trimprefix("${var.subdomain}.${var.base_domain}", ".")}"
-              http = {
-                paths = [
-                  {
-                    backend = {
-                      service = {
-                        name = "thanos-bucketweb"
-                        port = {
-                          name = "proxy"
-                        }
+
+          extraRules = [for domain in [
+            "thanos-bucketweb.${local.domain_full}",
+            var.enable_short_domain ? "thanos-bucketweb.${local.domain}" : null,
+            ] : {
+            host = "${domain}"
+            http = {
+              paths = [
+                {
+                  backend = {
+                    service = {
+                      name = "thanos-bucketweb"
+                      port = {
+                        name = "proxy"
                       }
                     }
-                    path     = "/"
-                    pathType = "ImplementationSpecific"
                   }
-                ]
-              }
-            },
-            {
-              host = "${local.thanos.bucketweb_domain}"
-              http = {
-                paths = [
-                  {
-                    backend = {
-                      service = {
-                        name = "thanos-bucketweb"
-                        port = {
-                          name = "proxy"
-                        }
-                      }
-                    }
-                    path     = "/"
-                    pathType = "ImplementationSpecific"
-                  }
-                ]
-              }
-            },
-          ]
+                  path     = "/"
+                  pathType = "ImplementationSpecific"
+                }
+              ]
+            }
+          }]
           extraTls = [{
             secretName = "thanos-bucketweb-tls"
-            hosts = [
-              "thanos-bucketweb.${trimprefix("${var.subdomain}.${var.base_domain}", ".")}",
-              "${local.thanos.bucketweb_domain}"
-            ]
+            hosts = compact([
+              "thanos-bucketweb.${local.domain_full}",
+              var.enable_short_domain ? "thanos-bucketweb.${local.domain}" : null,
+            ])
           }]
         }
         networkPolicy = {
@@ -263,7 +247,7 @@ locals {
             "--cookie-secure=false",
             "--cookie-secret=${replace(random_password.oauth2_cookie_secret.result, "\"", "\\\"")}",
             "--email-domain=*",
-            "--redirect-url=https://${local.thanos.query_domain}/oauth2/callback",
+            "--redirect-url=https://thanos-query.${local.domain_full}/oauth2/callback",
           ], var.oidc.oauth2_proxy_extra_args)
           image = local.oauth2_proxy_image
           name  = "thanos-proxy"
@@ -285,52 +269,34 @@ locals {
           annotations = local.ingress_annotations
           tls         = false
           hostname    = ""
-          extraRules = [
-            {
-              host = "thanos-query.${trimprefix("${var.subdomain}.${var.base_domain}", ".")}"
-              http = {
-                paths = [
-                  {
-                    backend = {
-                      service = {
-                        name = "thanos-query-frontend"
-                        port = {
-                          name = "proxy"
-                        }
+          extraRules = [for domain in compact([
+            "thanos-query.${local.domain_full}",
+            var.enable_short_domain ? "thanos-query.${local.domain}" : null,
+            ]) : {
+            host = "${domain}"
+            http = {
+              paths = [
+                {
+                  backend = {
+                    service = {
+                      name = "thanos-query-frontend"
+                      port = {
+                        name = "proxy"
                       }
                     }
-                    path     = "/"
-                    pathType = "ImplementationSpecific"
                   }
-                ]
-              }
-            },
-            {
-              host = "${local.thanos.query_domain}"
-              http = {
-                paths = [
-                  {
-                    backend = {
-                      service = {
-                        name = "thanos-query-frontend"
-                        port = {
-                          name = "proxy"
-                        }
-                      }
-                    }
-                    path     = "/"
-                    pathType = "ImplementationSpecific"
-                  }
-                ]
-              }
-            },
-          ]
+                  path     = "/"
+                  pathType = "ImplementationSpecific"
+                }
+              ]
+            }
+          }]
           extraTls = [{
             secretName = "thanos-query-tls"
-            hosts = [
-              "thanos-query.${trimprefix("${var.subdomain}.${var.base_domain}", ".")}",
-              "${local.thanos.query_domain}"
-            ]
+            hosts = compact([
+              "thanos-query.${local.domain_full}",
+              var.enable_short_domain ? "thanos-query.${local.domain}" : null,
+            ])
           }]
         }
         networkPolicy = {
@@ -351,9 +317,6 @@ locals {
   }]
 
   thanos_defaults = {
-    query_domain     = "thanos-query.${trimprefix("${var.subdomain}.${var.cluster_name}", ".")}.${var.base_domain}"
-    bucketweb_domain = "thanos-bucketweb.${trimprefix("${var.subdomain}.${var.cluster_name}", ".")}.${var.base_domain}"
-
     # TODO Create proper Terraform variables for these values instead of bundling everything inside of these locals
 
     compactor_retention = {
