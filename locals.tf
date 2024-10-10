@@ -105,7 +105,7 @@ locals {
           accessModes = [
             "ReadWriteOnce"
           ]
-          size = local.thanos.compactor_persistence_size
+          size = var.compactor_persistence_size
         }
         networkPolicy = {
           enabled = false
@@ -355,12 +355,6 @@ locals {
     bucketweb_domain = "thanos-bucketweb.${trimprefix("${var.subdomain}.${var.cluster_name}", ".")}.${var.base_domain}"
 
     # TODO Create proper Terraform variables for these values instead of bundling everything inside of these locals
-
-    # This is the size for the PersistentVolume used by the Thanos Compactor to perform its operations.
-    # By default, it is set at 8Gi but the documentation recommends a size of 100-300Gi.
-    # We left the default value at 8Gi only to have a working configuration, but this value MUST be configured otherwise
-    # the compactor will NOT work on a production deployment. The size of this PV cannot be changed afterwards.
-    compactor_persistence_size = "8Gi"
 
     compactor_retention = {
       raw      = "60d"

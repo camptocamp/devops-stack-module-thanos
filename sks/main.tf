@@ -14,7 +14,8 @@ module "thanos" {
   app_autosync           = var.app_autosync
   dependency_ids         = var.dependency_ids
 
-  resources = var.resources
+  resources                  = var.resources
+  compactor_persistence_size = var.compactor_persistence_size
 
   thanos = var.thanos
 
