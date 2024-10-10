@@ -187,3 +187,15 @@ variable "oidc" {
   })
   nullable = false
 }
+
+variable "compactor_persistence_size" {
+  description = <<-EOT
+    Size of the PVC for the Thanos Compactor component.
+
+    By default, it is set at 10Gi but the documentation recommends a size of 100-300Gi. We chose this small value for test deployments without much metrics. 
+    We strongly recommend setting this value to bigger sizes, otherwise the compactor will NOT work on a production deployment.
+  EOT
+  type        = string
+  default     = "10Gi"
+  nullable    = false
+}
