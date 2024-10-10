@@ -324,23 +324,6 @@ locals {
       five_min = "120d"
       one_hour = "240d"
     }
-
-    # TODO Create flavors instead of needing to pass resources values like this
-    compactor_resources = {
-      limits = {
-        memory = "1Gi"
-      }
-    }
-    storegateway_resources = {
-      limits = {
-        memory = "1Gi"
-      }
-    }
-    query_resources = {
-      limits = {
-        memory = "1Gi"
-      }
-    }
   }
 
   thanos = merge(
