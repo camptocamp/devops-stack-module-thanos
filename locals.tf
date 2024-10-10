@@ -1,14 +1,15 @@
 locals {
   oauth2_proxy_image = "quay.io/oauth2-proxy/oauth2-proxy:v7.6.0"
 
+  domain      = trimprefix("${var.subdomain}.${var.base_domain}", ".")
+  domain_full = trimprefix("${var.subdomain}.${var.cluster_name}.${var.base_domain}", ".")
+
   ingress_annotations = {
     "cert-manager.io/cluster-issuer"                   = "${var.cluster_issuer}"
     "traefik.ingress.kubernetes.io/router.entrypoints" = "websecure"
     "traefik.ingress.kubernetes.io/router.tls"         = "true"
   }
 
-  # values.yaml translated into HCL structures.
-  # Possible values available here -> https://github.com/bitnami/charts/tree/master/bitnami/thanos/
   helm_values = [{
     redis = {
       architecture = "standalone"
@@ -151,9 +152,9 @@ locals {
           annotations = local.ingress_annotations
           tls         = false
           hostname    = ""
-          extraRules = [
+          extraRules = compact([
             {
-              host = "thanos-bucketweb.${trimprefix("${var.subdomain}.${var.base_domain}", ".")}"
+              host = "thanos-bucketweb.${local.domain_full}"
               http = {
                 paths = [
                   {
@@ -171,8 +172,8 @@ locals {
                 ]
               }
             },
-            {
-              host = "${local.thanos.bucketweb_domain}"
+            var.enable_short_domain ? {
+              host = "thanos-bucketweb.${local.domain}"
               http = {
                 paths = [
                   {
@@ -189,14 +190,14 @@ locals {
                   }
                 ]
               }
-            },
-          ]
+            } : null,
+          ])
           extraTls = [{
             secretName = "thanos-bucketweb-tls"
-            hosts = [
-              "thanos-bucketweb.${trimprefix("${var.subdomain}.${var.base_domain}", ".")}",
-              "${local.thanos.bucketweb_domain}"
-            ]
+            hosts = compact([
+              "thanos-bucketweb.${local.domain_full}",
+              var.enable_short_domain ? "thanos-bucketweb.${local.domain}" : null,
+            ])
           }]
         }
         networkPolicy = {
@@ -285,9 +286,9 @@ locals {
           annotations = local.ingress_annotations
           tls         = false
           hostname    = ""
-          extraRules = [
+          extraRules = compact([
             {
-              host = "thanos-query.${trimprefix("${var.subdomain}.${var.base_domain}", ".")}"
+              host = "thanos-query.${local.domain_full}"
               http = {
                 paths = [
                   {
@@ -305,8 +306,8 @@ locals {
                 ]
               }
             },
-            {
-              host = "${local.thanos.query_domain}"
+            var.enable_short_domain ? {
+              host = "thanos-query.${local.domain}"
               http = {
                 paths = [
                   {
@@ -323,14 +324,14 @@ locals {
                   }
                 ]
               }
-            },
-          ]
+            } : null,
+          ])
           extraTls = [{
             secretName = "thanos-query-tls"
-            hosts = [
-              "thanos-query.${trimprefix("${var.subdomain}.${var.base_domain}", ".")}",
-              "${local.thanos.query_domain}"
-            ]
+            hosts = compact([
+              "thanos-query.${local.domain_full}",
+              var.enable_short_domain ? "thanos-query.${local.domain}" : null,
+            ])
           }]
         }
         networkPolicy = {
@@ -351,9 +352,6 @@ locals {
   }]
 
   thanos_defaults = {
-    query_domain     = "thanos-query.${trimprefix("${var.subdomain}.${var.cluster_name}", ".")}.${var.base_domain}"
-    bucketweb_domain = "thanos-bucketweb.${trimprefix("${var.subdomain}.${var.cluster_name}", ".")}.${var.base_domain}"
-
     # TODO Create proper Terraform variables for these values instead of bundling everything inside of these locals
 
     compactor_retention = {
