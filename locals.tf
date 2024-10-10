@@ -123,14 +123,14 @@ locals {
             "--http-address=0.0.0.0:9075",
             "--upstream=http://localhost:8080",
             "--provider=oidc",
-            "--oidc-issuer-url=${replace(local.thanos.oidc.issuer_url, "\"", "\\\"")}",
-            "--client-id=${replace(local.thanos.oidc.client_id, "\"", "\\\"")}",
-            "--client-secret=${replace(local.thanos.oidc.client_secret, "\"", "\\\"")}",
+            "--oidc-issuer-url=${replace(var.oidc.issuer_url, "\"", "\\\"")}",
+            "--client-id=${replace(var.oidc.client_id, "\"", "\\\"")}",
+            "--client-secret=${replace(var.oidc.client_secret, "\"", "\\\"")}",
             "--cookie-secure=false",
             "--cookie-secret=${replace(random_password.oauth2_cookie_secret.result, "\"", "\\\"")}",
             "--email-domain=*",
             "--redirect-url=https://${local.thanos.bucketweb_domain}/oauth2/callback",
-          ], local.thanos.oidc.oauth2_proxy_extra_args)
+          ], var.oidc.oauth2_proxy_extra_args)
           image = local.oauth2_proxy_image
           name  = "thanos-proxy"
           ports = [{
@@ -257,14 +257,14 @@ locals {
             "--http-address=0.0.0.0:9075",
             "--upstream=http://localhost:9090",
             "--provider=oidc",
-            "--oidc-issuer-url=${replace(local.thanos.oidc.issuer_url, "\"", "\\\"")}",
-            "--client-id=${replace(local.thanos.oidc.client_id, "\"", "\\\"")}",
-            "--client-secret=${replace(local.thanos.oidc.client_secret, "\"", "\\\"")}",
+            "--oidc-issuer-url=${replace(var.oidc.issuer_url, "\"", "\\\"")}",
+            "--client-id=${replace(var.oidc.client_id, "\"", "\\\"")}",
+            "--client-secret=${replace(var.oidc.client_secret, "\"", "\\\"")}",
             "--cookie-secure=false",
             "--cookie-secret=${replace(random_password.oauth2_cookie_secret.result, "\"", "\\\"")}",
             "--email-domain=*",
             "--redirect-url=https://${local.thanos.query_domain}/oauth2/callback",
-          ], local.thanos.oidc.oauth2_proxy_extra_args)
+          ], var.oidc.oauth2_proxy_extra_args)
           image = local.oauth2_proxy_image
           name  = "thanos-proxy"
           ports = [{

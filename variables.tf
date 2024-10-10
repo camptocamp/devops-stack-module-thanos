@@ -174,3 +174,16 @@ variable "enable_service_monitor" {
   type        = bool
   default     = false
 }
+
+variable "oidc" {
+  description = "OIDC settings to configure the access to the web interfaces of Thanos."
+  type = object({
+    issuer_url              = string
+    oauth_url               = string
+    token_url               = string
+    api_url                 = string
+    client_id               = string
+    oauth2_proxy_extra_args = optional(list(string), [])
+  })
+  nullable = false
+}
