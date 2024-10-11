@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.0.1](https://github.com/camptocamp/devops-stack-module-thanos/compare/v7.0.0...v7.0.1) (2024-10-11)
+
+
+### Bug Fixes
+
+* grafana panels uses angular deprecated plugin ([#90](https://github.com/camptocamp/devops-stack-module-thanos/issues/90)) ([bf7302f](https://github.com/camptocamp/devops-stack-module-thanos/commit/bf7302f8dd3f7b5b4655f9754213e3f59f047695))
+
 ## [7.0.0](https://github.com/camptocamp/devops-stack-module-thanos/compare/v6.0.0...v7.0.0) (2024-10-09)
 
 
