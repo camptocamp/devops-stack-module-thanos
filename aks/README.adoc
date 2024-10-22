@@ -318,7 +318,7 @@ Description: Override of target revision of the application chart.
 
 Type: `string`
 
-Default: `"v7.0.0"`
+Default: `"v7.0.1"`
 
 ==== [[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
 
@@ -474,6 +474,14 @@ Type: `bool`
 
 Default: `false`
 
+==== [[input_enable_network_policies]] <<input_enable_network_policies,enable_network_policies>>
+
+Description: Enable or disable network policy for Thanos components.
+
+Type: `bool`
+
+Default: `false`
+
 === Outputs
 
 The following outputs are exported:
@@ -592,7 +600,7 @@ object({
 |[[input_target_revision]] <<input_target_revision,target_revision>>
 |Override of target revision of the application chart.
 |`string`
-|`"v7.0.0"`
+|`"v7.0.1"`
 |no
 
 |[[input_cluster_issuer]] <<input_cluster_issuer,cluster_issuer>>
@@ -736,6 +744,12 @@ object({
 
 |[[input_enable_service_monitor]] <<input_enable_service_monitor,enable_service_monitor>>
 |Boolean to enable the deployment of a service monitor for Prometheus. This also enables the deployment of default Prometheus rules and Grafana dashboards, which are embedded inside the chart templates and are taken from the official Thanos examples, available https://github.com/thanos-io/thanos/blob/main/examples/alerts/alerts.yaml[here].
+|`bool`
+|`false`
+|no
+
+|[[input_enable_network_policies]] <<input_enable_network_policies,enable_network_policies>>
+|Enable or disable network policy for Thanos components.
 |`bool`
 |`false`
 |no

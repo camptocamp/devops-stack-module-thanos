@@ -174,3 +174,9 @@ variable "enable_service_monitor" {
   type        = bool
   default     = false
 }
+
+variable "enable_network_policies" {
+  description = "Enable or disable network policy for Thanos components."
+  type        = bool
+  default     = false
+}
