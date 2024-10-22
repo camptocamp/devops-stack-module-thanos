@@ -11,6 +11,11 @@ locals {
   }
 
   helm_values = [{
+    secrets_names = {
+      cluster_secret_store = var.secrets_names.cluster_secret_store_name
+      thanos               = var.secrets_names.thanos
+    }
+
     redis = {
       architecture = "standalone"
       auth = {
@@ -126,12 +131,30 @@ locals {
             "--provider=oidc",
             "--oidc-issuer-url=${replace(var.oidc.issuer_url, "\"", "\\\"")}",
             "--client-id=${replace(var.oidc.client_id, "\"", "\\\"")}",
-            "--client-secret=${replace(var.oidc.client_secret, "\"", "\\\"")}",
             "--cookie-secure=false",
-            "--cookie-secret=${replace(random_password.oauth2_cookie_secret.result, "\"", "\\\"")}",
             "--email-domain=*",
             "--redirect-url=https://thanos-bucketweb.${local.domain_full}/oauth2/callback",
           ], var.oidc.oauth2_proxy_extra_args)
+          env = [
+            {
+              name = "OAUTH2_PROXY_CLIENT_SECRET"
+              valueFrom = {
+                secretKeyRef = {
+                  name = "thanos-oidc-client-secret"
+                  key  = "value"
+                }
+              }
+            },
+            {
+              name = "OAUTH2_PROXY_COOKIE_SECRET"
+              valueFrom = {
+                secretKeyRef = {
+                  name = "thanos-oauth2-proxy-cookie-secret"
+                  key  = "value"
+                }
+              }
+            }
+          ]
           image = local.oauth2_proxy_image
           name  = "thanos-proxy"
           ports = [{
@@ -243,12 +266,30 @@ locals {
             "--provider=oidc",
             "--oidc-issuer-url=${replace(var.oidc.issuer_url, "\"", "\\\"")}",
             "--client-id=${replace(var.oidc.client_id, "\"", "\\\"")}",
-            "--client-secret=${replace(var.oidc.client_secret, "\"", "\\\"")}",
             "--cookie-secure=false",
-            "--cookie-secret=${replace(random_password.oauth2_cookie_secret.result, "\"", "\\\"")}",
             "--email-domain=*",
             "--redirect-url=https://thanos-query.${local.domain_full}/oauth2/callback",
           ], var.oidc.oauth2_proxy_extra_args)
+          env = [
+            {
+              name = "OAUTH2_PROXY_CLIENT_SECRET"
+              valueFrom = {
+                secretKeyRef = {
+                  name = "thanos-oidc-client-secret"
+                  key  = "value"
+                }
+              }
+            },
+            {
+              name = "OAUTH2_PROXY_COOKIE_SECRET"
+              valueFrom = {
+                secretKeyRef = {
+                  name = "thanos-oauth2-proxy-cookie-secret"
+                  key  = "value"
+                }
+              }
+            }
+          ]
           image = local.oauth2_proxy_image
           name  = "thanos-proxy"
           ports = [{

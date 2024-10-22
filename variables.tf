@@ -50,6 +50,20 @@ variable "target_revision" {
   default     = "v7.0.0" # x-release-please-version
 }
 
+variable "secrets_names" {
+  description = "Name of the `ClusterSecretStore` used by the External Secrets Operator and the names of the secrets required for this module."
+  type = object({
+    cluster_secret_store_name = string
+    thanos = object({
+      metrics_storage            = string
+      oauth2_proxy_cookie_secret = string
+      oidc_client_secret         = string
+      redis_password             = string
+    })
+  })
+  nullable = false
+}
+
 variable "cluster_issuer" {
   description = "SSL certificate issuer to use. Usually you would configure this value as `letsencrypt-staging` or `letsencrypt-prod` on your root `*.tf` files."
   type        = string
