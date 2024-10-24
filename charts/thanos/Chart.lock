@@ -1,9 +1,9 @@
 dependencies:
 - name: thanos
   repository: https://charts.bitnami.com/bitnami
-  version: 13.2.2
+  version: 15.7.29
 - name: redis
   repository: https://charts.bitnami.com/bitnami
-  version: 18.17.0
-digest: sha256:cc752483b9a6cb90320dc5faa387af7fb40a5e3e7dd19cad7198043d5afc97b9
-generated: "2024-03-01T12:28:15.172575594Z"
+  version: 20.2.1
+digest: sha256:c2b490d16032a5e59023fe09f1aa63ee10a8fc82207201ac7cb4741889211383
+generated: "2024-10-24T07:03:45.007338212Z"
